@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -11,6 +10,7 @@ import 'package:melora/components/links/link_text.dart';
 import 'package:melora/extensions/constrains.dart';
 import 'package:melora/models/metadata/metadata.dart';
 import 'package:melora/provider/audio_player/audio_player.dart';
+import 'package:melora/theme/melora_theme.dart';
 
 class PlayerTrackDetails extends HookConsumerWidget {
   final Color? color;
@@ -26,21 +26,21 @@ class PlayerTrackDetails extends HookConsumerWidget {
       children: [
         if (playback.activeTrack != null)
           Container(
-            margin: const EdgeInsets.only(left: 10, right: 12),
+            margin: const EdgeInsets.only(left: 14, right: 12),
             height: 44,
             width: 44,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: MeloraRadius.smBr,
               boxShadow: const [
                 BoxShadow(
                   color: Color(0x40000000),
-                  blurRadius: 8,
-                  offset: Offset(0, 2),
+                  blurRadius: 10,
+                  offset: Offset(0, 3),
                 ),
               ],
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: MeloraRadius.smBr,
               child: UniversalImage(
                 path: (track?.album.images)
                     .asUrlString(placeholder: ImagePlaceholder.albumArt),
@@ -56,27 +56,23 @@ class PlayerTrackDetails extends HookConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  playback.activeTrack?.name ?? "",
+                  playback.activeTrack?.name ?? '',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  style: TextStyle(
-                    fontSize: 14.5,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: -0.2,
-                    color: color ?? Colors.white,
+                  style: MeloraTextStyle.trackTitle.copyWith(
+                    color: color ?? MeloraColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 1.5),
+                const SizedBox(height: 2),
                 Text(
-                  playback.activeTrack?.artists.asString() ?? "",
+                  playback.activeTrack?.artists.asString() ?? '',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  style: TextStyle(
-                    fontSize: 12.5,
-                    fontWeight: FontWeight.w400,
-                    color: (color ?? Colors.white).withValues(alpha: 0.65),
+                  style: MeloraTextStyle.trackArtist.copyWith(
+                    color:
+                        (color ?? MeloraColors.textSecondary).withValues(alpha: 0.8),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -84,14 +80,17 @@ class PlayerTrackDetails extends HookConsumerWidget {
           Flexible(
             flex: 1,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 LinkText(
-                  playback.activeTrack?.name ?? "",
-                  TrackRoute(trackId: playback.activeTrack?.id ?? ""),
+                  playback.activeTrack?.name ?? '',
+                  TrackRoute(trackId: playback.activeTrack?.id ?? ''),
                   push: true,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontWeight: FontWeight.bold, color: color),
+                  style: MeloraTextStyle.trackTitle.copyWith(color: color),
                 ),
+                const SizedBox(height: 1),
                 ArtistLink(
                   artists: playback.activeTrack?.artists ?? [],
                   onRouteChange: (route) {
@@ -99,7 +98,7 @@ class PlayerTrackDetails extends HookConsumerWidget {
                   },
                   onOverflowArtistClick: () =>
                       context.navigateTo(TrackRoute(trackId: track!.id)),
-                )
+                ),
               ],
             ),
           ),

@@ -30,7 +30,7 @@ class UserPreferencesNotifier extends Notifier<PreferencesTableData> {
                 id: const Value(0),
                 downloadLocation: Value(await _getDefaultDownloadDirectory()),
                 showSystemTrayIcon: const Value(true),
-                closeBehavior: Value(CloseBehavior.minimizeToTray.name),
+                closeBehavior: const Value(CloseBehavior.minimizeToTray),
               ),
             );
       }

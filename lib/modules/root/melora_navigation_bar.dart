@@ -1,6 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart' show Badge;
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -13,18 +11,12 @@ import 'package:melora/extensions/context.dart';
 import 'package:melora/models/database/database.dart';
 import 'package:melora/provider/download_manager_provider.dart';
 import 'package:melora/provider/user_preferences/user_preferences_provider.dart';
-
-const _barBorder = Color(0x33A78BFA);
-const _barBackground = Color(0xEB090615);
-const _activeTabColor = Color(0xFFC4B5FD);
-const _inactiveTabColor = Color(0x668B8FA8);
+import 'package:melora/theme/melora_theme.dart';
 
 final navigationPanelHeight = StateProvider<double>((ref) => 50);
 
 class MeloraNavigationBar extends HookConsumerWidget {
-  const MeloraNavigationBar({
-    super.key,
-  });
+  const MeloraNavigationBar({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
@@ -45,8 +37,8 @@ class MeloraNavigationBar extends HookConsumerWidget {
     );
 
     final panelHeight = ref.watch(navigationPanelHeight);
-
     final router = context.watchRouter;
+
     final selectedIndex = max(
       0,
       navbarTileList.indexWhere(
@@ -60,52 +52,66 @@ class MeloraNavigationBar extends HookConsumerWidget {
       return const SizedBox();
     }
 
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 100),
+    return Container(
       height: panelHeight,
-      child: ClipRect(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 32, sigmaY: 32),
-          child: Container(
-            decoration: const BoxDecoration(
-              color: _barBackground,
-              border: Border(
-                top: BorderSide(
-                  color: _barBorder,
-                  width: 0.5,
-                ),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                for (int i = 0; i < navbarTileList.length; i++)
-                  Expanded(
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        context.navigateTo(navbarTileList[i].route);
-                      },
-                      child: Center(
-                        child: Badge(
-                          isLabelVisible:
-                              navbarTileList[i].id == "library" && downloadCount > 0,
-                          label: Text(downloadCount.toString()),
-                          child: Icon(
-                            navbarTileList[i].icon,
-                            size: 24,
-                            color: selectedIndex == i
-                                ? _activeTabColor
-                                : _inactiveTabColor,
-                          ),
-                        ),
+      decoration: const BoxDecoration(
+        color: MeloraColors.surface0,
+        border: Border(
+          top: BorderSide(color: MeloraColors.separator, width: 0.5),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: List.generate(navbarTileList.length, (i) {
+          final tile = navbarTileList[i];
+          final isActive = i == selectedIndex;
+          return Expanded(
+            child: GestureDetector(
+              onTap: () => context.navigateTo(tile.route),
+              behavior: HitTestBehavior.opaque,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Badge(
+                    isLabelVisible:
+                        tile.id == 'downloads' && downloadCount > 0,
+                    label: Text(downloadCount.toString()),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 160),
+                      padding: const EdgeInsets.all(7),
+                      decoration: BoxDecoration(
+                        color: isActive
+                            ? MeloraColors.accentGlow
+                            : Colors.transparent,
+                        borderRadius: MeloraRadius.smBr,
+                      ),
+                      child: Icon(
+                        tile.icon,
+                        size: 20,
+                        color: isActive
+                            ? MeloraColors.accentSoft
+                            : MeloraColors.textSecondary,
                       ),
                     ),
                   ),
-              ],
+                  const SizedBox(height: 3),
+                  Text(
+                    tile.title,
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: isActive
+                          ? FontWeight.w600
+                          : FontWeight.w400,
+                      color: isActive
+                          ? MeloraColors.accentSoft
+                          : MeloraColors.textTertiary,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }

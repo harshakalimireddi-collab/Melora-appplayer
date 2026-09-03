@@ -18,9 +18,9 @@ import 'package:melora/extensions/constrains.dart';
 import 'package:melora/extensions/context.dart';
 import 'package:melora/provider/audio_player/audio_player.dart';
 import 'package:melora/provider/user_preferences/user_preferences_provider.dart';
-
 import 'package:melora/provider/volume_provider.dart';
 import 'package:melora/utils/platform.dart';
+import 'package:melora/theme/melora_theme.dart';
 import 'package:window_manager/window_manager.dart';
 
 class BottomPlayer extends HookConsumerWidget {
@@ -31,7 +31,6 @@ class BottomPlayer extends HookConsumerWidget {
     final playlist = ref.watch(audioPlayerProvider);
     final layoutMode =
         ref.watch(userPreferencesProvider.select((s) => s.layoutMode));
-
     final mediaQuery = MediaQuery.of(context);
 
     String albumArt = useMemoized(
@@ -44,90 +43,129 @@ class BottomPlayer extends HookConsumerWidget {
       [playlist.activeTrack?.album.images],
     );
 
-    // returning an empty non spacious Container as the overlay will take
-    // place in the global overlay stack aka [_entries]
     if (layoutMode == LayoutMode.compact ||
         ((mediaQuery.mdAndDown) && layoutMode == LayoutMode.adaptive)) {
       return PlayerOverlay(albumArt: albumArt);
     }
 
-    return SurfaceCard(
-      borderRadius: BorderRadius.zero,
-      surfaceBlur: context.theme.surfaceBlur,
-      surfaceOpacity: context.theme.surfaceOpacity,
+    return Container(
+      height: 72,
+      decoration: const BoxDecoration(
+        color: MeloraColors.surface0,
+        border: Border(
+          top: BorderSide(color: MeloraColors.separator, width: 0.5),
+        ),
+      ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          // ── Left: Track info ──────────────────────────────
           Expanded(
             child: PlayerTrackDetails(track: playlist.activeTrack),
           ),
-          // controls
+
+          // ── Center: Controls ──────────────────────────────
           const Flexible(
             flex: 3,
-            child: Padding(
-              padding: EdgeInsets.only(top: 5),
-              child: PlayerControls(),
-            ),
+            child: PlayerControls(),
           ),
-          // add to saved tracks
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              PlayerActions(
-                extraActions: [
-                  Tooltip(
-                    tooltip:
-                        TooltipContainer(child: Text(context.l10n.mini_player))
-                            .call,
-                    child: IconButton(
-                      variance: ButtonVariance.ghost,
-                      icon: const Icon(MeloraIcons.miniPlayer),
-                      onPressed: () async {
-                        if (!kIsDesktop) return;
 
-                        final prevSize = await windowManager.getSize();
-                        await windowManager.setMinimumSize(
-                          const Size(300, 300),
-                        );
-                        await windowManager.setAlwaysOnTop(true);
-                        if (!kIsLinux) {
-                          await windowManager.setHasShadow(false);
-                        }
-                        await windowManager.setAlignment(Alignment.topRight);
-                        await windowManager.setSize(const Size(400, 500));
-                        await Future.delayed(
-                          const Duration(milliseconds: 100),
-                          () async {
-                            if (context.mounted) {
-                              context.navigateTo(
-                                MiniLyricsRoute(prevSize: prevSize),
-                              );
+          // ── Right: Actions + Volume ───────────────────────
+          SizedBox(
+            width: 240,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  PlayerActions(
+                    extraActions: [
+                      if (kIsDesktop)
+                        _PlayerIconBtn(
+                          icon: MeloraIcons.miniPlayer,
+                          tooltip: context.l10n.mini_player,
+                          onTap: () async {
+                            final prevSize = await windowManager.getSize();
+                            await windowManager.setMinimumSize(
+                              const Size(300, 300),
+                            );
+                            await windowManager.setAlwaysOnTop(true);
+                            if (!kIsLinux) {
+                              await windowManager.setHasShadow(false);
                             }
+                            await windowManager
+                                .setAlignment(Alignment.topRight);
+                            await windowManager.setSize(const Size(400, 500));
+                            await Future.delayed(
+                              const Duration(milliseconds: 100),
+                              () async {
+                                if (context.mounted) {
+                                  context.navigateTo(
+                                    MiniLyricsRoute(prevSize: prevSize),
+                                  );
+                                }
+                              },
+                            );
                           },
-                        );
-                      },
-                    ),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(width: 8),
+                  // Volume
+                  SizedBox(
+                    width: 120,
+                    child: Consumer(builder: (context, ref, _) {
+                      final volume = ref.watch(volumeProvider);
+                      return VolumeSlider(
+                        fullWidth: true,
+                        value: volume,
+                        onChanged: (value) {
+                          ref
+                              .read(volumeProvider.notifier)
+                              .setVolume(value);
+                        },
+                      );
+                    }),
                   ),
                 ],
               ),
-              Container(
-                height: 40,
-                constraints: const BoxConstraints(maxWidth: 250),
-                padding: const EdgeInsets.only(right: 10),
-                child: Consumer(builder: (context, ref, _) {
-                  final volume = ref.watch(volumeProvider);
-                  return VolumeSlider(
-                    fullWidth: true,
-                    value: volume,
-                    onChanged: (value) {
-                      ref.read(volumeProvider.notifier).setVolume(value);
-                    },
-                  );
-                }),
-              )
-            ],
+            ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _PlayerIconBtn extends StatelessWidget {
+  final IconData icon;
+  final String tooltip;
+  final VoidCallback onTap;
+
+  const _PlayerIconBtn({
+    required this.icon,
+    required this.tooltip,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      tooltip: TooltipContainer(child: Text(tooltip)).call,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: 36,
+          height: 36,
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: MeloraRadius.smBr,
+          ),
+          child: Icon(
+            icon,
+            size: 18,
+            color: MeloraColors.textSecondary,
+          ),
+        ),
       ),
     );
   }

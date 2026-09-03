@@ -227,8 +227,8 @@ class Melora extends HookConsumerWidget {
         colorScheme:
             colorSchemeMap[accentMaterialColor.name]?.call(ThemeMode.light) ??
                 LegacyColorSchemes.lightSlate(),
-        surfaceOpacity: .72,
-        surfaceBlur: 24,
+        surfaceOpacity: .80,
+        surfaceBlur: 8,
       ),
       darkTheme: ThemeData(
         radius: .75,
@@ -236,8 +236,8 @@ class Melora extends HookConsumerWidget {
         colorScheme:
             colorSchemeMap[accentMaterialColor.name]?.call(ThemeMode.dark) ??
                 LegacyColorSchemes.darkSlate(),
-        surfaceOpacity: .72,
-        surfaceBlur: 24,
+        surfaceOpacity: .90,
+        surfaceBlur: 8,
       ),
       materialTheme: material.ThemeData(
         brightness: switch (themeMode) {

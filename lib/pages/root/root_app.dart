@@ -11,6 +11,7 @@ import 'package:melora/modules/root/melora_navigation_bar.dart';
 import 'package:melora/hooks/configurators/use_endless_playback.dart';
 import 'package:melora/modules/root/use_global_subscriptions.dart';
 import 'package:melora/provider/glance/glance.dart';
+import 'package:melora/theme/melora_theme.dart';
 
 @RoutePage()
 class RootAppPage extends HookConsumerWidget {
@@ -18,76 +19,49 @@ class RootAppPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final backgroundColor = Theme.of(context).colorScheme.background;
-    final brightness = Theme.of(context).brightness;
-
     ref.listen(glanceProvider, (_, __) {});
-
     useGlobalSubscriptions(ref);
     useEndlessPlayback(ref);
     useCheckYtDlpInstalled(ref);
 
     useEffect(() {
       SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarColor: backgroundColor, // status bar color
-          statusBarIconBrightness: brightness == Brightness.dark
-              ? Brightness.light
-              : Brightness.dark,
+        const SystemUiOverlayStyle(
+          statusBarColor: MeloraColors.bg,
+          statusBarIconBrightness: Brightness.light,
+          systemNavigationBarColor: MeloraColors.surface0,
         ),
       );
       return null;
-    }, [backgroundColor, brightness]);
+    }, const []);
 
-    final scaffold = MediaQuery.removeViewInsets(
+    return MediaQuery.removeViewInsets(
       context: context,
       removeBottom: true,
       child: SafeArea(
         top: false,
-        child: Stack(
-          children: [
-            const Positioned.fill(
-              child: IgnorePointer(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: RadialGradient(
-                      center: Alignment(0.6, -0.7),
-                      radius: 1.2,
-                      colors: [
-                        Color(0x1F7C3AED),
-                        Color(0x0F06B6D4),
-                        Colors.transparent,
-                      ],
-                      stops: [0.0, 0.45, 1.0],
-                    ),
-                  ),
+        child: ColoredBox(
+          // Obsidian base coat — no giant radial blob
+          color: MeloraColors.bg,
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            footers: const [
+              BottomPlayer(),
+              MeloraNavigationBar(),
+            ],
+            floatingFooter: true,
+            child: Sidebar(
+              child: MediaQuery(
+                data: MediaQuery.of(context).copyWith(
+                  padding: MediaQuery.paddingOf(context)
+                      .copyWith(bottom: 100 * context.theme.scaling),
                 ),
+                child: const AutoRouter(),
               ),
             ),
-            Positioned.fill(
-              child: Scaffold(
-                backgroundColor: Colors.transparent,
-                footers: const [
-                  BottomPlayer(),
-                  MeloraNavigationBar(),
-                ],
-                floatingFooter: true,
-                child: Sidebar(
-                  child: MediaQuery(
-                    data: MediaQuery.of(context).copyWith(
-                      padding: MediaQuery.paddingOf(context)
-                          .copyWith(bottom: 100 * context.theme.scaling),
-                    ),
-                    child: const AutoRouter(),
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
-
-    return scaffold;
   }
 }
