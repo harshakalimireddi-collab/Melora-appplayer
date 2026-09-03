@@ -169,7 +169,7 @@ class AboutMeloraPage extends HookConsumerWidget {
                         ),
                         const SizedBox(height: 14),
                         const Text(
-                          "I’m Harsha, the developer behind Melora. I built Melora with a simple idea: music should feel personal, beautiful, and distraction-free.",
+                          "I'm Harsha, the developer behind Melora. I built Melora around a simple belief: music should feel personal, beautiful, and free from distractions.",
                           style: TextStyle(
                             color: MeloraColors.textPrimary,
                             fontSize: 13.5,
@@ -178,7 +178,7 @@ class AboutMeloraPage extends HookConsumerWidget {
                         ),
                         const SizedBox(height: 10),
                         const Text(
-                          "What started as a project to build the music player I wanted to use became Melora — an ongoing journey of designing, experimenting, and improving the listening experience.",
+                          "What started as a personal project to rethink the way I listen to music has grown into Melora — an ongoing journey of thoughtful design, experimentation, and engineering, all driven by one goal: creating a listening experience that feels truly yours.",
                           style: TextStyle(
                             color: MeloraColors.textSecondary,
                             fontSize: 13.5,
