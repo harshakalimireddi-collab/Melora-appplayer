@@ -116,8 +116,8 @@ class AboutMeloraPage extends HookConsumerWidget {
                               colon,
                               const TableCell(
                                 child: Hyperlink(
-                                  "github.com/melora-app/melora",
-                                  "https://github.com/melora-app/melora",
+                                  "github.com/harshakalimireddi-collab/Melora-appplayer",
+                                  "https://github.com/harshakalimireddi-collab/Melora-appplayer",
                                 ),
                               ),
                             ],
@@ -129,7 +129,7 @@ class AboutMeloraPage extends HookConsumerWidget {
                               const TableCell(
                                 child: Hyperlink(
                                   "BSD-4-Clause",
-                                  "https://raw.githubusercontent.com/melora-app/melora/master/LICENSE",
+                                  "https://raw.githubusercontent.com/harshakalimireddi-collab/Melora-appplayer/master/LICENSE",
                                 ),
                               ),
                             ],

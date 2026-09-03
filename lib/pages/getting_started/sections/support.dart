@@ -56,7 +56,7 @@ class GettingStartedScreenSupportSection extends HookConsumerWidget {
                       }),
                       onPressed: () async {
                         await launchUrlString(
-                          "https://github.com/melora-app/melora",
+                          "https://github.com/harshakalimireddi-collab/Melora-appplayer",
                           mode: LaunchMode.externalApplication,
                         );
                       },

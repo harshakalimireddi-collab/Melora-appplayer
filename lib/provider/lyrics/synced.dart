@@ -37,7 +37,7 @@ class SyncedLyricsNotifier
       options: Options(
         headers: {
           "User-Agent":
-              "Melora v${packageInfo.version} (https://github.com/melora-app/melora)"
+              "Melora v${packageInfo.version} (https://github.com/harshakalimireddi-collab/Melora-appplayer)"
         },
         responseType: ResponseType.json,
       ),
