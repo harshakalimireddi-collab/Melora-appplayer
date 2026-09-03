@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Install Melora on iOS — Step-by-Step Guide for iPhone & iPad</title>
+<meta name="description" content="Official step-by-step tutorial to install and run Melora on iOS. Use the native Safari PWA or sideload the IPA package with AltStore.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="../images/melora-logo.png">
+
+<style>
+:root {
+  --ff-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ff-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --c-bg: #06040d;
+  --c-surface: #0e0a1c;
+  --c-card: rgba(22, 16, 42, 0.65);
+  --c-card-hover: rgba(32, 24, 60, 0.85);
+  --c-violet: #7c3aed;
+  --c-violet-lt: #a78bfa;
+  --c-cyan: #06b6d4;
+  --c-cyan-lt: #67e8f9;
+  --c-emerald: #10b981;
+  --c-txt: #f8fafc;
+  --c-txt-dim: #94a3b8;
+  --c-txt-muted: #64748b;
+  --glass-bd: rgba(255, 255, 255, 0.08);
+  --glass-bd-hov: rgba(167, 139, 250, 0.35);
+  --radius: 16px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--ff-body);
+  background: var(--c-bg);
+  color: var(--c-txt);
+  min-height: 100vh;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* BACKGROUND AMBIENT GLOW */
+.ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.ambient-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.22;
+}
+.b1 { width: 550px; height: 550px; top: -100px; left: -100px; background: #7c3aed; }
+.b2 { width: 600px; height: 600px; top: 30%; right: -150px; background: #06b6d4; }
+.b3 { width: 450px; height: 450px; bottom: 0; left: 20%; background: #a855f7; }
+
+/* NAVIGATION */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(6, 4, 13, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-bd);
+  padding: 16px 24px;
+}
+.nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.nav-logo-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.4);
+}
+.nav-logo-mark img { width: 100%; height: 100%; object-fit: cover; }
+.nav-brand {
+  font-family: var(--ff-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+.nav-badge {
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(124, 58, 237, 0.18);
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  color: var(--c-violet-lt);
+  font-weight: 600;
+}
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.btn-back {
+  font-size: 0.85rem;
+  color: var(--c-txt-dim);
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--glass-bd);
+  transition: all 0.2s;
+}
+.btn-back:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.04);
+}
+.btn-launch {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  padding: 8px 18px;
+  border-radius: 10px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.35);
+  transition: all 0.2s;
+}
+.btn-launch:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.5);
+}
+
+/* CONTAINER */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 60px 24px 100px;
+  position: relative;
+  z-index: 1;
+}
+
+/* HERO */
+.hero {
+  text-align: center;
+  margin-bottom: 50px;
+}
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--c-violet-lt);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: var(--ff-display);
+  font-size: 2.75rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+}
+.hero h1 span {
+  background: linear-gradient(135deg, #fff 40%, var(--c-violet-lt) 70%, var(--c-cyan-lt) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero p {
+  font-size: 1.1rem;
+  color: var(--c-txt-dim);
+  max-width: 620px;
+  margin: 0 auto 30px;
+}
+
+/* METHOD TABS */
+.method-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+.tab-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-bd);
+  color: var(--c-txt-dim);
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-family: var(--ff-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.tab-btn:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+.tab-btn.active {
+  background: rgba(124, 58, 237, 0.2);
+  border-color: rgba(167, 139, 250, 0.5);
+  color: #fff;
+  box-shadow: 0 0 24px rgba(124, 58, 237, 0.25);
+}
+.tab-pill {
+  font-size: 0.68rem;
+  padding: 2px 7px;
+  border-radius: 99px;
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+/* TUTORIAL CARD */
+.tutorial-section {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+.tutorial-section.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.guide-card {
+  background: var(--c-card);
+  border: 1px solid var(--glass-bd);
+  border-radius: 20px;
+  padding: 36px 32px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  margin-bottom: 30px;
+}
+.guide-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--glass-bd);
+}
+.guide-card-title {
+  font-family: var(--ff-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.guide-card-subtitle {
+  font-size: 0.88rem;
+  color: var(--c-txt-dim);
+}
+
+/* STEP LIST */
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.step-item {
+  display: flex;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 20px 22px;
+  transition: all 0.2s ease;
+}
+.step-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(167, 139, 250, 0.25);
+  transform: translateX(4px);
+}
+.step-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(6, 182, 212, 0.3));
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+.step-content {
+  flex: 1;
+}
+.step-title {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.step-desc {
+  font-size: 0.88rem;
+  color: var(--c-txt-dim);
+  line-height: 1.6;
+}
+.step-hint {
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: rgba(124, 58, 237, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.15);
+  font-size: 0.78rem;
+  color: var(--c-violet-lt);
+}
+
+/* HIGHLIGHT BOX */
+.callout {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.callout-icon {
+  color: #10b981;
+  flex-shrink: 0;
+}
+.callout-text {
+  font-size: 0.85rem;
+  color: #a7f3d0;
+}
+
+/* FAQ SECTION */
+.faq-wrap {
+  margin-top: 60px;
+}
+.faq-title {
+  font-family: var(--ff-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  text-align: center;
+}
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (max-width: 680px) {
+  .faq-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 2.1rem; }
+  .method-tabs { flex-direction: column; }
+}
+.faq-card {
+  background: rgba(22, 16, 42, 0.4);
+  border: 1px solid var(--glass-bd);
+  border-radius: 14px;
+  padding: 20px;
+}
+.faq-q {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.faq-a {
+  font-size: 0.82rem;
+  color: var(--c-txt-dim);
+  line-height: 1.5;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding-top: 40px;
+  border-top: 1px solid var(--glass-bd);
+  margin-top: 60px;
+  font-size: 0.82rem;
+  color: var(--c-txt-muted);
+}
+</style>
+</head>
+<body>
+
+<div class="ambient">
+  <div class="ambient-blob b1"></div>
+  <div class="ambient-blob b2"></div>
+  <div class="ambient-blob b3"></div>
+</div>
+
+<!-- TOP NAVIGATION -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../" class="nav-logo">
+      <div class="nav-logo-mark"><img src="../images/melora-logo.png" alt="Melora"></div>
+      <span class="nav-brand">Melora</span>
+      <span class="nav-badge">iOS Hub</span>
+    </a>
+    <div class="nav-actions">
+      <a href="../#downloads" class="btn-back">&larr; All Downloads</a>
+      <a href="../player/" class="btn-launch" target="_blank">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        Launch Web Player
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN CONTAINER -->
+<div class="container">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-tag">
+      <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      Official iOS Installation Guide
+    </div>
+    <h1>Step-by-Step <span>Melora for iPhone &amp; iPad</span></h1>
+    <p>Enjoy distraction-free music on your iPhone. Apple restricts unsigned App Store downloads, so choose the method that best fits your workflow.</p>
+
+    <!-- METHOD SELECTOR -->
+    <div class="method-tabs">
+      <button type="button" class="tab-btn active" id="tabPwa" onclick="setTab('pwa')">
+        <span>✨ Method 1: Instant Safari PWA</span>
+        <span class="tab-pill">Recommended</span>
+      </button>
+      <button type="button" class="tab-btn" id="tabSideload" onclick="setTab('sideload')">
+        <span>⚙️ Method 2: Sideload IPA</span>
+        <span style="font-size:0.68rem;padding:2px 7px;border-radius:99px;background:rgba(255,255,255,0.08);color:var(--c-txt-dim);">AltStore</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- METHOD 1: SAFARI PWA (RECOMMENDED) -->
+  <section class="tutorial-section active" id="sectionPwa">
+    <div class="guide-card">
+      <div class="guide-card-head">
+        <div>
+          <div class="guide-card-title">Method 1: Native Safari Web App (PWA)</div>
+          <div class="guide-card-subtitle">Takes 15 seconds &bull; No computer required &bull; Never gets revoked by Apple</div>
+        </div>
+      </div>
+
+      <div class="steps-list">
+
+        <!-- STEP 1 -->
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Open the Web Player in Safari</div>
+            <div class="step-desc">On your iPhone or iPad, open the <strong>Safari</strong> browser and navigate to the Melora Web Player. (Make sure you use Safari, as iOS only allows Home Screen installations via Safari).</div>
+            <div style="margin-top:10px;">
+              <a href="../player/" class="btn-launch" target="_blank" style="padding:7px 14px;font-size:0.8rem;">
+                Open Web Player in Safari &nearr;
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Tap the Share Icon</div>
+            <div class="step-desc">At the bottom toolbar of Safari (or top bar on iPad), tap the <strong>Share</strong> button (the square icon with an upward arrow pointing out: <code>[ &uarr; ]</code>).</div>
+            <div class="step-hint">
+              💡 Look at the bottom center of your iPhone screen
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Select "Add to Home Screen"</div>
+            <div class="step-desc">In the iOS Share menu sheet, scroll down past the contact list and tap <strong>"Add to Home Screen"</strong> (the icon with a plus inside a square <code>&#8862;</code>).</div>
+          </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">Confirm and Tap "Add"</div>
+            <div class="step-desc">A confirmation dialog appears showing the Melora logo and title. Simply tap <strong>"Add"</strong> in the top-right corner.</div>
+          </div>
+        </div>
+
+        <!-- STEP 5 -->
+        <div class="step-item">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <div class="step-title">Launch Melora from your Home Screen</div>
+            <div class="step-desc">Return to your iPhone Home Screen. You will see the native <strong>Melora</strong> app icon. Tap it to launch full-screen with no browser address bars, offline caching, and responsive sound.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="callout">
+        <div class="callout-icon">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="callout-text">
+          <strong>Zero Expiry Guarantee:</strong> Unlike sideloaded apps which expire every 7 days without a paid Apple Developer Account, Safari Web Apps never expire and never get revoked.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METHOD 2: SIDELOADING WITH ALTSTORE (IPA) -->
+  <section class="tutorial-section" id="sectionSideload">
+    <div class="guide-card">
+      <div class="guide-card-head">
+        <div>
+          <div class="guide-card-title">Method 2: Sideload via AltStore / Sideloadly</div>
+          <div class="guide-card-subtitle">For power users who want the native Flutter engine &bull; Requires a PC or Mac</div>
+        </div>
+      </div>
+
+      <div class="steps-list">
+
+        <!-- STEP 1 -->
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Install AltServer on your PC / Mac</div>
+            <div class="step-desc">Download and install <strong>AltServer</strong> from <a href="https://altstore.io" target="_blank" style="color:var(--c-cyan-lt);">altstore.io</a>. Launch AltServer and enable Wi-Fi sync in iTunes / Finder.</div>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Install AltStore on your iPhone</div>
+            <div class="step-desc">Connect your iPhone via USB. In AltServer on your computer, click <em>Install AltStore &gt; [Your iPhone]</em> and enter your free Apple ID credentials to sign the app.</div>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Download the Melora iOS IPA</div>
+            <div class="step-desc">Download the latest official Melora iOS build file directly from GitHub Releases:</div>
+            <div style="margin-top:10px;">
+              <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest" class="btn-launch" target="_blank" style="padding:7px 14px;font-size:0.8rem;background:rgba(255,255,255,0.06);border:1px solid var(--glass-bd);">
+                Download Melora.ipa from Releases &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">Open in AltStore &amp; Sideload</div>
+            <div class="step-desc">On your iPhone, open AltStore &gt; tap the <strong>"+"</strong> icon in "My Apps" &gt; select the downloaded <code>Melora.ipa</code> file. AltStore will sign and install it to your home screen.</div>
+          </div>
+        </div>
+
+        <!-- STEP 5 -->
+        <div class="step-item">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <div class="step-title">Trust Developer Certificate</div>
+            <div class="step-desc">On your iPhone, go to <strong>Settings &gt; General &gt; VPN &amp; Device Management</strong>. Tap your Apple ID and tap <strong>"Trust"</strong>. Melora is now ready to run!</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="callout" style="background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.25);">
+        <div class="callout-icon" style="color:#f59e0b;">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        </div>
+        <div class="callout-text" style="color:#fde68a;">
+          <strong>7-Day Sideload Refresh Note:</strong> Free Apple IDs require refreshing sideloaded apps every 7 days via AltStore. For a completely hassle-free experience with zero refreshes, we strongly recommend <strong>Method 1 (Safari PWA)</strong>.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-wrap">
+    <div class="faq-title">Frequently Asked Questions</div>
+    <div class="faq-grid">
+      <div class="faq-card">
+        <div class="faq-q">Why isn't Melora on the official Apple App Store?</div>
+        <div class="faq-a">Apple's App Store Review Guidelines strictly restrict third-party music apps with open plugin architectures and external audio stream resolvers. Distributing via PWA and Sideloading guarantees complete privacy and 100% ad-free freedom.</div>
+      </div>
+      <div class="faq-card">
+        <div class="faq-q">Does background playback work on iOS?</div>
+        <div class="faq-a">Yes! When added to your Home Screen as a Web App, iOS Media Session API integrates with the native iOS Lock Screen, Dynamic Island, and Control Center playback controls.</div>
+      </div>
+      <div class="faq-card">
+        <div class="faq-q">Is the Web Player free of advertisements?</div>
+        <div class="faq-a">100% yes. Melora has zero commercial tracking, zero ad networks, and will never interrupt your music.</div>
+      </div>
+      <div class="faq-card">
+        <div class="faq-q">Can I import my Spotify playlists on iPhone?</div>
+        <div class="faq-a">Yes! Open the Web Player, paste any Spotify playlist URL into the search bar, and Melora will automatically load all tracks instantly.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>&copy; 2026 Melora Music Player &bull; Crafted by Kalimireddi Harsha Vardhan &bull; Open Source under MIT</p>
+  </footer>
+
+</div>
+
+<script>
+function setTab(name) {
+  document.getElementById('tabPwa').classList.toggle('active', name === 'pwa');
+  document.getElementById('tabSideload').classList.toggle('active', name === 'sideload');
+  document.getElementById('sectionPwa').classList.toggle('active', name === 'pwa');
+  document.getElementById('sectionSideload').classList.toggle('active', name === 'sideload');
+}
+</script>
+
+</body>
+</html>

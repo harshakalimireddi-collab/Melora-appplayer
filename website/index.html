@@ -759,6 +759,7 @@ section { padding: 110px 0; scroll-margin-top: 80px; }
       <li><a href="#showcase">Interface</a></li>
       <li><a href="#downloads">Downloads</a></li>
       <li><a href="#about">About</a></li>
+      <li><a href="./player/" target="_blank" style="color:var(--c-cyan-lt);font-weight:600;">Web Player &nearr;</a></li>
     </ul>
     <a href="#downloads" class="nav-btn-dl">
       <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
@@ -776,9 +777,9 @@ section { padding: 110px 0; scroll-margin-top: 80px; }
       <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
       Download for Free
     </a>
-    <a href="#showcase" class="btn-secondary">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      View Interface
+    <a href="./player/" class="btn-secondary" target="_blank">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Launch Web Player
     </a>
   </div>
   <div class="hero-stats">
@@ -986,7 +987,7 @@ section { padding: 110px 0; scroll-margin-top: 80px; }
       </div>
 
       <!-- iOS -->
-      <div class="dl-card" data-os="ios" id="ios-card">
+      <div class="dl-card dl-card--live" data-os="ios" id="ios-card">
         <div>
           <div class="dl-head">
             <div class="dl-icon-wrap" style="color:#fda4af">
@@ -995,14 +996,14 @@ section { padding: 110px 0; scroll-margin-top: 80px; }
             <div class="dl-title-wrap">
               <div class="dl-card-name">iOS</div>
               <div class="dl-card-sub">iPhone &amp; iPad</div>
-              <div class="dl-status dl-status--coming">Sideload &middot; .IPA</div>
+              <div class="dl-status dl-status--live"><span class="dl-status-dot"></span>Tutorial &amp; Web App</div>
             </div>
           </div>
         </div>
         <div class="dl-actions">
-          <button type="button" class="dl-main-btn" onclick="openModal('modal-ios')" style="border:none;cursor:pointer;width:100%;">
-            <span>iOS Install Guide</span>
-          </button>
+          <a href="./ios/" class="dl-main-btn" style="width:100%;">
+            <span>iOS Install Guide &rarr;</span>
+          </a>
         </div>
       </div>
 
