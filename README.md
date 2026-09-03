@@ -29,7 +29,7 @@ Bring your own metadata, playlists, and audio sources. Zero ads. Zero tracking. 
 
 | Platform | Download | Format |
 |----------|----------|--------|
-| 🪟 **Windows** | [**⬇ Download Installer**](https://harshakalimireddi-collab.github.io/Melora-appplayer/downloads/Melora-Windows-x64-Setup.exe) | `.exe` — Single-file Setup ✅ |
+| 🪟 **Windows** | [**⬇ Download Installer**](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-Windows-x64-Setup.exe) | `.exe` — Single-file Setup ✅ |
 | 🤖 **Android** | [View Releases](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases) | `.apk` — Coming Soon |
 | 🍎 **macOS** | [View Releases](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases) | `.dmg` — Coming Soon |
 | 🐧 **Linux** | [View Releases](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases) | `.AppImage` / `.deb` / `.rpm` — Coming Soon |
