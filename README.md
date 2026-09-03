@@ -17,7 +17,7 @@ Bring your own metadata, playlists, and audio sources. Zero ads. Zero tracking. 
 
 ---
 
-<img src="assets/branding/melora_banner.png" alt="Melora Desktop Preview" width="100%">
+<img src="assets/branding/melora-readme-banner.jpg" alt="Melora — Open-Source Music Streaming" width="100%">
 
 </div>
 
@@ -29,12 +29,10 @@ Bring your own metadata, playlists, and audio sources. Zero ads. Zero tracking. 
 
 | Platform | Download | Format |
 |----------|----------|--------|
-| 🪟 **Windows** | [**Download Installer**](https://harshakalimireddi-collab.github.io/Melora-appplayer/downloads/Melora-Windows-x64-Setup.exe) | `.exe` — Single-file Setup |
-| 🤖 **Android** | [**Download APK**](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-android-all-arch.apk) | `.apk` — Universal |
-| 🍎 **macOS** | [**Download DMG**](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-macos-universal.dmg) | `.dmg` — Apple Silicon & Intel |
-| 🐧 **Linux (AppImage)** | [**Download AppImage**](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-linux-x86_64.AppImage) | `.AppImage` — Universal |
-| 🐧 **Linux (Debian)** | [**Download DEB**](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-linux-x86_64.deb) | `.deb` — Debian/Ubuntu |
-| 🐧 **Linux (Fedora)** | [**Download RPM**](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-linux-x86_64.rpm) | `.rpm` — Fedora/RHEL |
+| 🪟 **Windows** | [**⬇ Download Installer**](https://harshakalimireddi-collab.github.io/Melora-appplayer/downloads/Melora-Windows-x64-Setup.exe) | `.exe` — Single-file Setup ✅ |
+| 🤖 **Android** | [View Releases](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases) | `.apk` — Coming Soon |
+| 🍎 **macOS** | [View Releases](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases) | `.dmg` — Coming Soon |
+| 🐧 **Linux** | [View Releases](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases) | `.AppImage` / `.deb` / `.rpm` — Coming Soon |
 
 > 💡 **Auto-Updates:** Melora checks for new releases on launch. When a new version is available, you'll see it instantly.
 
