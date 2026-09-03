@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:melora/collections/routes.gr.dart';
-import 'package:melora/components/fallbacks/error_box.dart';
 import 'package:melora/components/fallbacks/no_default_metadata_plugin.dart';
 import 'package:melora/components/horizontal_playbutton_card_view/horizontal_playbutton_card_view.dart';
 import 'package:melora/extensions/context.dart';
@@ -57,61 +56,58 @@ class HomePageBrowseSection extends HookConsumerWidget {
     }
 
     if (browseSections.hasError) {
-      final err = browseSections.error.toString().toLowerCase();
-      final isAuthError = err.contains('401') ||
-          err.contains('unauthorized') ||
-          err.contains('unauthenticated');
-      if (isAuthError) {
-        return SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                spacing: 12,
-                children: [
-                  Undraw(
-                    height: 140,
-                    illustration: UndrawIllustration.explore,
-                    color: colorScheme.primary,
+      // Show the discover card for any error — network, API, auth, plugin issues.
+      // Users can always search and paste Spotify links regardless of browse API status.
+      return SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              spacing: 12,
+              children: [
+                Undraw(
+                  height: 140,
+                  illustration: UndrawIllustration.explore,
+                  color: colorScheme.primary,
+                ),
+                Text(
+                  "Discover Millions of Free Songs",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: colorScheme.foreground,
                   ),
-                  Text(
-                    "Discover Millions of Free Songs",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: colorScheme.foreground,
+                ),
+                Text(
+                  "Search any song, artist, album, or paste a Spotify playlist link to stream free — no ads, no subscription.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: colorScheme.mutedForeground,
+                  ),
+                ),
+                const Gap(8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 10,
+                  children: [
+                    Button.primary(
+                      child: const Text("Search Music"),
+                      onPressed: () {
+                        context.navigateTo(const SearchRoute());
+                      },
                     ),
-                  ),
-                  Text(
-                    "Search any song, artist, album, or paste a Spotify playlist link in Search to stream free with no ads.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: colorScheme.mutedForeground,
+                    Button.outline(
+                      child: const Text("Retry"),
+                      onPressed: () {
+                        ref.invalidate(metadataPluginBrowseSectionsProvider);
+                      },
                     ),
-                  ),
-                  const Gap(8),
-                  Button.primary(
-                    child: const Text("Search Music"),
-                    onPressed: () {
-                      context.navigateTo(const SearchRoute());
-                    },
-                  ),
-                ],
-              ),
+                  ],
+                ),
+              ],
             ),
-          ),
-        );
-      }
-
-      return SliverFillRemaining(
-        child: Center(
-          child: ErrorBox(
-            error: browseSections.error!,
-            onRetry: () {
-              ref.invalidate(metadataPluginBrowseSectionsProvider);
-            },
           ),
         ),
       );
