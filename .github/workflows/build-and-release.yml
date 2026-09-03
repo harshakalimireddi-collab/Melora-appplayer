@@ -58,6 +58,15 @@ jobs:
       - name: 📥 Install dependencies
         run: flutter pub get
 
+      - name: ⚙️ Generate code (build_runner)
+        run: |
+          echo "LASTFM_API_KEY=" > .env
+          echo "LASTFM_API_SECRET=" >> .env
+          echo "HIDE_DONATIONS=0" >> .env
+          echo "ENABLE_UPDATE_CHECK=1" >> .env
+          echo "RELEASE_CHANNEL=stable" >> .env
+          dart run build_runner build --delete-conflicting-outputs
+
       - name: 🔨 Build Windows release
         run: flutter build windows --release
 
@@ -99,6 +108,11 @@ jobs:
 
       - name: 📥 Install dependencies
         run: flutter pub get
+
+      - name: ⚙️ Generate code (build_runner)
+        run: |
+          printf 'LASTFM_API_KEY=\nLASTFM_API_SECRET=\nHIDE_DONATIONS=0\nENABLE_UPDATE_CHECK=1\nRELEASE_CHANNEL=stable\n' > .env
+          dart run build_runner build --delete-conflicting-outputs
 
       - name: 🔨 Build APK
         run: flutter build apk --release
@@ -143,6 +157,11 @@ jobs:
       - name: 📥 Install Flutter dependencies
         run: flutter pub get
 
+      - name: ⚙️ Generate code (build_runner)
+        run: |
+          printf 'LASTFM_API_KEY=\nLASTFM_API_SECRET=\nHIDE_DONATIONS=0\nENABLE_UPDATE_CHECK=1\nRELEASE_CHANNEL=stable\n' > .env
+          dart run build_runner build --delete-conflicting-outputs
+
       - name: 🔨 Build Linux release
         run: flutter build linux --release
 
@@ -177,6 +196,11 @@ jobs:
 
       - name: 📥 Install dependencies
         run: flutter pub get
+
+      - name: ⚙️ Generate code (build_runner)
+        run: |
+          printf 'LASTFM_API_KEY=\nLASTFM_API_SECRET=\nHIDE_DONATIONS=0\nENABLE_UPDATE_CHECK=1\nRELEASE_CHANNEL=stable\n' > .env
+          dart run build_runner build --delete-conflicting-outputs
 
       - name: 🔨 Build macOS release
         run: flutter build macos --release
