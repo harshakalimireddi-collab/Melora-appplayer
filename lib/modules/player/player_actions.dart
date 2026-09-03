@@ -98,7 +98,7 @@ class PlayerActions extends HookConsumerWidget {
                   transformBackdrop: false,
                   draggable: false,
                   surfaceBlur: context.theme.surfaceBlur,
-                  surfaceOpacity: 0.7,
+                  surfaceOpacity: context.theme.surfaceOpacity,
                   builder: (context) {
                     return Container(
                       constraints: const BoxConstraints(maxWidth: 800),

@@ -118,8 +118,8 @@ class TitleBar extends HookConsumerWidget implements PreferredSizeWidget {
               leadingGap: leadingGap,
               trailingGap: trailingGap,
               height: height ?? (48 * context.theme.scaling),
-              surfaceBlur: surfaceBlur,
-              surfaceOpacity: surfaceOpacity,
+              surfaceBlur: surfaceBlur ?? context.theme.surfaceBlur,
+              surfaceOpacity: surfaceOpacity ?? context.theme.surfaceOpacity,
               useSafeArea: useSafeArea,
               child: child,
             ).withPadding(

@@ -14,10 +14,10 @@ import 'package:melora/models/database/database.dart';
 import 'package:melora/provider/download_manager_provider.dart';
 import 'package:melora/provider/user_preferences/user_preferences_provider.dart';
 
-const _barBorder = Color(0x1FFFFFFF);
-const _barBackground = Color(0xD90E0E12);
-const _activeTabColor = Color(0xFFFFFFFF);
-const _inactiveTabColor = Color(0x73FFFFFF);
+const _barBorder = Color(0x33A78BFA);
+const _barBackground = Color(0xEB090615);
+const _activeTabColor = Color(0xFFC4B5FD);
+const _inactiveTabColor = Color(0x668B8FA8);
 
 final navigationPanelHeight = StateProvider<double>((ref) => 50);
 
@@ -65,7 +65,7 @@ class MeloraNavigationBar extends HookConsumerWidget {
       height: panelHeight,
       child: ClipRect(
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
+          filter: ImageFilter.blur(sigmaX: 32, sigmaY: 32),
           child: Container(
             decoration: const BoxDecoration(
               color: _barBackground,

@@ -44,21 +44,46 @@ class RootAppPage extends HookConsumerWidget {
       removeBottom: true,
       child: SafeArea(
         top: false,
-        child: Scaffold(
-          footers: const [
-            BottomPlayer(),
-            MeloraNavigationBar(),
-          ],
-          floatingFooter: true,
-          child: Sidebar(
-            child: MediaQuery(
-              data: MediaQuery.of(context).copyWith(
-                padding: MediaQuery.paddingOf(context)
-                    .copyWith(bottom: 100 * context.theme.scaling),
+        child: Stack(
+          children: [
+            const Positioned.fill(
+              child: IgnorePointer(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: RadialGradient(
+                      center: Alignment(0.6, -0.7),
+                      radius: 1.2,
+                      colors: [
+                        Color(0x1F7C3AED),
+                        Color(0x0F06B6D4),
+                        Colors.transparent,
+                      ],
+                      stops: [0.0, 0.45, 1.0],
+                    ),
+                  ),
+                ),
               ),
-              child: const AutoRouter(),
             ),
-          ),
+            Positioned.fill(
+              child: Scaffold(
+                backgroundColor: Colors.transparent,
+                footers: const [
+                  BottomPlayer(),
+                  MeloraNavigationBar(),
+                ],
+                floatingFooter: true,
+                child: Sidebar(
+                  child: MediaQuery(
+                    data: MediaQuery.of(context).copyWith(
+                      padding: MediaQuery.paddingOf(context)
+                          .copyWith(bottom: 100 * context.theme.scaling),
+                    ),
+                    child: const AutoRouter(),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

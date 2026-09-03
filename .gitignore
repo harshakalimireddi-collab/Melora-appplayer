@@ -33,6 +33,7 @@
 /build/
 
 # Web related
+website/public/downloads/
 
 # Symbolication related
 app.*.symbols

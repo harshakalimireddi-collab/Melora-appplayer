@@ -50,20 +50,32 @@ class PlayerOverlayCollapsedSection extends HookConsumerWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
+                  filter: ImageFilter.blur(sigmaX: 32, sigmaY: 32),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: _glassBackground,
+                      gradient: const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color(0xEE1E1538),
+                          Color(0xEE0D091F),
+                        ],
+                      ),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: _glassBorder,
-                        width: 0.5,
+                        color: const Color(0x33A78BFA),
+                        width: 1,
                       ),
                       boxShadow: const [
                         BoxShadow(
-                          color: _glassShadow,
-                          blurRadius: 18,
-                          offset: Offset(0, 6),
+                          color: Color(0x66000000),
+                          blurRadius: 24,
+                          offset: Offset(0, 8),
+                        ),
+                        BoxShadow(
+                          color: Color(0x227C3AED),
+                          blurRadius: 30,
+                          offset: Offset(0, 0),
                         ),
                       ],
                     ),

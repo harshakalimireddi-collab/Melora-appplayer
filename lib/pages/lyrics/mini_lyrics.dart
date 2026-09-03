@@ -214,7 +214,7 @@ class MiniLyricsPage extends HookConsumerWidget {
                                 transformBackdrop: false,
                                 position: OverlayPosition.bottom,
                                 surfaceBlur: context.theme.surfaceBlur,
-                                surfaceOpacity: 0.7,
+                                surfaceOpacity: context.theme.surfaceOpacity,
                                 expands: true,
                                 builder: (context) => Consumer(
                                   builder: (context, ref, _) {

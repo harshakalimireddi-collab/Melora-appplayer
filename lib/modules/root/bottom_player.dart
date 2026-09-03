@@ -54,6 +54,7 @@ class BottomPlayer extends HookConsumerWidget {
     return SurfaceCard(
       borderRadius: BorderRadius.zero,
       surfaceBlur: context.theme.surfaceBlur,
+      surfaceOpacity: context.theme.surfaceOpacity,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

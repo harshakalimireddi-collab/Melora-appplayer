@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
+import 'package:shadcn_flutter/shadcn_flutter_extension.dart';
 import 'package:melora/collections/melora_icons.dart';
 import 'package:melora/components/button/back_button.dart';
 import 'package:melora/components/dialogs/playlist_add_track_dialog.dart';
@@ -133,15 +134,15 @@ class PlayerQueue extends HookConsumerWidget {
                             },
                           )
                       ],
-                      surfaceBlur: 0,
-                      surfaceOpacity: 0,
+                      surfaceBlur: context.theme.surfaceBlur,
+                      surfaceOpacity: context.theme.surfaceOpacity,
                       child: searchBar,
                     )
                   else if (selectionMode.value)
                     AppBar(
                       backgroundColor: Colors.transparent,
-                      surfaceBlur: 0,
-                      surfaceOpacity: 0,
+                      surfaceBlur: context.theme.surfaceBlur,
+                      surfaceOpacity: context.theme.surfaceOpacity,
                       leading: [
                         IconButton.ghost(
                           icon: const Icon(MeloraIcons.close),
@@ -226,8 +227,8 @@ class PlayerQueue extends HookConsumerWidget {
                     AppBar(
                       trailingGap: 0,
                       backgroundColor: Colors.transparent,
-                      surfaceBlur: 0,
-                      surfaceOpacity: 0,
+                      surfaceBlur: context.theme.surfaceBlur,
+                      surfaceOpacity: context.theme.surfaceOpacity,
                       title: mediaQuery.mdAndUp || !isSearching.value
                           ? SizedBox(
                               height: 30,

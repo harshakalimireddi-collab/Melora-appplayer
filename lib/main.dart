@@ -222,22 +222,22 @@ class Melora extends HookConsumerWidget {
       },
       scaling: const AdaptiveScaling(1),
       theme: ThemeData(
-        radius: .5,
+        radius: .75,
         iconTheme: const IconThemeProperties(),
         colorScheme:
             colorSchemeMap[accentMaterialColor.name]?.call(ThemeMode.light) ??
                 LegacyColorSchemes.lightSlate(),
-        surfaceOpacity: .8,
-        surfaceBlur: 10,
+        surfaceOpacity: .72,
+        surfaceBlur: 24,
       ),
       darkTheme: ThemeData(
-        radius: .5,
+        radius: .75,
         iconTheme: const IconThemeProperties(),
         colorScheme:
             colorSchemeMap[accentMaterialColor.name]?.call(ThemeMode.dark) ??
                 LegacyColorSchemes.darkSlate(),
-        surfaceOpacity: .8,
-        surfaceBlur: 10,
+        surfaceOpacity: .72,
+        surfaceBlur: 24,
       ),
       materialTheme: material.ThemeData(
         brightness: switch (themeMode) {

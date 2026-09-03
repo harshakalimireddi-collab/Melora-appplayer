@@ -166,7 +166,7 @@ class TrackPresentationTopSection extends HookConsumerWidget {
                   surfaceBlur: context.theme.surfaceBlur,
                   padding: EdgeInsets.all(24 * scale),
                   borderRadius: BorderRadius.circular(22 * scale),
-                  borderWidth: 2,
+                  borderWidth: 1,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     spacing: 16 * scale,
