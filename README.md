@@ -1,36 +1,42 @@
 <div align="center">
 
-<img width="200" src="assets/branding/melora-logo.png" alt="Melora Logo">
+<img width="180" src="assets/branding/melora-logo.png" alt="Melora Logo">
 
 # Melora
 
 **Next-Gen Open-Source Music Streaming — No Boundaries.**
 
-A cross-platform, plugin-powered music player.  
-Bring your own metadata, playlists, and audio sources.
+A cross-platform, plugin-powered music player with cinematic Obsidian Aurora Glass UI.  
+Bring your own metadata, playlists, and audio sources. Zero ads. Zero tracking. Forever free.
 
 [![Release](https://img.shields.io/github/v/release/harshakalimireddi-collab/Melora-appplayer?style=for-the-badge&color=8B5CF6&label=Latest)](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/harshakalimireddi-collab/Melora-appplayer/total?style=for-the-badge&color=06B6D4&label=Downloads)](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases)
 [![License](https://img.shields.io/github/license/harshakalimireddi-collab/Melora-appplayer?style=for-the-badge&color=10B981)](LICENSE)
 
+🌐 **[Visit the Official Website →](https://harshakalimireddi-collab.github.io/Melora-appplayer/)**
+
 ---
 
-![Melora Desktop](assets/branding/melora-screenshot.png)
+<img src="assets/branding/melora_banner.png" alt="Melora Desktop Preview" width="100%">
 
 </div>
 
 ---
 
-## 📥 Download
+## 📥 Download Melora
+
+> **One click. No ads. No subscriptions. Every song, every device.**
 
 | Platform | Download | Format |
 |----------|----------|--------|
-| 🪟 **Windows** | [Download](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-Windows-x64.zip) | `.zip` (portable) |
-| 🤖 **Android** | [Download](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-Android.apk) | `.apk` |
-| 🐧 **Linux** | [Download](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-Linux-x64.tar.gz) | `.tar.gz` |
-| 🍎 **macOS** | [Download](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-macOS.zip) | `.zip` |
+| 🪟 **Windows** | [**Download Installer**](https://harshakalimireddi-collab.github.io/Melora-appplayer/downloads/Melora-Windows-x64-Setup.exe) | `.exe` — Single-file Setup |
+| 🤖 **Android** | [**Download APK**](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-android-all-arch.apk) | `.apk` — Universal |
+| 🍎 **macOS** | [**Download DMG**](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-macos-universal.dmg) | `.dmg` — Apple Silicon & Intel |
+| 🐧 **Linux (AppImage)** | [**Download AppImage**](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-linux-x86_64.AppImage) | `.AppImage` — Universal |
+| 🐧 **Linux (Debian)** | [**Download DEB**](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-linux-x86_64.deb) | `.deb` — Debian/Ubuntu |
+| 🐧 **Linux (Fedora)** | [**Download RPM**](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-linux-x86_64.rpm) | `.rpm` — Fedora/RHEL |
 
-> **Auto-Updates:** Melora checks for new releases on launch. When you push a new version, every user gets notified automatically.
+> 💡 **Auto-Updates:** Melora checks for new releases on launch. When a new version is available, you'll see it instantly.
 
 ---
 
@@ -38,14 +44,14 @@ Bring your own metadata, playlists, and audio sources.
 
 | Feature | Description |
 |---------|-------------|
-| 🧩 **Plugin System** | Supports any music service through community or custom plugins |
-| 🗺️ **Community Driven** | Growing library of plugins for popular platforms |
-| ⬇️ **Free Downloads** | Download tracks with full tagged metadata |
-| 🖥️📱 **Cross-Platform** | Windows, macOS, Linux, Android, iOS |
-| 🪶 **Lightweight** | Small footprint, minimal data usage |
-| 🕒 **Synced Lyrics** | Time-synced lyrics regardless of plugin |
-| 🔒 **Privacy First** | Zero telemetry, zero data collection |
-| 🚀 **Native Performance** | Built with Flutter — no Electron bloat |
+| 🎵 **Bit-Perfect Lossless** | 24-bit / 96kHz playback with WASAPI and PipeWire hardware output |
+| 🧩 **Plugin Architecture** | Extend audio sources, lyric providers, and integrations via sandboxed Dart plugins |
+| 🔒 **Private & Ad-Free** | Zero telemetry, zero data collection, zero advertisements |
+| 🎤 **Synchronized Lyrics** | Millisecond-accurate real-time lyrics with karaoke tracking |
+| 📱 **Cross-Platform** | Windows, macOS, Linux, Android, iOS — one codebase |
+| 🌊 **Obsidian Aurora Glass UI** | Cinematic dark glass interface with refined micro-animations |
+| 📡 **Melora Connect** | Control desktop playback from your phone on local network |
+| 🚀 **Native Performance** | Built with Flutter — no Electron bloat, instant startup |
 
 ---
 
@@ -62,6 +68,7 @@ Melora-appplayer/
 │   ├── pages/              # App screens/routes
 │   ├── provider/           # State management (Riverpod providers)
 │   ├── services/           # Background services (audio, downloads)
+│   ├── theme/              # Obsidian Aurora design tokens
 │   └── utils/              # Utilities & helpers
 │
 ├── android/                # Android platform config
@@ -73,6 +80,7 @@ Melora-appplayer/
 │
 ├── assets/                 # Branding, icons, translations, plugins
 ├── website/                # Melora showcase & download website
+├── installer/              # Inno Setup script for Windows installer
 │
 ├── .github/workflows/      # CI/CD pipelines
 │   ├── build-and-release.yml   # Auto-build all platforms + create release
@@ -87,13 +95,13 @@ Melora-appplayer/
 ## 🔄 How Auto-Updates Work
 
 ```
-You push code → Tag a release (v4.1.0) → GitHub Actions builds all binaries
-                                        → Creates a Release with downloads
-                                        → Users open Melora → See "Update Available"
-                                        → One tap → Updated!
+Push code → Tag a release (v4.1.0) → GitHub Actions builds all binaries
+                                    → Creates a Release with downloads
+                                    → Users open Melora → See "Update Available"
+                                    → One tap → Updated!
 ```
 
-The app checks `https://api.github.com/repos/harshakalimireddi-collab/Melora-appplayer/releases/latest` on every launch. If a newer version exists, it prompts the user to download the new binary.
+The app checks `https://api.github.com/repos/harshakalimireddi-collab/Melora-appplayer/releases/latest` on every launch.
 
 ---
 
@@ -111,8 +119,8 @@ git tag v4.1.0
 git push origin main --tags
 ```
 
-That's it. GitHub Actions handles the rest:
-- ✅ Builds Windows `.exe`, Android `.apk`, Linux `.tar.gz`, macOS `.zip`
+GitHub Actions handles the rest:
+- ✅ Builds Windows `.exe` installer, Android `.apk`, Linux `.AppImage/.deb/.rpm`, macOS `.dmg`
 - ✅ Creates a GitHub Release with all binaries
 - ✅ Deploys the website to GitHub Pages
 - ✅ Every user gets notified of the update
@@ -141,6 +149,19 @@ flutter run -d linux
 
 ---
 
+## 👨‍💻 Creator
+
+<div align="center">
+
+**Kalimireddi Harsha Vardhan**  
+*Architect & Lead Developer*
+
+🌐 [GitHub](https://github.com/harshakalimireddi-collab) · 💜 [Website](https://harshakalimireddi-collab.github.io/Melora-appplayer/)
+
+</div>
+
+---
+
 ## 📄 License
 
 Licensed under the [BSD-4-Clause License](LICENSE).
@@ -149,6 +170,6 @@ Licensed under the [BSD-4-Clause License](LICENSE).
 
 <div align="center">
 
-**Built with 💜 by Harsha**
+**Built with 💜 by Harsha Vardhan**
 
 </div>

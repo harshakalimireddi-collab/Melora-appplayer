@@ -1,1820 +1,935 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Melora — Next-Gen Music Streaming Without Boundaries</title>
-  <meta name="description" content="Download Melora for Windows, Android, iOS, macOS, and Linux. Free, open-source, ad-free music player with Hi-Res playback and zero subscription fees.">
-  <link rel="icon" type="image/png" href="./images/melora-logo.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Melora &mdash; The Open Source Music Streaming Experience</title>
+<meta name="description" content="Melora is a modern, open-source Hi-Res music player. Bit-perfect playback, zero advertisements, and available across all major platforms.">
+<link rel="icon" type="image/png" href="./images/melora-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ff-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ff-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --c-bg: #06040d;
+  --c-violet: #7c3aed;
+  --c-violet-lt: #a78bfa;
+  --c-cyan: #06b6d4;
+  --c-cyan-lt: #67e8f9;
+  --c-emerald: #10b981;
+  --c-txt: #f8fafc;
+  --c-txt-dim: #94a3b8;
+  --c-txt-muted: #64748b;
+  --glass-bd: rgba(255, 255, 255, 0.08);
+  --glass-bd-hov: rgba(167, 139, 250, 0.3);
+  --radius: 16px;
+  --radius-xl: 24px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ff-body);
+  background: var(--c-bg);
+  color: var(--c-txt);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--c-bg); }
+::-webkit-scrollbar-thumb { background: rgba(124, 58, 237, 0.4); border-radius: 99px; }
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+#bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.page-wrap { position: relative; z-index: 2; }
 
-  <style>
-    /* ═══════════════════════════════════════════════════
-       DESIGN TOKENS
-       ═══════════════════════════════════════════════════ */
-    :root {
-      --font-display: 'Space Grotesk', sans-serif;
-      --font-body: 'Inter', -apple-system, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+/* NAVIGATION */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 16px 0; transition: all 0.3s ease;
+}
+.nav.scrolled {
+  background: rgba(6, 4, 13, 0.85);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--glass-bd);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+.nav-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo-mark {
+  width: 36px; height: 36px; border-radius: 10px; overflow: hidden;
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.4);
+}
+.nav-logo-mark img { width: 100%; height: 100%; object-fit: cover; }
+.nav-wordmark {
+  font-family: var(--ff-display); font-size: 1.35rem; font-weight: 700;
+  letter-spacing: -0.02em; color: #fff;
+}
+.nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+.nav-links a {
+  font-size: 0.9rem; font-weight: 500; color: var(--c-txt-dim);
+  text-decoration: none; transition: color 0.2s ease;
+}
+.nav-links a:hover { color: #fff; }
+.nav-btn-dl {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 20px; border-radius: 10px;
+  background: linear-gradient(135deg, #7c3aed, #6366f1);
+  color: #fff; font-size: 0.88rem; font-weight: 600;
+  text-decoration: none; transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.35);
+}
+.nav-btn-dl:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(124, 58, 237, 0.55); }
 
-      /* Core palette */
-      --violet-50: #f5f3ff; --violet-100: #ede9fe; --violet-200: #ddd6fe;
-      --violet-300: #c4b5fd; --violet-400: #a78bfa; --violet-500: #8b5cf6;
-      --violet-600: #7c3aed; --violet-700: #6d28d9; --violet-800: #5b21b6;
+/* HERO */
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  padding: 130px 24px 90px; position: relative;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 16px; border-radius: 999px;
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  font-size: 0.8rem; font-weight: 600; color: var(--c-violet-lt);
+  margin-bottom: 28px; animation: fadeUp 0.8s ease both;
+}
+.badge-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--c-emerald); box-shadow: 0 0 8px var(--c-emerald);
+}
+.hero-title {
+  font-family: var(--ff-display); font-size: clamp(3.2rem, 7.5vw, 5.8rem);
+  font-weight: 800; line-height: 1.05; letter-spacing: -0.035em;
+  margin-bottom: 24px; animation: fadeUp 0.8s ease 0.1s both;
+}
+.hero-title .line-1 { display: block; color: #fff; }
+.hero-title .line-2 {
+  display: block;
+  background: linear-gradient(135deg, #c4b5fd 10%, #67e8f9 50%, #f472b6 90%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-sub {
+  font-size: clamp(1rem, 1.8vw, 1.15rem); color: var(--c-txt-dim);
+  max-width: 580px; line-height: 1.7; margin: 0 auto 44px;
+  animation: fadeUp 0.8s ease 0.2s both;
+}
+.hero-actions {
+  display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+  animation: fadeUp 0.8s ease 0.3s both; margin-bottom: 64px;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 14px 32px; border-radius: 12px;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: #fff; font-size: 0.98rem; font-weight: 600;
+  text-decoration: none; transition: all 0.25s ease;
+  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.45);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(124, 58, 237, 0.6); }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 28px; border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-bd);
+  backdrop-filter: blur(12px); color: var(--c-txt);
+  font-size: 0.98rem; font-weight: 600; text-decoration: none;
+  transition: all 0.25s ease;
+}
+.btn-secondary:hover { background: rgba(255, 255, 255, 0.09); border-color: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
 
-      --cyan-400: #22d3ee; --cyan-500: #06b6d4;
-      --rose-400: #fb7185; --rose-500: #f43f5e;
-      --emerald-400: #34d399; --emerald-500: #10b981;
-      --amber-400: #fbbf24; --amber-500: #f59e0b;
+.hero-stats {
+  display: flex; gap: 54px; flex-wrap: wrap; justify-content: center;
+  animation: fadeUp 0.8s ease 0.4s both;
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-family: var(--ff-display); font-size: 2rem; font-weight: 700;
+  color: #fff; display: block; letter-spacing: -0.02em;
+}
+.stat-label { font-size: 0.76rem; color: var(--c-txt-muted); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
 
-      --bg-deep: #030014;
-      --bg-surface: rgba(15, 10, 40, 0.6);
-      --text-white: #f8fafc;
-      --text-dim: #a5b4c8;
-      --text-muted: #64748b;
+/* SECTIONS */
+section { padding: 110px 0; scroll-margin-top: 80px; }
+.container { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+.section-eyebrow {
+  display: inline-block; font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.12em; color: var(--c-violet-lt); margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.section-title {
+  font-family: var(--ff-display); font-size: clamp(2rem, 3.6vw, 2.9rem);
+  font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 14px;
+}
+.section-sub {
+  font-size: 1.02rem; color: var(--c-txt-dim); max-width: 540px; line-height: 1.7;
+}
+.section-header { margin-bottom: 56px; }
 
-      --glass-bg: rgba(255,255,255,0.03);
-      --glass-border: rgba(255,255,255,0.06);
-      --glass-border-hover: rgba(255,255,255,0.15);
+/* FEATURE CARDS */
+.features-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;
+}
+.feat-card {
+  position: relative;
+  background: rgba(18, 14, 34, 0.6);
+  border: 1px solid var(--glass-bd);
+  border-radius: var(--radius);
+  padding: 32px 26px;
+  backdrop-filter: blur(18px);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.feat-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(167, 139, 250, 0.3);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(124, 58, 237, 0.08);
+  background: rgba(22, 17, 42, 0.75);
+}
+.feat-icon {
+  width: 46px; height: 46px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.feat-card:hover .feat-icon {
+  transform: scale(1.12); box-shadow: 0 4px 20px rgba(124, 58, 237, 0.2);
+}
+.feat-card h3 {
+  font-family: var(--ff-display); font-size: 1.15rem; font-weight: 600;
+  letter-spacing: -0.015em; margin-bottom: 8px; color: #fff;
+  transition: color 0.2s ease;
+}
+.feat-card:hover h3 { color: #e0daf7; }
+.feat-card p {
+  font-size: 0.88rem; color: var(--c-txt-dim); line-height: 1.6;
+  transition: color 0.2s ease;
+}
+.feat-card:hover p { color: #b0adc5; }
 
-      --r: 16px;
-      --r-lg: 24px;
-      --r-xl: 32px;
-    }
+/* PLAYER DEMO */
+.player-shell {
+  border-radius: 20px;
+  background: rgba(14, 10, 28, 0.85);
+  border: 1px solid var(--glass-bd);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+.ptb {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 20px; background: rgba(8, 5, 18, 0.6);
+  border-bottom: 1px solid var(--glass-bd);
+}
+.ptb-dots { display: flex; gap: 7px; }
+.ptb-dot {
+  width: 11px; height: 11px; border-radius: 50%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;
+}
+.ptb-dot:hover { transform: scale(1.3); }
+.ptb-dot-r { background: #ef4444; }
+.ptb-dot-r:hover { box-shadow: 0 0 8px rgba(239, 68, 68, 0.6); }
+.ptb-dot-y { background: #f59e0b; }
+.ptb-dot-y:hover { box-shadow: 0 0 8px rgba(245, 158, 11, 0.6); }
+.ptb-dot-g { background: #10b981; }
+.ptb-dot-g:hover { box-shadow: 0 0 8px rgba(16, 185, 129, 0.6); }
+.ptb-title {
+  display: flex; align-items: center; gap: 8px; font-size: 0.78rem;
+  font-weight: 500; color: var(--c-txt-muted);
+}
+.ptb-badge-hires {
+  font-size: 0.68rem; font-weight: 600; padding: 3px 9px; border-radius: 6px;
+  background: rgba(6, 182, 212, 0.12); color: var(--c-cyan-lt);
+  border: 1px solid rgba(6, 182, 212, 0.25);
+}
+.player-body { display: flex; }
+.psb {
+  width: 220px; flex-shrink: 0; background: rgba(8, 6, 18, 0.5);
+  border-right: 1px solid var(--glass-bd); padding: 20px 14px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.psb-brand {
+  display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+  background: rgba(124, 58, 237, 0.1); border-radius: 10px; margin-bottom: 16px;
+  cursor: pointer; transition: all 0.3s ease;
+}
+.psb-brand:hover {
+  background: rgba(124, 58, 237, 0.2);
+  box-shadow: 0 2px 12px rgba(124, 58, 237, 0.15);
+}
+.psb-name { font-family: var(--ff-display); font-size: 0.95rem; font-weight: 700; color: #fff; }
+.psb-ver { font-size: 0.68rem; color: var(--c-cyan-lt); }
+.psb-label { font-size: 0.65rem; font-weight: 700; color: var(--c-txt-muted); letter-spacing: 0.1em; padding: 0 8px; margin: 8px 0 2px; }
+.psb-item {
+  display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px;
+  font-size: 0.83rem; font-weight: 500; color: var(--c-txt-dim); cursor: pointer; text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); position: relative;
+}
+.psb-item:hover {
+  background: rgba(124, 58, 237, 0.1); color: #e0daf7;
+  transform: translateX(4px);
+}
+.psb-item.act { background: rgba(124, 58, 237, 0.18); color: #fff; }
+.psb-item.act:hover { background: rgba(124, 58, 237, 0.28); transform: translateX(4px); }
+.psb-item .badge-ct { margin-left: auto; font-size: 0.65rem; font-weight: 600; background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; transition: background 0.2s ease; }
+.psb-item:hover .badge-ct { background: rgba(124, 58, 237, 0.2); color: #c4b5fd; }
+.pmain { flex: 1; padding: 24px; }
+.pm-greeting-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.pm-greet-title { font-family: var(--ff-display); font-size: 1.3rem; font-weight: 700; color: #fff; }
+.pm-stream-pill {
+  display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px;
+  border-radius: 99px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25);
+  font-size: 0.72rem; font-weight: 600; color: var(--c-emerald);
+}
+.pm-quick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 22px; }
+.qcard {
+  display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-bd);
+  border-radius: 10px; cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.qcard:hover {
+  background: rgba(124, 58, 237, 0.08); border-color: rgba(167, 139, 250, 0.35);
+  transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124, 58, 237, 0.12);
+}
+.qcard-art { width: 40px; height: 40px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease; }
+.qcard:hover .qcard-art { transform: scale(1.1); }
+.qa1 { background: linear-gradient(135deg, #f43f5e, #ec4899); }
+.qa2 { background: linear-gradient(135deg, #7c3aed, #3b82f6); }
+.qa3 { background: linear-gradient(135deg, #06b6d4, #10b981); }
+.qcard-title { font-size: 0.82rem; font-weight: 600; color: #fff; }
+.qcard-sub { font-size: 0.68rem; color: var(--c-txt-muted); }
+.pm-shelf { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.pm-shelf > div {
+  cursor: pointer; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pm-shelf > div:hover { transform: translateY(-6px); }
+.scard-cover {
+  width: 100%; aspect-ratio: 1; border-radius: 10px; margin-bottom: 8px;
+  position: relative; overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+.scard-cover::after {
+  content: '▶'; position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; color: #fff; background: rgba(0, 0, 0, 0.4);
+  opacity: 0; transition: opacity 0.3s ease; border-radius: 10px;
+  backdrop-filter: blur(2px);
+}
+.pm-shelf > div:hover .scard-cover::after { opacity: 1; }
+.pm-shelf > div:hover .scard-cover { box-shadow: 0 8px 30px rgba(124, 58, 237, 0.3); }
+.sc1 { background: linear-gradient(135deg, #7c3aed, #ec4899); }
+.sc2 { background: linear-gradient(135deg, #0ea5e9, #06b6d4); }
+.sc3 { background: linear-gradient(135deg, #059669, #22d3ee); }
+.sc4 { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+.scard-title { font-size: 0.8rem; font-weight: 600; color: #fff; transition: color 0.2s ease; }
+.pm-shelf > div:hover .scard-title { color: #c4b5fd; }
+.scard-artist { font-size: 0.7rem; color: var(--c-txt-muted); transition: color 0.2s ease; }
+.pm-shelf > div:hover .scard-artist { color: #a5b4fc; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--font-body);
-      background: var(--bg-deep);
-      color: var(--text-white);
-      min-height: 100vh;
-      overflow-x: hidden;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
+.pbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px; background: rgba(8, 5, 18, 0.8);
+  border-top: 1px solid var(--glass-bd);
+}
+.pbar-np { display: flex; align-items: center; gap: 12px; width: 220px; }
+.pbar-art {
+  width: 42px; height: 42px; border-radius: 8px; background: linear-gradient(135deg, #ec4899, #8b5cf6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer;
+}
+.pbar-art:hover { transform: scale(1.12) rotate(-3deg); box-shadow: 0 4px 16px rgba(236, 72, 153, 0.4); }
+.pbar-track { font-size: 0.82rem; font-weight: 600; color: #fff; transition: color 0.2s ease; cursor: pointer; }
+.pbar-track:hover { color: #c4b5fd; }
+.pbar-artist { font-size: 0.7rem; color: var(--c-txt-muted); transition: color 0.2s ease; cursor: pointer; }
+.pbar-artist:hover { color: #a5b4fc; }
+.pbar-center { flex: 1; max-width: 460px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.pbar-btns { display: flex; align-items: center; gap: 16px; }
+.pbtn-main {
+  width: 34px; height: 34px; border-radius: 50%; background: #fff;
+  border: none; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: #000;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+.pbtn-main:hover {
+  transform: scale(1.15); box-shadow: 0 0 18px rgba(255, 255, 255, 0.4);
+}
+.pbar-scrubber { width: 100%; display: flex; align-items: center; gap: 8px; font-size: 0.68rem; color: var(--c-txt-muted); }
+.pbar-track-bar {
+  flex: 1; height: 4px; border-radius: 99px; background: rgba(255,255,255,0.1);
+  cursor: pointer; transition: height 0.2s ease;
+}
+.pbar-track-bar:hover { height: 6px; }
+.pbar-fill {
+  width: 60%; height: 100%; border-radius: 99px; background: #fff;
+  position: relative; transition: background 0.2s ease;
+}
+.pbar-track-bar:hover .pbar-fill { background: linear-gradient(90deg, #c4b5fd, #8b5cf6); }
+.pbar-fill::after {
+  content: ''; position: absolute; right: -5px; top: 50%; transform: translateY(-50%);
+  width: 10px; height: 10px; border-radius: 50%; background: #fff;
+  opacity: 0; transition: opacity 0.2s ease;
+}
+.pbar-track-bar:hover .pbar-fill::after { opacity: 1; }
+.pbar-right { display: flex; align-items: center; gap: 10px; width: 220px; justify-content: flex-end; }
+.pbar-viz { display: flex; align-items: flex-end; gap: 3px; height: 16px; }
+.pbar-vbar { width: 3px; border-radius: 2px; background: var(--c-violet-lt); animation: viz 1.1s ease-in-out infinite alternate; }
+.pbar-vbar:nth-child(1){height:40%;} .pbar-vbar:nth-child(2){height:90%;} .pbar-vbar:nth-child(3){height:60%;} .pbar-vbar:nth-child(4){height:100%;}
+@keyframes viz { 0% { height: 20%; } 100% { height: 100%; } }
 
-    /* ═══════════════════════════════════════════════════
-       ANIMATED MESH BACKGROUND
-       ═══════════════════════════════════════════════════ */
-    .mesh-bg {
-      position: fixed; inset: 0;
-      z-index: 0; pointer-events: none;
-      overflow: hidden;
-    }
-    .mesh-bg .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.4;
-      animation: orbFloat 20s ease-in-out infinite alternate;
-    }
-    .mesh-bg .orb:nth-child(1) {
-      width: 700px; height: 700px;
-      background: radial-gradient(circle, var(--violet-600), transparent 70%);
-      top: -20%; left: -10%;
-      animation-delay: 0s;
-    }
-    .mesh-bg .orb:nth-child(2) {
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, var(--cyan-500), transparent 70%);
-      top: 40%; right: -15%;
-      animation-delay: -5s;
-      animation-duration: 25s;
-    }
-    .mesh-bg .orb:nth-child(3) {
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, var(--rose-500), transparent 70%);
-      bottom: -10%; left: 30%;
-      animation-delay: -10s;
-      animation-duration: 22s;
-    }
-    .mesh-bg .orb:nth-child(4) {
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, var(--emerald-500), transparent 70%);
-      top: 60%; left: -5%;
-      animation-delay: -15s;
-      animation-duration: 28s;
-    }
-    @keyframes orbFloat {
-      0% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(80px, -60px) scale(1.1); }
-      66% { transform: translate(-40px, 40px) scale(0.95); }
-      100% { transform: translate(60px, 80px) scale(1.05); }
-    }
+/* REDESIGNED DOWNLOAD CARDS: SLEEK, PROFESSIONAL, CLUTTER-FREE */
+.platform-tabs {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px;
+}
+.tab-btn {
+  padding: 8px 18px; border-radius: 8px; border: 1px solid var(--glass-bd);
+  background: rgba(255, 255, 255, 0.03); color: var(--c-txt-dim);
+  font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease;
+}
+.tab-btn:hover { color: #fff; border-color: rgba(255, 255, 255, 0.2); }
+.tab-btn.active {
+  background: rgba(124, 58, 237, 0.2); border-color: rgba(167, 139, 250, 0.4);
+  color: #fff;
+}
 
-    /* Grain overlay */
-    .grain {
-      position: fixed; inset: 0; z-index: 1; pointer-events: none;
-      opacity: 0.035;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-repeat: repeat;
-    }
+.dl-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;
+}
+.dl-card {
+  position: relative;
+  background: rgba(16, 12, 30, 0.65);
+  border: 1px solid var(--glass-bd);
+  border-radius: var(--radius);
+  padding: 24px;
+  backdrop-filter: blur(20px);
+  display: flex; flex-direction: column; justify-content: space-between;
+  transition: all 0.3s ease;
+}
+.dl-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--glass-bd-hov);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+.dl-head {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+}
+.dl-icon-wrap {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+}
+.dl-title-wrap { display: flex; flex-direction: column; }
+.dl-card-name {
+  font-family: var(--ff-display); font-size: 1.15rem; font-weight: 600;
+  letter-spacing: -0.015em; color: #fff;
+}
+.dl-card-sub {
+  font-size: 0.78rem; color: var(--c-txt-muted); font-weight: 500;
+}
 
-    /* ═══════════════════════════════════════════════════
-       LAYOUT
-       ═══════════════════════════════════════════════════ */
-    .page-content { position: relative; z-index: 2; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-    section { scroll-margin-top: 100px; }
+.dl-actions {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.dl-main-btn {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-bd);
+  color: #fff; text-decoration: none; font-size: 0.88rem; font-weight: 600;
+  transition: all 0.2s ease;
+}
+.dl-main-btn:hover {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(99, 102, 241, 0.3));
+  border-color: rgba(167, 139, 250, 0.4);
+  transform: translateX(2px);
+}
+.dl-format-tag {
+  font-size: 0.72rem; font-weight: 500; color: var(--c-txt-muted);
+}
+.dl-main-btn:hover .dl-format-tag { color: var(--c-violet-lt); }
 
-    /* ═══════════════════════════════════════════════════
-       NAV
-       ═══════════════════════════════════════════════════ */
-    .nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 16px 0;
-      background: rgba(3,0,20,0.7);
-      backdrop-filter: blur(20px) saturate(1.8);
-      border-bottom: 1px solid var(--glass-border);
-      transition: all 0.3s ease;
-    }
-    .nav-inner {
-      max-width: 1200px; margin: 0 auto; padding: 0 24px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .nav-brand {
-      display: flex; align-items: center; gap: 12px;
-      text-decoration: none; color: var(--text-white);
-    }
-    .nav-brand img { width: 36px; height: 36px; border-radius: 10px; }
-    .nav-brand span {
-      font-family: var(--font-display);
-      font-size: 1.35rem; font-weight: 700;
-      background: linear-gradient(135deg, var(--violet-300), var(--cyan-400));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
-    .nav-links a {
-      color: var(--text-dim); text-decoration: none;
-      font-size: 0.9rem; font-weight: 500;
-      transition: color 0.2s;
-      position: relative;
-    }
-    .nav-links a::after {
-      content: ''; position: absolute; bottom: -4px; left: 0;
-      width: 0; height: 2px;
-      background: linear-gradient(90deg, var(--violet-500), var(--cyan-400));
-      transition: width 0.3s ease;
-    }
-    .nav-links a:hover { color: var(--text-white); }
-    .nav-links a:hover::after { width: 100%; }
-    .nav-cta {
-      padding: 10px 24px; border-radius: 12px; border: none;
-      background: linear-gradient(135deg, var(--violet-600), var(--violet-700));
-      color: white; font-weight: 600; font-size: 0.9rem;
-      cursor: pointer; text-decoration: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 20px rgba(124,58,237,0.3);
-    }
-    .nav-cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba(124,58,237,0.5);
-    }
+/* FOOTER */
+.footer {
+  padding: 70px 0 40px; border-top: 1px solid var(--glass-bd);
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px;
+}
+.footer-brand span {
+  font-family: var(--ff-display); font-size: 1.25rem; font-weight: 700; color: #fff;
+}
+.footer-brand p {
+  font-size: 0.85rem; color: var(--c-txt-dim); line-height: 1.6; max-width: 280px; margin-top: 10px;
+}
+.footer-col h4 {
+  font-size: 0.85rem; font-weight: 600; color: #fff; margin-bottom: 14px;
+}
+.footer-col a {
+  display: block; font-size: 0.83rem; color: var(--c-txt-dim);
+  text-decoration: none; padding: 4px 0; transition: color 0.2s;
+}
+.footer-col a:hover { color: #fff; }
+.footer-bottom {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 24px; border-top: 1px solid var(--glass-bd);
+  font-size: 0.78rem; color: var(--c-txt-muted);
+}
 
-    /* ═══════════════════════════════════════════════════
-       HERO
-       ═══════════════════════════════════════════════════ */
-    .hero {
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      text-align: center;
-      padding: 140px 24px 80px;
-      position: relative;
-    }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 8px 20px; border-radius: 999px;
-      background: rgba(139,92,246,0.12);
-      border: 1px solid rgba(139,92,246,0.25);
-      color: var(--violet-300); font-size: 0.85rem; font-weight: 600;
-      margin-bottom: 32px;
-      animation: fadeUp 0.8s ease;
-    }
-    .hero-badge .dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--emerald-400);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.3); }
-    }
-    .hero h1 {
-      font-family: var(--font-display);
-      font-size: clamp(3rem, 7vw, 5.5rem);
-      font-weight: 800; line-height: 1.05;
-      margin-bottom: 24px;
-      animation: fadeUp 0.8s ease 0.1s both;
-    }
-    .hero h1 .gradient-text {
-      background: linear-gradient(135deg, var(--violet-400) 0%, var(--cyan-400) 50%, var(--rose-400) 100%);
-      background-size: 200% auto;
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      animation: shimmer 4s linear infinite;
-    }
-    @keyframes shimmer {
-      0% { background-position: 0% center; }
-      100% { background-position: 200% center; }
-    }
-    .hero-sub {
-      font-size: clamp(1.05rem, 2vw, 1.25rem);
-      color: var(--text-dim); max-width: 640px; margin: 0 auto 48px;
-      line-height: 1.7;
-      animation: fadeUp 0.8s ease 0.2s both;
-    }
-    .hero-actions {
-      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
-      animation: fadeUp 0.8s ease 0.3s both;
-    }
-    .btn-primary {
-      padding: 16px 40px; border-radius: 16px; border: none;
-      background: linear-gradient(135deg, var(--violet-500), var(--violet-700));
-      color: white; font-size: 1.05rem; font-weight: 700;
-      cursor: pointer; text-decoration: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 32px rgba(124,58,237,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
-      position: relative; overflow: hidden;
-    }
-    .btn-primary::before {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
-      transform: translateX(-100%);
-      transition: transform 0.5s ease;
-    }
-    .btn-primary:hover::before { transform: translateX(100%); }
-    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(124,58,237,0.6); }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal.in { opacity: 1; transform: translateY(0); }
 
-    .btn-ghost {
-      padding: 16px 40px; border-radius: 16px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: var(--text-white); font-size: 1.05rem; font-weight: 600;
-      cursor: pointer; text-decoration: none;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-    }
-    .btn-ghost:hover {
-      background: rgba(255,255,255,0.08);
-      border-color: rgba(255,255,255,0.2);
-      transform: translateY(-3px);
-    }
-
-    .hero-stats {
-      display: flex; gap: 48px; justify-content: center;
-      margin-top: 64px;
-      animation: fadeUp 0.8s ease 0.5s both;
-    }
-    .stat { text-align: center; }
-    .stat-num {
-      font-family: var(--font-display);
-      font-size: 2rem; font-weight: 800;
-      background: linear-gradient(135deg, var(--violet-300), var(--cyan-400));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .stat-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ═══════════════════════════════════════════════════
-       SECTION HEADERS
-       ═══════════════════════════════════════════════════ */
-    .section-header { text-align: center; margin-bottom: 64px; }
-    .section-tag {
-      display: inline-block; padding: 6px 16px;
-      border-radius: 999px; font-size: 0.8rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(6,182,212,0.15));
-      border: 1px solid rgba(139,92,246,0.2);
-      color: var(--violet-300);
-      margin-bottom: 20px;
-    }
-    .section-title {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800; margin-bottom: 16px;
-    }
-    .section-desc {
-      font-size: 1.1rem; color: var(--text-dim);
-      max-width: 600px; margin: 0 auto;
-    }
-
-    /* ═══════════════════════════════════════════════════
-       DOWNLOADS — THE SHOWSTOPPER
-       ═══════════════════════════════════════════════════ */
-    .downloads { padding: 120px 0; }
-
-    .platform-tabs {
-      display: flex; justify-content: center; gap: 8px;
-      margin-bottom: 56px; flex-wrap: wrap;
-    }
-    .tab-btn {
-      padding: 12px 28px; border-radius: 14px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      color: var(--text-dim); font-size: 0.9rem; font-weight: 600;
-      cursor: pointer; transition: all 0.3s ease;
-      font-family: var(--font-body);
-    }
-    .tab-btn:hover {
-      background: rgba(255,255,255,0.06);
-      color: var(--text-white);
-    }
-    .tab-btn.active {
-      background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(6,182,212,0.15));
-      border-color: rgba(139,92,246,0.4);
-      color: var(--text-white);
-      box-shadow: 0 0 24px rgba(139,92,246,0.15);
-    }
-
-    .dl-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
-    }
-
-    /* ── Individual Download Card ── */
-    .dl-card {
-      position: relative;
-      background: rgba(15,10,40,0.5);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: var(--r-xl);
-      padding: 36px 32px;
-      backdrop-filter: blur(20px);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      overflow: hidden;
-    }
-    .dl-card::before {
-      content: ''; position: absolute; inset: 0;
-      border-radius: var(--r-xl);
-      background: linear-gradient(135deg, transparent 40%, rgba(139,92,246,0.06) 100%);
-      opacity: 0; transition: opacity 0.4s ease;
-    }
-    .dl-card:hover {
-      border-color: rgba(255,255,255,0.12);
-      transform: translateY(-8px);
-      box-shadow:
-        0 32px 64px rgba(0,0,0,0.4),
-        0 0 0 1px rgba(139,92,246,0.15),
-        0 0 60px rgba(139,92,246,0.08);
-    }
-    .dl-card:hover::before { opacity: 1; }
-
-    .dl-card-accent {
-      position: absolute; top: 0; left: 32px; right: 32px;
-      height: 2px;
-      border-radius: 0 0 4px 4px;
-      opacity: 0; transition: opacity 0.4s ease;
-    }
-    .dl-card:hover .dl-card-accent { opacity: 1; }
-    .dl-card[data-os="windows"] .dl-card-accent { background: linear-gradient(90deg, var(--cyan-400), var(--violet-400)); }
-    .dl-card[data-os="android"] .dl-card-accent { background: linear-gradient(90deg, var(--emerald-400), var(--cyan-400)); }
-    .dl-card[data-os="ios"] .dl-card-accent { background: linear-gradient(90deg, var(--rose-400), var(--violet-400)); }
-    .dl-card[data-os="linux"] .dl-card-accent { background: linear-gradient(90deg, var(--amber-400), var(--emerald-400)); }
-    .dl-card[data-os="macos"] .dl-card-accent { background: linear-gradient(90deg, var(--violet-400), var(--rose-400)); }
-
-    .dl-card-header {
-      display: flex; align-items: flex-start; gap: 16px;
-      margin-bottom: 20px; position: relative; z-index: 1;
-    }
-    .os-icon {
-      width: 52px; height: 52px; border-radius: 16px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: all 0.3s ease;
-    }
-    .dl-card[data-os="windows"] .os-icon { background: linear-gradient(135deg, rgba(34,211,238,0.12), rgba(34,211,238,0.04)); color: var(--cyan-400); }
-    .dl-card[data-os="android"] .os-icon { background: linear-gradient(135deg, rgba(52,211,153,0.12), rgba(52,211,153,0.04)); color: var(--emerald-400); }
-    .dl-card[data-os="ios"] .os-icon { background: linear-gradient(135deg, rgba(251,113,133,0.12), rgba(251,113,133,0.04)); color: var(--rose-400); }
-    .dl-card[data-os="linux"] .os-icon { background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(251,191,36,0.04)); color: var(--amber-400); }
-    .dl-card[data-os="macos"] .os-icon { background: linear-gradient(135deg, rgba(167,139,250,0.12), rgba(167,139,250,0.04)); color: var(--violet-400); }
-
-    .dl-card:hover .os-icon { transform: scale(1.1); }
-
-    .os-info h3 {
-      font-family: var(--font-display);
-      font-size: 1.3rem; font-weight: 700;
-      margin-bottom: 2px;
-    }
-    .os-info .version {
-      font-size: 0.75rem; font-weight: 700; font-family: var(--font-mono);
-      padding: 3px 10px; border-radius: 8px;
-      background: rgba(139,92,246,0.15);
-      color: var(--violet-300);
-      display: inline-block; margin-left: 8px;
-      vertical-align: middle;
-    }
-    .os-info p {
-      font-size: 0.88rem; color: var(--text-dim);
-      line-height: 1.5; margin-top: 4px;
-    }
-
-    .dl-buttons {
-      display: flex; flex-direction: column; gap: 10px;
-      margin-top: 24px; position: relative; z-index: 1;
-    }
-    .dl-btn {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 20px; border-radius: 14px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      color: var(--text-white); text-decoration: none;
-      transition: all 0.3s ease; cursor: pointer;
-    }
-    .dl-btn:hover {
-      background: rgba(255,255,255,0.07);
-      border-color: rgba(255,255,255,0.15);
-      transform: translateX(4px);
-    }
-    .dl-btn-info { display: flex; align-items: center; gap: 12px; }
-    .dl-btn-info .name { font-weight: 600; font-size: 0.92rem; }
-    .dl-btn-info .ext {
-      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600;
-      padding: 3px 8px; border-radius: 6px;
-      background: rgba(255,255,255,0.06);
-      color: var(--text-dim);
-    }
-    .dl-btn .dl-icon {
-      width: 36px; height: 36px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(139,92,246,0.12);
-      color: var(--violet-300);
-      transition: all 0.3s ease;
-    }
-    .dl-btn:hover .dl-icon {
-      background: var(--violet-600);
-      color: white;
-    }
-    .dl-card-footer {
-      font-size: 0.78rem; color: var(--text-muted);
-      margin-top: 16px; padding-top: 16px;
-      border-top: 1px solid rgba(255,255,255,0.04);
-      position: relative; z-index: 1;
-    }
-
-    /* ═══════════════════════════════════════════════════
-       FEATURES
-       ═══════════════════════════════════════════════════ */
-    .features { padding: 120px 0; }
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-    .feature-card {
-      padding: 36px 28px;
-      border-radius: var(--r-lg);
-      background: rgba(15,10,40,0.4);
-      border: 1px solid rgba(255,255,255,0.04);
-      transition: all 0.4s ease;
-      position: relative;
-    }
-    .feature-card:hover {
-      border-color: rgba(255,255,255,0.1);
-      transform: translateY(-4px);
-      background: rgba(15,10,40,0.6);
-    }
-    .feature-icon {
-      width: 48px; height: 48px; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 20px;
-      background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(6,182,212,0.1));
-      color: var(--violet-300);
-    }
-    .feature-card h3 {
-      font-family: var(--font-display);
-      font-size: 1.15rem; font-weight: 700;
-      margin-bottom: 10px;
-    }
-    .feature-card p {
-      font-size: 0.9rem; color: var(--text-dim); line-height: 1.6;
-    }
-
-    /* Alternating icon colors */
-    .feature-card:nth-child(2) .feature-icon { background: linear-gradient(135deg, rgba(52,211,153,0.15), rgba(6,182,212,0.1)); color: var(--emerald-400); }
-    .feature-card:nth-child(3) .feature-icon { background: linear-gradient(135deg, rgba(251,113,133,0.15), rgba(244,63,94,0.1)); color: var(--rose-400); }
-    .feature-card:nth-child(4) .feature-icon { background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.1)); color: var(--amber-400); }
-    .feature-card:nth-child(5) .feature-icon { background: linear-gradient(135deg, rgba(34,211,238,0.15), rgba(6,182,212,0.1)); color: var(--cyan-400); }
-    .feature-card:nth-child(6) .feature-icon { background: linear-gradient(135deg, rgba(167,139,250,0.15), rgba(139,92,246,0.1)); color: var(--violet-300); }
-
-    /* ═══════════════════════════════════════════════════
-       SHOWCASE / PLAYER MOCKUP
-       ═══════════════════════════════════════════════════ */
-    /* ═══════════════════════════════════════════════════
-       SHOWCASE / NATIVE PLAYER WINDOW MOCKUP
-       ═══════════════════════════════════════════════════ */
-    .showcase { padding: 120px 0; }
-    
-    .player-window-wrapper {
-      position: relative;
-      background: rgba(13, 9, 32, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      box-shadow: 
-        0 30px 90px rgba(0, 0, 0, 0.7),
-        0 0 80px rgba(124, 58, 237, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
-      overflow: hidden;
-      backdrop-filter: blur(25px);
-    }
-
-    /* Window Top Bar */
-    .window-topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 20px;
-      background: rgba(20, 15, 45, 0.9);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    .window-dots {
-      display: flex;
-      gap: 8px;
-    }
-    .window-dots span {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-    .dot-close { background: #ff5f56; }
-    .dot-min { background: #ffbd2e; }
-    .dot-max { background: #27c93f; }
-
-    .window-title-tab {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--text-dim);
-      font-family: var(--font-display);
-    }
-    .window-title-tab svg { color: var(--cyan-400); }
-
-    .badge-lossless {
-      font-size: 0.68rem;
-      font-weight: 700;
-      font-family: var(--font-mono);
-      letter-spacing: 0.08em;
-      padding: 4px 10px;
-      border-radius: 6px;
-      background: rgba(6, 182, 212, 0.12);
-      border: 1px solid rgba(6, 182, 212, 0.3);
-      color: var(--cyan-400);
-    }
-
-    /* Window Body */
-    .player-body {
-      display: flex;
-      min-height: 480px;
-    }
-
-    /* Sidebar */
-    .player-sidebar {
-      width: 240px;
-      background: rgba(10, 7, 26, 0.6);
-      border-right: 1px solid rgba(255, 255, 255, 0.05);
-      padding: 24px 18px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .app-brand-pill {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 14px;
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(6, 182, 212, 0.1));
-      border: 1px solid rgba(139, 92, 246, 0.25);
-      border-radius: 12px;
-      margin-bottom: 24px;
-    }
-    .brand-avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, var(--violet-500), var(--cyan-500));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-    }
-    .brand-text strong {
-      display: block;
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      color: #fff;
-    }
-    .brand-text small {
-      font-size: 0.72rem;
-      color: var(--cyan-400);
-      font-weight: 600;
-    }
-
-    .sidebar-menu {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .menu-label {
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      letter-spacing: 0.1em;
-      margin-bottom: 8px;
-      padding-left: 10px;
-    }
-    .sidebar-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 9px 12px;
-      border-radius: 10px;
-      color: var(--text-dim);
-      text-decoration: none;
-      font-size: 0.88rem;
-      font-weight: 500;
-      transition: all 0.2s ease;
-    }
-    .sidebar-item:hover {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.05);
-    }
-    .sidebar-item.active {
-      color: #fff;
-      background: linear-gradient(90deg, rgba(139, 92, 246, 0.25), transparent);
-      border-left: 3px solid var(--violet-400);
-    }
-
-    .sidebar-footer {
-      padding-top: 16px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .user-chip {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .user-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #ec4899, #8b5cf6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 0.85rem;
-      color: white;
-    }
-    .u-name { font-size: 0.84rem; font-weight: 600; color: #fff; }
-    .u-status { font-size: 0.72rem; color: var(--emerald-400); }
-
-    /* Main Area */
-    .player-main {
-      flex: 1;
-      padding: 28px 32px;
-      background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.08), transparent 60%);
-      overflow: hidden;
-    }
-
-    .main-greeting {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 24px;
-    }
-    .greeting-sub {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: var(--violet-400);
-      display: block;
-    }
-    .greeting-title {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: #fff;
-    }
-    .stream-pill {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      color: var(--emerald-400);
-      font-size: 0.76rem;
-      font-weight: 600;
-    }
-    .dot-live {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--emerald-400);
-      box-shadow: 0 0 8px var(--emerald-400);
-      animation: pulse 1.8s infinite;
-    }
-
-    /* Quick Grid */
-    .quick-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-    .quick-card {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 10px 14px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 12px;
-      transition: all 0.25s ease;
-      cursor: pointer;
-    }
-    .quick-card:hover {
-      background: rgba(255, 255, 255, 0.07);
-      transform: translateY(-2px);
-      border-color: rgba(255, 255, 255, 0.15);
-    }
-    .quick-img {
-      width: 46px;
-      height: 46px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .gradient-art-1 { background: linear-gradient(135deg, #f43f5e, #ec4899); }
-    .gradient-art-2 { background: linear-gradient(135deg, #8b5cf6, #3b82f6); }
-    .gradient-art-3 { background: linear-gradient(135deg, #06b6d4, #10b981); }
-
-    .quick-meta {
-      flex: 1;
-      min-width: 0;
-    }
-    .quick-meta strong {
-      display: block;
-      font-size: 0.88rem;
-      color: #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .quick-meta span {
-      font-size: 0.74rem;
-      color: var(--text-dim);
-    }
-    .quick-play {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--violet-600);
-      border: none;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      opacity: 0.8;
-      transition: all 0.2s;
-    }
-    .quick-card:hover .quick-play {
-      opacity: 1;
-      transform: scale(1.08);
-      background: var(--violet-500);
-    }
-
-    /* Shelf Header & Grid */
-    .shelf-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-    .shelf-header h4 {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      color: #fff;
-    }
-    .shelf-tag {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-    }
-    .shelf-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-    .shelf-item {
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
-    .shelf-item:hover {
-      transform: translateY(-4px);
-    }
-    .album-cover {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 1;
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 10px;
-    }
-    .cover-1 { background: linear-gradient(135deg, #7c3aed, #db2777); }
-    .cover-2 { background: linear-gradient(135deg, #2563eb, #06b6d4); }
-    .cover-3 { background: linear-gradient(135deg, #059669, #10b981); }
-    .cover-4 { background: linear-gradient(135deg, #ea580c, #f59e0b); }
-
-    .cover-glow {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at center, rgba(255,255,255,0.2), transparent 70%);
-      opacity: 0.5;
-    }
-    .cover-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity 0.25s ease;
-    }
-    .shelf-item:hover .cover-overlay {
-      opacity: 1;
-    }
-    .play-btn-round {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--violet-500), var(--cyan-400));
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-      transform: scale(0.9);
-      transition: transform 0.2s;
-    }
-    .shelf-item:hover .play-btn-round {
-      transform: scale(1);
-    }
-    .album-title {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .album-artist {
-      font-size: 0.74rem;
-      color: var(--text-dim);
-    }
-
-    /* Bottom Playback Bar */
-    .player-bottombar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 28px;
-      background: rgba(16, 12, 38, 0.95);
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      gap: 24px;
-    }
-
-    .now-playing-left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      width: 250px;
-    }
-    .mini-album-art {
-      width: 48px;
-      height: 48px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #ec4899, #8b5cf6, #06b6d4);
-      box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35);
-      flex-shrink: 0;
-    }
-    .track-details {
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .track-name {
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .track-author {
-      font-size: 0.72rem;
-      color: var(--text-dim);
-    }
-    .btn-like-active {
-      background: none;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      margin-left: 4px;
-      padding: 4px;
-      transition: transform 0.2s;
-    }
-    .btn-like-active:hover {
-      transform: scale(1.2);
-    }
-
-    /* Center Controls */
-    .controls-center {
-      flex: 1;
-      max-width: 520px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
-    .transport-buttons {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-    .ctrl-sub {
-      background: none;
-      border: none;
-      color: var(--text-dim);
-      cursor: pointer;
-      transition: color 0.2s;
-      display: flex;
-      align-items: center;
-    }
-    .ctrl-sub:hover { color: #fff; }
-    .ctrl-main-play {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: #fff;
-      border: none;
-      color: #030014;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 0 16px rgba(255, 255, 255, 0.4);
-    }
-    .ctrl-main-play:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 24px rgba(255, 255, 255, 0.7);
-    }
-
-    .progress-container {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .time-stamp {
-      font-size: 0.7rem;
-      font-family: var(--font-mono);
-      color: var(--text-muted);
-    }
-    .audio-scrubber {
-      flex: 1;
-      height: 4px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.12);
-      position: relative;
-      cursor: pointer;
-    }
-    .audio-scrubber-fill {
-      width: 65%;
-      height: 100%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--violet-500), var(--cyan-400));
-    }
-    .audio-scrubber-handle {
-      position: absolute;
-      left: 65%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #fff;
-      box-shadow: 0 0 8px var(--cyan-400);
-    }
-
-    /* Extras Right */
-    .extras-right {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      width: 250px;
-      justify-content: flex-end;
-    }
-    .visualizer-bars {
-      display: flex;
-      align-items: flex-end;
-      gap: 3px;
-      height: 18px;
-    }
-    .v-bar {
-      width: 3px;
-      border-radius: 2px;
-      background: var(--cyan-400);
-      animation: equalize 1.2s infinite ease-in-out alternate;
-    }
-    .v-bar:nth-child(1) { height: 40%; animation-delay: 0.1s; }
-    .v-bar:nth-child(2) { height: 90%; animation-delay: 0.3s; background: var(--violet-400); }
-    .v-bar:nth-child(3) { height: 60%; animation-delay: 0.2s; }
-    .v-bar:nth-child(4) { height: 100%; animation-delay: 0.4s; background: var(--violet-400); }
-    .v-bar:nth-child(5) { height: 75%; animation-delay: 0.15s; }
-    .v-bar:nth-child(6) { height: 35%; animation-delay: 0.35s; }
-
-    @keyframes equalize {
-      0% { height: 20%; }
-      50% { height: 95%; }
-      100% { height: 40%; }
-    }
-
-    .volume-box {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-dim);
-    }
-    .volume-slider {
-      width: 70px;
-      height: 4px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.12);
-      position: relative;
-    }
-    .volume-fill {
-      width: 80%;
-      height: 100%;
-      border-radius: 999px;
-      background: var(--text-white);
-    }
-
-    @media (max-width: 900px) {
-      .player-sidebar { display: none; }
-      .quick-grid { grid-template-columns: 1fr; }
-      .shelf-grid { grid-template-columns: repeat(2, 1fr); }
-      .now-playing-left, .extras-right { width: auto; }
-    }
-
-    /* ═══════════════════════════════════════════════════
-       HOW IT WORKS
-       ═══════════════════════════════════════════════════ */
-    .how-it-works { padding: 120px 0; }
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-    .step-card {
-      text-align: center; padding: 48px 28px;
-      border-radius: var(--r-lg);
-      background: rgba(15,10,40,0.3);
-      border: 1px solid rgba(255,255,255,0.04);
-      transition: all 0.3s ease;
-    }
-    .step-card:hover {
-      border-color: rgba(255,255,255,0.1);
-      transform: translateY(-4px);
-    }
-    .step-number {
-      font-family: var(--font-display);
-      font-size: 3rem; font-weight: 900;
-      background: linear-gradient(135deg, var(--violet-500), var(--cyan-400));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      margin-bottom: 16px; display: block;
-    }
-    .step-card h3 {
-      font-family: var(--font-display);
-      font-size: 1.2rem; font-weight: 700;
-      margin-bottom: 10px;
-    }
-    .step-card p { font-size: 0.9rem; color: var(--text-dim); }
-
-    /* ═══════════════════════════════════════════════════
-       FOOTER
-       ═══════════════════════════════════════════════════ */
-    .footer {
-      padding: 80px 0 40px;
-      border-top: 1px solid rgba(255,255,255,0.04);
-    }
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 48px; margin-bottom: 48px;
-    }
-    .footer-brand p { color: var(--text-dim); font-size: 0.9rem; margin-top: 12px; max-width: 300px; }
-    .footer-col h4 {
-      font-family: var(--font-display);
-      font-size: 0.9rem; font-weight: 700;
-      margin-bottom: 16px; color: var(--text-white);
-    }
-    .footer-col a {
-      display: block; color: var(--text-dim); text-decoration: none;
-      font-size: 0.88rem; padding: 4px 0;
-      transition: color 0.2s;
-    }
-    .footer-col a:hover { color: var(--violet-300); }
-    .footer-bottom {
-      text-align: center; padding-top: 32px;
-      border-top: 1px solid rgba(255,255,255,0.04);
-      color: var(--text-muted); font-size: 0.8rem;
-    }
-
-    /* ═══════════════════════════════════════════════════
-       RESPONSIVE
-       ═══════════════════════════════════════════════════ */
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .hero h1 { font-size: 2.5rem; }
-      .hero-stats { gap: 24px; }
-      .stat-num { font-size: 1.5rem; }
-      .dl-grid { grid-template-columns: 1fr; }
-      .steps-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
-    }
-
-    /* ═══════════════════════════════════════════════════
-       INTERSECTION OBSERVER ANIMATIONS
-       ═══════════════════════════════════════════════════ */
-    .reveal {
-      opacity: 0; transform: translateY(40px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-    .reveal.visible {
-      opacity: 1; transform: translateY(0);
-    }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
-  </style>
+@media(max-width: 900px) {
+  .nav-links { display: none; }
+  .psb { display: none; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+@media(max-width: 640px) {
+  .hero-stats { gap: 28px; }
+  .pm-quick { grid-template-columns: 1fr; }
+  .pm-shelf { grid-template-columns: repeat(2, 1fr); }
+  .dl-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 12px; }
+}
+</style>
 </head>
 <body>
 
-  <!-- Animated Mesh Background -->
-  <div class="mesh-bg">
-    <div class="orb"></div>
-    <div class="orb"></div>
-    <div class="orb"></div>
-    <div class="orb"></div>
+<canvas id="bg-canvas"></canvas>
+<div class="page-wrap">
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-mark"><img src="./images/melora-logo.png" alt="Melora"></div>
+      <span class="nav-wordmark">Melora</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#showcase">Interface</a></li>
+      <li><a href="#downloads">Downloads</a></li>
+    </ul>
+    <a href="#downloads" class="nav-btn-dl">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      Download Free
+    </a>
   </div>
-  <div class="grain"></div>
+</nav>
 
-  <div class="page-content">
-
-    <!-- ━━━ NAV ━━━ -->
-    <nav class="nav" id="nav">
-      <div class="nav-inner">
-        <a href="#" class="nav-brand">
-          <img src="./images/melora-logo.png" alt="Melora" onerror="this.style.display='none'">
-          <span>Melora</span>
-        </a>
-        <ul class="nav-links">
-          <li><a href="#features">Features</a></li>
-          <li><a href="#downloads">Downloads</a></li>
-          <li><a href="#showcase">Preview</a></li>
-          <li><a href="https://github.com/harshakalimireddi-collab/Melora-appplayer" target="_blank">GitHub</a></li>
-        </ul>
-        <a href="#downloads" class="nav-cta">Download Free</a>
-      </div>
-    </nav>
-
-    <!-- ━━━ HERO ━━━ -->
-    <section class="hero" id="hero">
-      <div>
-        <div class="hero-badge">
-          <span class="dot"></span>
-          <span>v4.0.0 — Open Source & Free Forever</span>
-        </div>
-        <h1>
-          Music Without<br>
-          <span class="gradient-text">Boundaries</span>
-        </h1>
-        <p class="hero-sub">
-          The open-source music player that respects your privacy, skips the ads,
-          and streams lossless audio across every device you own.
-        </p>
-        <div class="hero-actions">
-          <a href="#downloads" class="btn-primary">⬇ Download Now</a>
-          <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer" target="_blank" class="btn-ghost">★ Star on GitHub</a>
-        </div>
-        <div class="hero-stats">
-          <div class="stat">
-            <div class="stat-num">5</div>
-            <div class="stat-label">Platforms</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num">0</div>
-            <div class="stat-label">Ads</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num">∞</div>
-            <div class="stat-label">Music</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num">$0</div>
-            <div class="stat-label">Price</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ━━━ FEATURES ━━━ -->
-    <section class="features container" id="features">
-      <div class="section-header reveal">
-        <span class="section-tag">Why Melora</span>
-        <h2 class="section-title">Built Different From The Ground Up</h2>
-        <p class="section-desc">No corporate bloat. No telemetry. No paywalls. Just your music, the way it should be.</p>
-      </div>
-      <div class="features-grid">
-        <div class="feature-card reveal reveal-delay-1">
-          <div class="feature-icon">
-            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-          </div>
-          <h3>100% Ad-Free Forever</h3>
-          <p>No ads, no premium tiers, no upsells. Every feature is unlocked from day one. Free as in freedom.</p>
-        </div>
-        <div class="feature-card reveal reveal-delay-2">
-          <div class="feature-icon">
-            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
-          </div>
-          <h3>Plugin-Powered Streaming</h3>
-          <p>Extend Melora with community plugins for any music service. YouTube, SoundCloud, or build your own.</p>
-        </div>
-        <div class="feature-card reveal reveal-delay-3">
-          <div class="feature-icon">
-            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
-          </div>
-          <h3>Download with Metadata</h3>
-          <p>Save any track with full album art, lyrics, artist info, and proper ID3 tags. Your offline library, perfected.</p>
-        </div>
-        <div class="feature-card reveal reveal-delay-1">
-          <div class="feature-icon">
-            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><path d="M8 21h8M12 17v4"></path></svg>
-          </div>
-          <h3>Cross-Platform Native</h3>
-          <p>Windows, macOS, Linux, Android, iOS. Built with Flutter — no Electron, no web wrappers. Real native speed.</p>
-        </div>
-        <div class="feature-card reveal reveal-delay-2">
-          <div class="feature-icon">
-            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-          </div>
-          <h3>Zero Tracking</h3>
-          <p>No analytics, no telemetry, no data harvesting. What you listen to is nobody's business but yours.</p>
-        </div>
-        <div class="feature-card reveal reveal-delay-3">
-          <div class="feature-icon">
-            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-          </div>
-          <h3>Synced Lyrics</h3>
-          <p>Time-synced lyrics from multiple sources, regardless of what plugin you use. Karaoke mode built in.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ━━━ SHOWCASE ━━━ -->
-    <section class="showcase container" id="showcase">
-      <div class="section-header reveal">
-        <span class="section-tag">Interactive Preview</span>
-        <h2 class="section-title">Designed for Audiophiles</h2>
-        <p class="section-desc">Real native Flutter player experience. Smooth controls, hi-res visualizer, and zero subscription paywalls.</p>
-      </div>
-
-      <!-- Native Melora Player Interactive Mockup -->
-      <div class="player-window-wrapper reveal">
-        <div class="window-topbar">
-          <div class="window-dots">
-            <span class="dot-close"></span>
-            <span class="dot-min"></span>
-            <span class="dot-max"></span>
-          </div>
-          <div class="window-title-tab">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
-            <span>Melora Player — Now Playing</span>
-          </div>
-          <div class="window-actions">
-            <span class="badge-lossless">LOSSLESS 24-BIT / 96kHz</span>
-          </div>
-        </div>
-
-        <div class="player-body">
-          <!-- Sidebar -->
-          <aside class="player-sidebar">
-            <div class="app-brand-pill">
-              <div class="brand-avatar">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
-              </div>
-              <div class="brand-text">
-                <strong>Melora</strong>
-                <small>v4.0.0 Pro</small>
-              </div>
-            </div>
-
-            <nav class="sidebar-menu">
-              <div class="menu-label">DISCOVER</div>
-              <a href="#showcase" class="sidebar-item active">
-                <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
-                <span>Browse</span>
-              </a>
-              <a href="#showcase" class="sidebar-item">
-                <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                <span>Search</span>
-              </a>
-              <a href="#showcase" class="sidebar-item">
-                <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
-                <span>Synced Lyrics</span>
-              </a>
-
-              <div class="menu-label" style="margin-top: 24px;">YOUR LIBRARY</div>
-              <a href="#showcase" class="sidebar-item">
-                <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                <span>Liked Tracks</span>
-              </a>
-              <a href="#showcase" class="sidebar-item">
-                <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                <span>Downloads</span>
-              </a>
-              <a href="#showcase" class="sidebar-item">
-                <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-                <span>Plugins (Active)</span>
-              </a>
-            </nav>
-
-            <div class="sidebar-footer">
-              <div class="user-chip">
-                <div class="user-avatar">H</div>
-                <div class="user-info">
-                  <div class="u-name">Harsha</div>
-                  <div class="u-status">● Audio Engine: Native</div>
-                </div>
-              </div>
-            </div>
-          </aside>
-
-          <!-- Main Area -->
-          <main class="player-main">
-            <!-- Header greeting -->
-            <div class="main-greeting">
-              <div>
-                <span class="greeting-sub">CONTINUE LISTENING</span>
-                <h3 class="greeting-title">Welcome back to Melora</h3>
-              </div>
-              <div class="stream-pill">
-                <span class="dot-live"></span>
-                <span>FLAC Pure Stream</span>
-              </div>
-            </div>
-
-            <!-- Quick Cards -->
-            <div class="quick-grid">
-              <div class="quick-card">
-                <div class="quick-img gradient-art-1">
-                  <svg width="22" height="22" fill="white" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                </div>
-                <div class="quick-meta">
-                  <strong>Liked Tracks</strong>
-                  <span>842 songs • Offline ready</span>
-                </div>
-                <button class="quick-play" aria-label="Play Liked Tracks">
-                  <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                </button>
-              </div>
-
-              <div class="quick-card">
-                <div class="quick-img gradient-art-2">
-                  <svg width="22" height="22" fill="white" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
-                </div>
-                <div class="quick-meta">
-                  <strong>Synthwave Odyssey</strong>
-                  <span>By Melora Mix • Lossless</span>
-                </div>
-                <button class="quick-play" aria-label="Play Synthwave">
-                  <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                </button>
-              </div>
-
-              <div class="quick-card">
-                <div class="quick-img gradient-art-3">
-                  <svg width="22" height="22" fill="white" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-                </div>
-                <div class="quick-meta">
-                  <strong>Cyberpunk Beats</strong>
-                  <span>Curated • 48 kHz High-Res</span>
-                </div>
-                <button class="quick-play" aria-label="Play Beats">
-                  <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                </button>
-              </div>
-            </div>
-
-            <!-- Heavy Rotations Section -->
-            <div class="shelf-header">
-              <h4>Trending On Melora Plugins</h4>
-              <span class="shelf-tag">Updated 5 min ago</span>
-            </div>
-
-            <div class="shelf-grid">
-              <div class="shelf-item">
-                <div class="album-cover cover-1">
-                  <div class="cover-glow"></div>
-                  <div class="cover-overlay">
-                    <button class="play-btn-round" aria-label="Play Track">
-                      <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="album-title">Midnight Horizons</div>
-                <div class="album-artist">Kavinsky • Re-Mastered</div>
-              </div>
-
-              <div class="shelf-item">
-                <div class="album-cover cover-2">
-                  <div class="cover-glow"></div>
-                  <div class="cover-overlay">
-                    <button class="play-btn-round" aria-label="Play Track">
-                      <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="album-title">Electric Nights</div>
-                <div class="album-artist">The Midnight • Lossless</div>
-              </div>
-
-              <div class="shelf-item">
-                <div class="album-cover cover-3">
-                  <div class="cover-glow"></div>
-                  <div class="cover-overlay">
-                    <button class="play-btn-round" aria-label="Play Track">
-                      <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="album-title">Cosmic Waves</div>
-                <div class="album-artist">Gunship • 24-Bit Studio</div>
-              </div>
-
-              <div class="shelf-item">
-                <div class="album-cover cover-4">
-                  <div class="cover-glow"></div>
-                  <div class="cover-overlay">
-                    <button class="play-btn-round" aria-label="Play Track">
-                      <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="album-title">After Hours Drive</div>
-                <div class="album-artist">Timecop1983 • FLAC</div>
-              </div>
-            </div>
-          </main>
-        </div>
-
-        <!-- Sleek Bottom Playback Bar -->
-        <footer class="player-bottombar">
-          <div class="now-playing-left">
-            <div class="mini-album-art"></div>
-            <div class="track-details">
-              <span class="track-name">Neon Cyberwave Dream</span>
-              <span class="track-author">Melora Studio Orchestra • Lossless</span>
-            </div>
-            <button class="btn-like-active" aria-label="Liked">
-              <svg width="16" height="16" fill="#f43f5e" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-            </button>
-          </div>
-
-          <div class="controls-center">
-            <div class="transport-buttons">
-              <button class="ctrl-sub" aria-label="Shuffle">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
-              </button>
-              <button class="ctrl-sub" aria-label="Previous">
-                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="3"></line></svg>
-              </button>
-              <button class="ctrl-main-play" aria-label="Play/Pause">
-                <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
-              </button>
-              <button class="ctrl-sub" aria-label="Next">
-                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="3"></line></svg>
-              </button>
-              <button class="ctrl-sub" aria-label="Repeat">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
-              </button>
-            </div>
-
-            <!-- Dynamic audio visualizer bars -->
-            <div class="progress-container">
-              <span class="time-stamp">2:44</span>
-              <div class="audio-scrubber">
-                <div class="audio-scrubber-fill"></div>
-                <div class="audio-scrubber-handle"></div>
-              </div>
-              <span class="time-stamp">4:12</span>
-            </div>
-          </div>
-
-          <div class="extras-right">
-            <div class="visualizer-bars">
-              <span class="v-bar"></span>
-              <span class="v-bar"></span>
-              <span class="v-bar"></span>
-              <span class="v-bar"></span>
-              <span class="v-bar"></span>
-              <span class="v-bar"></span>
-            </div>
-            <div class="volume-box">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-              <div class="volume-slider">
-                <div class="volume-fill"></div>
-              </div>
-            </div>
-          </div>
-        </footer>
-      </div>
-    </section>
-
-    <!-- ━━━ DOWNLOADS ━━━ -->
-    <section class="downloads container" id="downloads">
-      <div class="section-header reveal">
-        <span class="section-tag">Instant Delivery</span>
-        <h2 class="section-title">Download For Your Device</h2>
-        <p class="section-desc">Zero ads. Zero countdown timers. Native binaries, direct from GitHub Releases.</p>
-      </div>
-
-      <div class="platform-tabs reveal">
-        <button class="tab-btn active" data-filter="all">All Platforms</button>
-        <button class="tab-btn" data-filter="windows">🪟 Windows</button>
-        <button class="tab-btn" data-filter="android">🤖 Android</button>
-        <button class="tab-btn" data-filter="ios">🍎 iOS</button>
-        <button class="tab-btn" data-filter="linux">🐧 Linux</button>
-        <button class="tab-btn" data-filter="macos">💻 macOS</button>
-      </div>
-
-      <div class="dl-grid" id="dlGrid">
-
-        <!-- Windows -->
-        <div class="dl-card reveal reveal-delay-1" data-os="windows">
-          <div class="dl-card-accent"></div>
-          <div class="dl-card-header">
-            <div class="os-icon">
-              <svg width="26" height="26" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"></path></svg>
-            </div>
-            <div class="os-info">
-              <h3>Windows <span class="version">v4.0.0</span></h3>
-              <p>Native 64-bit build with System Tray integration, background playback, and SMTC media controls.</p>
-            </div>
-          </div>
-          <div class="dl-buttons">
-            <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-Windows-x64.zip" class="dl-btn">
-              <div class="dl-btn-info">
-                <span class="name">Portable Package</span>
-                <span class="ext">.ZIP</span>
-              </div>
-              <div class="dl-icon">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
-              </div>
-            </a>
-          </div>
-          <div class="dl-card-footer">Windows 10 & 11 (x64)</div>
-        </div>
-
-        <!-- Android -->
-        <div class="dl-card reveal reveal-delay-2" data-os="android">
-          <div class="dl-card-accent"></div>
-          <div class="dl-card-header">
-            <div class="os-icon">
-              <svg width="26" height="26" fill="currentColor" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8564 8 12 8s-3.5902.411-5.1368.9497L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"></path></svg>
-            </div>
-            <div class="os-info">
-              <h3>Android <span class="version">v4.0.0</span></h3>
-              <p>Material You with lockscreen audio controls and background service.</p>
-            </div>
-          </div>
-          <div class="dl-buttons">
-            <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-Android.apk" class="dl-btn">
-              <div class="dl-btn-info">
-                <span class="name">Universal APK</span>
-                <span class="ext">.APK</span>
-              </div>
-              <div class="dl-icon">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
-              </div>
-            </a>
-          </div>
-          <div class="dl-card-footer">Android 7.0 (Nougat) or higher</div>
-        </div>
-
-        <!-- iOS -->
-        <div class="dl-card reveal reveal-delay-3" data-os="ios">
-          <div class="dl-card-accent"></div>
-          <div class="dl-card-header">
-            <div class="os-icon">
-              <svg width="26" height="26" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-.98 1.72-.85 2.74 1.01.08 2.03-.5 2.56-1.24z"></path></svg>
-            </div>
-            <div class="os-info">
-              <h3>iOS & iPadOS <span class="version">v4.0.0</span></h3>
-              <p>Full iOS experience with Home Screen widget and Lock Screen audio.</p>
-            </div>
-          </div>
-          <div class="dl-buttons">
-            <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-macOS.zip" class="dl-btn">
-              <div class="dl-btn-info">
-                <span class="name">Sideload Package</span>
-                <span class="ext">.IPA</span>
-              </div>
-              <div class="dl-icon">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
-              </div>
-            </a>
-          </div>
-          <div class="dl-card-footer">Install via AltStore, SideStore, or Sideloadly</div>
-        </div>
-
-        <!-- Linux -->
-        <div class="dl-card reveal reveal-delay-1" data-os="linux">
-          <div class="dl-card-accent"></div>
-          <div class="dl-card-header">
-            <div class="os-icon">
-              <svg width="26" height="26" fill="currentColor" viewBox="0 0 24 24"><path d="M12.504 0c-.155 0-.311.002-.465.014C8.788.152 6.28 2.578 6.28 5.656c0 .826.167 1.92.502 3.263-1.524 1.073-2.547 2.81-2.547 4.82 0 2.895 1.925 5.376 4.626 5.938.528.833 1.387 1.394 2.424 1.394 1.038 0 1.896-.56 2.425-1.394 2.7-.562 4.625-3.043 4.625-5.938 0-2.01-1.023-3.747-2.546-4.82.335-1.343.501-2.437.501-3.263C16.29 2.578 13.782.152 10.53.014 10.375.002 10.219 0 10.063 0h2.441z"></path></svg>
-            </div>
-            <div class="os-info">
-              <h3>Linux <span class="version">v4.0.0</span></h3>
-              <p>MPRIS D-Bus integration, system tray, and native Wayland/X11 support.</p>
-            </div>
-          </div>
-          <div class="dl-buttons">
-            <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-Linux-x64.tar.gz" class="dl-btn">
-              <div class="dl-btn-info">
-                <span class="name">Portable Archive</span>
-                <span class="ext">.TAR.GZ</span>
-              </div>
-              <div class="dl-icon">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
-              </div>
-            </a>
-          </div>
-          <div class="dl-card-footer">Glitch-free native performance</div>
-        </div>
-
-        <!-- macOS -->
-        <div class="dl-card reveal reveal-delay-2" data-os="macos">
-          <div class="dl-card-accent"></div>
-          <div class="dl-card-header">
-            <div class="os-icon">
-              <svg width="26" height="26" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-.98 1.72-.85 2.74 1.01.08 2.03-.5 2.56-1.24z"></path></svg>
-            </div>
-            <div class="os-info">
-              <h3>macOS <span class="version">v4.0.0</span></h3>
-              <p>Universal binary for Apple Silicon M1/M2/M3/M4 and Intel Macs.</p>
-            </div>
-          </div>
-          <div class="dl-buttons">
-            <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-macOS.zip" class="dl-btn">
-              <div class="dl-btn-info">
-                <span class="name">Universal App</span>
-                <span class="ext">.ZIP</span>
-              </div>
-              <div class="dl-icon">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
-              </div>
-            </a>
-          </div>
-          <div class="dl-card-footer">macOS 11.0 (Big Sur) or newer</div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ━━━ HOW IT WORKS ━━━ -->
-    <section class="how-it-works container" id="how">
-      <div class="section-header reveal">
-        <span class="section-tag">Simple as 1-2-3</span>
-        <h2 class="section-title">Start Streaming in Seconds</h2>
-      </div>
-      <div class="steps-grid">
-        <div class="step-card reveal reveal-delay-1">
-          <span class="step-number">01</span>
-          <h3>Download</h3>
-          <p>Grab the binary for your platform. No account needed, no email required.</p>
-        </div>
-        <div class="step-card reveal reveal-delay-2">
-          <span class="step-number">02</span>
-          <h3>Install & Launch</h3>
-          <p>Run the installer or extract the portable package. Open Melora.</p>
-        </div>
-        <div class="step-card reveal reveal-delay-3">
-          <span class="step-number">03</span>
-          <h3>Enjoy</h3>
-          <p>Search, stream, download, and discover. Auto-updates keep you on the latest version.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ━━━ FOOTER ━━━ -->
-    <footer class="footer">
-      <div class="container">
-        <div class="footer-grid">
-          <div class="footer-brand">
-            <a href="#" class="nav-brand">
-              <img src="./images/melora-logo.png" alt="Melora" width="32" height="32" style="border-radius:8px" onerror="this.style.display='none'">
-              <span>Melora</span>
-            </a>
-            <p>Open-source music streaming without boundaries. Free forever.</p>
-          </div>
-          <div class="footer-col">
-            <h4>Product</h4>
-            <a href="#features">Features</a>
-            <a href="#downloads">Downloads</a>
-            <a href="#showcase">Preview</a>
-          </div>
-          <div class="footer-col">
-            <h4>Resources</h4>
-            <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer" target="_blank">GitHub</a>
-            <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases" target="_blank">Releases</a>
-            <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/issues" target="_blank">Report Bug</a>
-          </div>
-          <div class="footer-col">
-            <h4>Legal</h4>
-            <a href="#">Privacy Policy</a>
-            <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/blob/main/LICENSE" target="_blank">License (BSD-4)</a>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          © 2024 Melora. Built with 💜 by Harsha.
-        </div>
-      </div>
-    </footer>
-
+<section class="hero" id="hero">
+  <div class="hero-badge"><span class="badge-dot"></span>v4.0 &mdash; Hi-Res Lossless &amp; Community Plugins</div>
+  <h1 class="hero-title"><span class="line-1">Music, Crafted for</span><span class="line-2">Pure Clarity.</span></h1>
+  <p class="hero-sub">The modern open-source music player. Bit-perfect FLAC audio, native system tray integration, synchronized lyrics, and no subscriptions.</p>
+  <div class="hero-actions">
+    <a href="#downloads" class="btn-primary">
+      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      Download for Free
+    </a>
+    <a href="#showcase" class="btn-secondary">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      View Interface
+    </a>
   </div>
+  <div class="hero-stats">
+    <div class="stat-item"><span class="stat-num">$0</span><span class="stat-label">Subscription</span></div>
+    <div class="stat-item"><span class="stat-num">5</span><span class="stat-label">Platforms</span></div>
+    <div class="stat-item"><span class="stat-num">24-bit</span><span class="stat-label">Hi-Res Audio</span></div>
+    <div class="stat-item"><span class="stat-num">MIT</span><span class="stat-label">Open Source</span></div>
+  </div>
+</section>
 
-  <script>
-    // ── Intersection Observer for scroll animations ──
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          observer.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+<section id="features">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">Highlights</span>
+      <h2 class="section-title">Engineered for Fidelity</h2>
+      <p class="section-sub">Melora pairs an audiophile audio pipeline with a modern, glass-crafted native interface.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(124,58,237,0.15);color:#c4b5fd">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        </div>
+        <h3>Bit-Perfect Lossless</h3>
+        <p>Direct 24-bit / 96kHz playback with WASAPI and PipeWire hardware output support for studio clarity.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(6,182,212,0.15);color:#67e8f9">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </div>
+        <h3>Plugin Architecture</h3>
+        <p>Extend audio sources, lyric providers, and integrations through sandboxed Dart plugin modules.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(244,63,94,0.15);color:#fda4af">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </div>
+        <h3>System Tray Controls</h3>
+        <p>Minimizes quietly to your system tray on Windows and macOS. Seamless background playback with global hotkeys.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(16,185,129,0.15);color:#6ee7b7">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z"/></svg>
+        </div>
+        <h3>Synchronized Lyrics</h3>
+        <p>Millisecond-accurate real-time lyrics with karaoke tracking and automatic multi-provider fallback.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(245,158,11,0.15);color:#fde68a">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/></svg>
+        </div>
+        <h3>Cross-Device Melora Connect</h3>
+        <p>Control desktop playback directly from your phone on the local network without cloud dependencies.</p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon" style="background:rgba(236,72,153,0.15);color:#f9a8d4">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Private &amp; Ad-Free</h3>
+        <p>Zero tracking, zero analytics telemetry, and zero advertisements. Free software under the MIT License.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+<section id="showcase">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">Interactive Preview</span>
+      <h2 class="section-title">Designed for Modern Desktops</h2>
+      <p class="section-sub">A responsive, high-framerate interface built with Flutter native rendering.</p>
+    </div>
+    <div class="player-shell reveal">
+      <div class="ptb">
+        <div class="ptb-dots"><div class="ptb-dot ptb-dot-r"></div><div class="ptb-dot ptb-dot-y"></div><div class="ptb-dot ptb-dot-g"></div></div>
+        <div class="ptb-title">Melora Player</div>
+        <div class="ptb-badge-hires">24-BIT / 96kHz LOSSLESS</div>
+      </div>
+      <div class="player-body">
+        <aside class="psb">
+          <div class="psb-brand">
+            <div class="psb-name">Melora</div>
+            <div class="psb-ver">v4.0.0</div>
+          </div>
+          <div class="psb-label">EXPLORE</div>
+          <div class="psb-item act">Browse</div>
+          <div class="psb-item">Search</div>
+          <div class="psb-item">Synced Lyrics</div>
+          <div class="psb-label">COLLECTIONS</div>
+          <div class="psb-item">Liked Songs<span class="badge-ct">842</span></div>
+          <div class="psb-item">Downloads<span class="badge-ct">36</span></div>
+          <div class="psb-item">Plugins<span class="badge-ct">3</span></div>
+        </aside>
+        <main class="pmain">
+          <div class="pm-greeting-row">
+            <div class="pm-greet-title">Now Playing</div>
+            <div class="pm-stream-pill"><span class="badge-dot"></span>Active Stream</div>
+          </div>
+          <div class="pm-quick">
+            <div class="qcard"><div class="qcard-art qa1"></div><div><div class="qcard-title">Liked Songs</div><div class="qcard-sub">842 tracks</div></div></div>
+            <div class="qcard"><div class="qcard-art qa2"></div><div><div class="qcard-title">Synthwave Sessions</div><div class="qcard-sub">Studio FLAC</div></div></div>
+            <div class="qcard"><div class="qcard-art qa3"></div><div><div class="qcard-title">Atmospheric Focus</div><div class="qcard-sub">Curated</div></div></div>
+          </div>
+          <div class="pm-shelf">
+            <div><div class="scard-cover sc1"></div><div class="scard-title">Midnight Horizons</div><div class="scard-artist">Kavinsky</div></div>
+            <div><div class="scard-cover sc2"></div><div class="scard-title">Electric Nights</div><div class="scard-artist">The Midnight</div></div>
+            <div><div class="scard-cover sc3"></div><div class="scard-title">Cosmic Waves</div><div class="scard-artist">Gunship</div></div>
+            <div><div class="scard-cover sc4"></div><div class="scard-title">After Hours Drive</div><div class="scard-artist">Timecop1983</div></div>
+          </div>
+        </main>
+      </div>
+      <footer class="pbar">
+        <div class="pbar-np">
+          <div class="pbar-art"></div>
+          <div><div class="pbar-track">Neon Horizon</div><div class="pbar-artist">Melora Studio</div></div>
+        </div>
+        <div class="pbar-center">
+          <div class="pbar-btns">
+            <button class="pbtn-main"><svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg></button>
+          </div>
+          <div class="pbar-scrubber">
+            <span>2:44</span>
+            <div class="pbar-track-bar"><div class="pbar-fill"></div></div>
+            <span>4:12</span>
+          </div>
+        </div>
+        <div class="pbar-right">
+          <div class="pbar-viz"><div class="pbar-vbar"></div><div class="pbar-vbar"></div><div class="pbar-vbar"></div><div class="pbar-vbar"></div></div>
+        </div>
+      </footer>
+    </div>
+  </div>
+</section>
 
-    // ── Platform filter tabs ──
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const filter = btn.dataset.filter;
-        document.querySelectorAll('.dl-card').forEach(card => {
-          if (filter === 'all' || card.dataset.os === filter) {
-            card.style.display = '';
-            card.style.animation = 'fadeUp 0.5s ease both';
-          } else {
-            card.style.display = 'none';
-          }
-        });
-      });
+<section id="downloads">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">Direct Releases</span>
+      <h2 class="section-title">Download Melora</h2>
+      <p class="section-sub">Official builds directly from GitHub Releases. Choose your operating system below.</p>
+    </div>
+
+    <div class="platform-tabs reveal">
+      <button class="tab-btn active" data-filter="all">All Platforms</button>
+      <button class="tab-btn" data-filter="windows">Windows</button>
+      <button class="tab-btn" data-filter="macos">macOS</button>
+      <button class="tab-btn" data-filter="android">Android</button>
+      <button class="tab-btn" data-filter="ios">iOS</button>
+      <button class="tab-btn" data-filter="linux">Linux</button>
+    </div>
+
+    <div class="dl-grid" id="dlGrid">
+
+      <!-- Windows -->
+      <div class="dl-card reveal" data-os="windows">
+        <div>
+          <div class="dl-head">
+            <div class="dl-icon-wrap" style="color:#67e8f9">
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+            </div>
+            <div class="dl-title-wrap">
+              <div class="dl-card-name">Windows</div>
+              <div class="dl-card-sub">Windows 10 / 11 &middot; 64-bit</div>
+            </div>
+          </div>
+        </div>
+        <div class="dl-actions">
+          <a href="./downloads/Melora-Windows-x64-Setup.exe" download="Melora-Windows-x64-Setup.exe" class="dl-main-btn" onclick="showDownloadToast('Windows 64-bit')">
+            <span>Download for Windows</span>
+            <span class="dl-format-tag">.EXE &middot; Installer</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- macOS -->
+      <div class="dl-card reveal" data-os="macos">
+        <div>
+          <div class="dl-head">
+            <div class="dl-icon-wrap" style="color:#c4b5fd">
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            </div>
+            <div class="dl-title-wrap">
+              <div class="dl-card-name">macOS</div>
+              <div class="dl-card-sub">macOS 12+ &middot; Apple Silicon &amp; Intel</div>
+            </div>
+          </div>
+        </div>
+        <div class="dl-actions">
+          <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-macos-universal.dmg" class="dl-main-btn">
+            <span>Download for macOS</span>
+            <span class="dl-format-tag">.DMG</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Android -->
+      <div class="dl-card reveal" data-os="android">
+        <div>
+          <div class="dl-head">
+            <div class="dl-icon-wrap" style="color:#6ee7b7">
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8564 8 12 8s-3.5902.411-5.1368.9497L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
+            </div>
+            <div class="dl-title-wrap">
+              <div class="dl-card-name">Android</div>
+              <div class="dl-card-sub">Android 7.0+ &middot; Universal APK</div>
+            </div>
+          </div>
+        </div>
+        <div class="dl-actions">
+          <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-android-all-arch.apk" class="dl-main-btn">
+            <span>Download Android APK</span>
+            <span class="dl-format-tag">.APK</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- iOS -->
+      <div class="dl-card reveal" data-os="ios">
+        <div>
+          <div class="dl-head">
+            <div class="dl-icon-wrap" style="color:#fda4af">
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            </div>
+            <div class="dl-title-wrap">
+              <div class="dl-card-name">iOS</div>
+              <div class="dl-card-sub">iOS 15.0+ &middot; Sideload Package</div>
+            </div>
+          </div>
+        </div>
+        <div class="dl-actions">
+          <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-iOS.ipa" class="dl-main-btn">
+            <span>Download iOS IPA</span>
+            <span class="dl-format-tag">.IPA</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Linux -->
+      <div class="dl-card reveal" data-os="linux">
+        <div>
+          <div class="dl-head">
+            <div class="dl-icon-wrap" style="color:#fde68a">
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12.504 0c-.155 0-.315.008-.48.021C7.309.332 3.993 2.956 3.68 5.89c-.284 2.695 1.254 4.469 3.592 4.469h.037c4.278 0 7.45-4.199 7.45-4.199s.61 1.388 1.31 2.195c.96 1.117 2.25 1.74 3.732 1.74 1.466 0 2.718-.505 3.727-1.501C24.514 7.603 24.936 6.47 24.997 5.5v-.014c0-2.927-2.73-5.448-6.282-5.448-.714 0-1.452.099-2.194.296-.437-.22-.897-.334-1.017-.334zm-.48 5.25c.43 0 .78.35.78.78s-.35.78-.78.78-.78-.35-.78-.78.35-.78.78-.78zM4.51 11.357c-1.636 0-2.905.657-3.527 1.736C.325 14.232.012 15.8.012 17.75c0 2.115.406 3.79 1.265 5.075.857 1.282 2.14 1.988 3.815 1.988.848 0 1.637-.201 2.327-.597.62-.359 1.13-.88 1.49-1.537l.09-.173c.14.11.28.213.426.31 1.018.67 2.178 1.01 3.447 1.01 1.33 0 2.53-.364 3.564-1.077a8.1 8.1 0 00.487-.352c.405.634.905 1.139 1.493 1.513.694.44 1.487.663 2.358.663 1.542 0 2.824-.718 3.697-2.071.875-1.354 1.274-3.053 1.274-4.99 0-1.987-.376-3.707-1.186-4.985-.808-1.277-2.068-1.967-3.715-1.967z"/></svg>
+            </div>
+            <div class="dl-title-wrap">
+              <div class="dl-card-name">Linux</div>
+              <div class="dl-card-sub">x86_64 &middot; All Distributions</div>
+            </div>
+          </div>
+        </div>
+        <div class="dl-actions">
+          <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-linux-x86_64.AppImage" class="dl-main-btn">
+            <span>Universal AppImage</span>
+            <span class="dl-format-tag">.AppImage</span>
+          </a>
+          <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-linux-x86_64.deb" class="dl-main-btn">
+            <span>Debian / Ubuntu Package</span>
+            <span class="dl-format-tag">.DEB</span>
+          </a>
+          <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-linux-x86_64.rpm" class="dl-main-btn">
+            <span>Fedora / RPM Package</span>
+            <span class="dl-format-tag">.RPM</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span>Melora</span>
+        <p>A free, open-source Hi-Res music player engineered with precision. Free forever under the MIT License.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#features">Features</a>
+        <a href="#showcase">Interface</a>
+        <a href="#downloads">Downloads</a>
+      </div>
+      <div class="footer-col">
+        <h4>Source</h4>
+        <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer" target="_blank" rel="noopener">GitHub Repository</a>
+        <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases" target="_blank" rel="noopener">Releases &amp; Changelog</a>
+        <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/issues" target="_blank" rel="noopener">Issue Tracker</a>
+      </div>
+      <div class="footer-col">
+        <h4>License</h4>
+        <a href="#">MIT License</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Melora Project. Released under the MIT License.</span>
+      <span>Open Source on GitHub</span>
+    </div>
+  </div>
+</footer>
+
+</div>
+
+<script>
+(function() {
+  var c = document.getElementById('bg-canvas'), ctx = c.getContext('2d'), W, H, orbs, pts;
+  function resize() { W = c.width = window.innerWidth; H = c.height = window.innerHeight; }
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+  function initOrbs() {
+    orbs = [
+      { x: W * 0.15, y: H * 0.15, r: 460, dx: 0.08, dy: 0.06, col: 'rgba(124, 58, 237, 0.12)' },
+      { x: W * 0.85, y: H * 0.35, r: 420, dx: -0.06, dy: 0.08, col: 'rgba(6, 182, 212, 0.09)' },
+      { x: W * 0.5, y: H * 0.8, r: 380, dx: 0.07, dy: -0.07, col: 'rgba(99, 102, 241, 0.08)' }
+    ];
+  }
+  function initPts() {
+    pts = Array.from({ length: 60 }, function() {
+      return { x: rnd(0, W), y: rnd(0, H), r: rnd(0.5, 1.6), dx: rnd(-0.1, 0.1), dy: rnd(-0.15, -0.04), a: rnd(0.1, 0.35) };
     });
-
-    // ── Nav background on scroll ──
-    window.addEventListener('scroll', () => {
-      const nav = document.getElementById('nav');
-      if (window.scrollY > 80) {
-        nav.style.background = 'rgba(3,0,20,0.92)';
-      } else {
-        nav.style.background = 'rgba(3,0,20,0.7)';
-      }
+  }
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#06040d';
+    ctx.fillRect(0, 0, W, H);
+    orbs.forEach(function(o) {
+      o.x += o.dx; o.y += o.dy;
+      if (o.x - o.r > W || o.x + o.r < 0) o.dx *= -1;
+      if (o.y - o.r > H || o.y + o.r < 0) o.dy *= -1;
+      var g = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r);
+      g.addColorStop(0, o.col);
+      g.addColorStop(1, 'transparent');
+      ctx.beginPath(); ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2);
+      ctx.fillStyle = g; ctx.fill();
     });
-  </script>
+    pts.forEach(function(p) {
+      p.x += p.dx; p.y += p.dy;
+      if (p.y < -2) { p.y = H + 2; p.x = rnd(0, W); }
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(220, 215, 255, ' + p.a + ')';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize', function() { resize(); initOrbs(); initPts(); }, { passive: true });
+  resize(); initOrbs(); initPts(); draw();
+})();
 
+var nav = document.getElementById('nav');
+window.addEventListener('scroll', function() {
+  nav.classList.toggle('scrolled', window.scrollY > 30);
+}, { passive: true });
+
+var io = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+
+document.querySelectorAll('.tab-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    var f = btn.dataset.filter;
+    document.querySelectorAll('.dl-card').forEach(function(card) {
+      card.style.display = (f === 'all' || card.dataset.os === f) ? '' : 'none';
+    });
+  });
+});
+
+var toastTimeout;
+function showDownloadToast(platform) {
+  var toast = document.getElementById('dl-toast');
+  var msg = document.getElementById('dl-toast-msg');
+  if (!toast) return;
+  msg.textContent = 'Downloading Melora for ' + platform + '. All songs stream 100% free with zero subscriptions!';
+  toast.style.opacity = '1';
+  toast.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(function() {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(-50%) translateY(20px)';
+  }, 5000);
+}
+document.querySelectorAll('.dl-main-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var card = btn.closest('.dl-card');
+    var name = card ? card.querySelector('.dl-card-name').textContent : 'your device';
+    showDownloadToast(name);
+  });
+});
+</script>
+<div id="dl-toast" style="position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(18,14,36,0.92);border:1px solid rgba(167,139,250,0.35);backdrop-filter:blur(24px);padding:14px 24px;border-radius:12px;color:#fff;font-size:0.88rem;font-weight:500;box-shadow:0 12px 36px rgba(0,0,0,0.6),0 0 24px rgba(124,58,237,0.25);z-index:9999;opacity:0;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);pointer-events:none;display:flex;align-items:center;gap:10px;">
+  <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;"></span>
+  <span id="dl-toast-msg">Starting download...</span>
+</div>
 </body>
 </html>
