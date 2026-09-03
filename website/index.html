@@ -995,13 +995,13 @@ section { padding: 110px 0; scroll-margin-top: 80px; }
             <div class="dl-title-wrap">
               <div class="dl-card-name">iOS</div>
               <div class="dl-card-sub">iPhone &amp; iPad</div>
-              <div class="dl-status dl-status--coming">Web App &middot; IPA</div>
+              <div class="dl-status dl-status--coming">Sideload &middot; .IPA</div>
             </div>
           </div>
         </div>
         <div class="dl-actions">
           <button type="button" class="dl-main-btn" onclick="openModal('modal-ios')" style="border:none;cursor:pointer;width:100%;">
-            <span>Install on iPhone</span>
+            <span>iOS Install Guide</span>
           </button>
         </div>
       </div>
@@ -1041,35 +1041,34 @@ section { padding: 110px 0; scroll-margin-top: 80px; }
       </div>
       <div>
         <div class="modal-title">Melora on iPhone &amp; iPad</div>
-        <div class="modal-sub">Choose your preferred installation method</div>
+        <div class="modal-sub">How to install Melora on iOS</div>
       </div>
     </div>
     <div class="modal-notice">
-      <strong>Notice:</strong> Apple does not allow installing Android (.apk) or Windows (.exe) files on iOS. Choose one of the verified options below to run Melora:
+      <strong>Why no direct 1-tap download?</strong> Apple blocks direct web installation of apps on iOS. Unlike Windows (.exe) or Android (.apk), Apple requires iOS apps to be installed through the App Store or sideloaded using an .IPA package.
     </div>
     <div class="modal-options">
-      <!-- Option 1: Web App PWA -->
-      <a href="https://harshakalimireddi-collab.github.io/Melora-appplayer/" target="_blank" rel="noopener" class="modal-opt-card">
-        <div class="modal-opt-top">
-          <span class="modal-opt-title">1. Launch Safari Web App</span>
-          <span class="modal-opt-badge">Instant &middot; Recommended</span>
-        </div>
-        <div class="modal-opt-desc">Runs directly in full-screen on your iPhone with bit-perfect audio streaming. Zero setup needed.</div>
-        <div class="modal-opt-guide">&rarr; In Safari, tap Share (&uArr;) &rarr; tap &ldquo;Add to Home Screen&rdquo;</div>
-      </a>
-
-      <!-- Option 2: Sideload IPA -->
+      <!-- Option 1: Sideload IPA -->
       <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases" target="_blank" rel="noopener" class="modal-opt-card">
         <div class="modal-opt-top">
-          <span class="modal-opt-title">2. Sideload Native Package</span>
-          <span class="modal-opt-badge" style="background:rgba(167,139,250,0.15);color:var(--c-violet-lt);">.IPA Package</span>
+          <span class="modal-opt-title">1. Sideload .IPA Package</span>
+          <span class="modal-opt-badge" style="background:rgba(167,139,250,0.15);color:var(--c-violet-lt);">AltStore / SideStore</span>
         </div>
-        <div class="modal-opt-desc">Download the signed package to install with AltStore, SideStore, Scarlet, or TrollStore.</div>
-        <div class="modal-opt-guide">&rarr; View on GitHub Releases</div>
+        <div class="modal-opt-desc">Download the signed package to install with <strong>AltStore</strong>, <strong>SideStore</strong>, <strong>Scarlet</strong>, or <strong>TrollStore</strong>.</div>
+        <div class="modal-opt-guide">&rarr; Open GitHub Releases to get the .IPA package</div>
       </a>
+
+      <!-- Option 2: Live Platforms -->
+      <div class="modal-opt-card" style="border-color:rgba(16,185,129,0.25);background:rgba(16,185,129,0.04);cursor:default;">
+        <div class="modal-opt-top">
+          <span class="modal-opt-title" style="color:#6ee7b7;">2. Instant Playback on Windows &amp; Android</span>
+          <span class="modal-opt-badge">Ready Now</span>
+        </div>
+        <div class="modal-opt-desc">If you have a PC or Android phone, Melora is 100% live right now with zero restrictions. Direct installer downloads are on this page.</div>
+      </div>
     </div>
     <button type="button" class="dl-main-btn" onclick="closeModal('modal-ios')" style="border:none;cursor:pointer;width:100%;">
-      <span>Done</span>
+      <span>Got it</span>
     </button>
   </div>
 </div>
