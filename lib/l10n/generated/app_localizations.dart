@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -1071,11 +1071,11 @@ abstract class AppLocalizations {
   /// **'Please Sponsor/Donate'**
   String get please_sponsor;
 
-  /// No description provided for @Melora_description.
+  /// No description provided for @spotube_description.
   ///
   /// In en, this message translates to:
   /// **'Melora — An elegant, modern iOS music player experience'**
-  String get Melora_description;
+  String get spotube_description;
 
   /// No description provided for @version.
   ///
@@ -2121,11 +2121,11 @@ abstract class AppLocalizations {
   /// **'Added {tracks_length} tracks to queue'**
   String added_num_tracks_to_queue(Object tracks_length);
 
-  /// No description provided for @Melora_has_an_update.
+  /// No description provided for @spotube_has_an_update.
   ///
   /// In en, this message translates to:
   /// **'Melora has an update'**
-  String get Melora_has_an_update;
+  String get spotube_has_an_update;
 
   /// No description provided for @download_now.
   ///

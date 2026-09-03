@@ -1,4 +1,4 @@
-﻿// ignore: unused_import
+// ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
@@ -506,7 +506,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get please_sponsor => 'Bitte unterstützen/Spenden Sie';
 
   @override
-  String get Melora_description =>
+  String get spotube_description =>
       'Melora, ein leichtgewichtiger, plattformübergreifender und kostenloser Spotify-Client';
 
   @override
@@ -1039,8 +1039,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get enable_connect => 'Verbindung aktivieren';
 
   @override
-  String get enable_connect_description =>
-      'Melora von anderen Geräten steuern';
+  String get enable_connect_description => 'Melora von anderen Geräten steuern';
 
   @override
   String get devices => 'Geräte';
@@ -1088,7 +1087,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get Melora_has_an_update => 'Melora hat ein Update';
+  String get spotube_has_an_update => 'Melora hat ein Update';
 
   @override
   String get download_now => 'Jetzt herunterladen';

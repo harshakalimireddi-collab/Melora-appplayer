@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "Invitado",
   "browse": "Explorar",
   "search": "Buscar",
@@ -147,7 +147,7 @@
   "about_Melora": "Acerca de Melora",
   "blacklist": "Lista negra",
   "please_sponsor": "Por favor, apoya/dona",
-  "Melora_description": "Melora, un cliente ligero, multiplataforma y gratuito de Spotify",
+  "spotube_description": "Melora, un cliente ligero, multiplataforma y gratuito de Spotify",
   "version": "Versión",
   "build_number": "Número de compilación",
   "founder": "Fundador",
@@ -333,7 +333,7 @@
   "not_playing": "No reproduciendo",
   "epic_failure": "¡Fallo épico!",
   "added_num_tracks_to_queue": "Se añadieron {tracks_length} canciones a la cola",
-  "Melora_has_an_update": "Melora tiene una actualización",
+  "spotube_has_an_update": "Melora tiene una actualización",
   "download_now": "Descargar ahora",
   "nightly_version": "Melora Nightly {nightlyBuildNum} ha sido lanzado",
   "release_version": "Melora v{version} ha sido lanzado",

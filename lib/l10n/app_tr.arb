@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "Misafir",
   "browse": "Göz at",
   "search": "Ara",
@@ -150,7 +150,7 @@
   "about_Melora": "Melora hakkında",
   "blacklist": "Kara liste",
   "please_sponsor": "Sponsor Ol/Bağış Yap",
-  "Melora_description": "Melora, hafif, platformlar arası uyumlu ve herkes için ücretsiz bir Spotify istemcisidir.",
+  "spotube_description": "Melora, hafif, platformlar arası uyumlu ve herkes için ücretsiz bir Spotify istemcisidir.",
   "version": "Sürüm",
   "build_number": "Derleme numarası",
   "founder": "Geliştirici",
@@ -333,7 +333,7 @@
   "not_playing": "Çalmıyor",
   "epic_failure": "Efsanevi başarısızlık!",
   "added_num_tracks_to_queue": "{tracks_length} şarkı sıraya eklendi",
-  "Melora_has_an_update": "Melora bir güncelleme aldı",
+  "spotube_has_an_update": "Melora bir güncelleme aldı",
   "download_now": "Şimdi İndir",
   "nightly_version": "Melora Nightly {nightlyBuildNum} yayımlandı",
   "release_version": "Melora v{version} yayımlandı",

@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "விருந்தினர்",
   "browse": "உலாவு",
   "search": "தேடுக",
@@ -154,7 +154,7 @@
   "about_Melora": "Melora பற்றி",
   "blacklist": "தடைப்பட்டியல்",
   "please_sponsor": "தயவுசெய்து ஆதரவு/நன்கொடை அளியுங்கள்",
-  "Melora_description": "Melora, ஒரு லேசான, பல தளங்களில் இயங்கும், அனைவருக்கும் இலவசமான spotify கிளையன்ட்",
+  "spotube_description": "Melora, ஒரு லேசான, பல தளங்களில் இயங்கும், அனைவருக்கும் இலவசமான spotify கிளையன்ட்",
   "version": "பதிப்பு",
   "build_number": "கட்டமைப்பு எண்",
   "founder": "நிறுவனர்",
@@ -338,7 +338,7 @@
   "not_playing": "இயக்கப்படவில்லை",
   "epic_failure": "மோசமான தோல்வி!",
   "added_num_tracks_to_queue": "{tracks_length} பாடல்கள் வரிசையில் சேர்க்கப்பட்டன",
-  "Melora_has_an_update": "Melora க்கு ஒரு புதுப்பிப்பு உள்ளது",
+  "spotube_has_an_update": "Melora க்கு ஒரு புதுப்பிப்பு உள்ளது",
   "download_now": "இப்போது பதிவிறக்கு",
   "nightly_version": "Melora Nightly {nightlyBuildNum} வெளியிடப்பட்டுள்ளது",
   "release_version": "Melora v{version} வெளியிடப்பட்டுள்ளது",

@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "Host",
   "browse": "Procházet",
   "search": "Hledat",
@@ -150,7 +150,7 @@
   "about_Melora": "O Melora",
   "blacklist": "Černá listina",
   "please_sponsor": "Sponzorovat/darovat",
-  "Melora_description": "Melora, rychlý, multiplatformní, bezplatný Spotify klient",
+  "spotube_description": "Melora, rychlý, multiplatformní, bezplatný Spotify klient",
   "version": "Verze",
   "build_number": "Číslo sestavení",
   "founder": "Zakladatel",
@@ -333,7 +333,7 @@
   "not_playing": "Nepřehrává se",
   "epic_failure": "Epické selhání!",
   "added_num_tracks_to_queue": "Přidáno {tracks_length} skladeb do fronty",
-  "Melora_has_an_update": "Melora má aktualizaci",
+  "spotube_has_an_update": "Melora má aktualizaci",
   "download_now": "Stáhnout nyní",
   "nightly_version": "Byla vydána noční verze Melora {nightlyBuildNum}",
   "release_version": "Byla vydána verze Melora v{version}",

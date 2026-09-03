@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "ผู้มาเยือน",
   "browse": "เรียกดู",
   "search": "ค้นหา",
@@ -150,7 +150,7 @@
   "about_Melora": "เกี่ยวกับ Melora",
   "blacklist": "แบล็กลิสต์",
   "please_sponsor": "กรุณาสนับสนุน/บริจาค",
-  "Melora_description": "Melora โปรแกรมเล่น Spotify ฟรีสำหรับทุกคน น้ำหนักเบา รองรับหลายแพลตฟอร์ม",
+  "spotube_description": "Melora โปรแกรมเล่น Spotify ฟรีสำหรับทุกคน น้ำหนักเบา รองรับหลายแพลตฟอร์ม",
   "version": "รุ่น",
   "build_number": "หมายเลขบิลด์",
   "founder": "ผู้ก่อตั้ง",
@@ -334,7 +334,7 @@
   "not_playing": "ไม่เล่น",
   "epic_failure": "ล้มเหลวอย่างยิ่ง!",
   "added_num_tracks_to_queue": "เพิ่ม {tracks_length} เพลงในคิว",
-  "Melora_has_an_update": "Melora มีการอัปเดต",
+  "spotube_has_an_update": "Melora มีการอัปเดต",
   "download_now": "ดาวน์โหลดตอนนี้",
   "nightly_version": "Melora Nightly {nightlyBuildNum} ได้รับการปล่อยออกมา",
   "release_version": "Melora v{version} ได้รับการปล่อยออกมา",

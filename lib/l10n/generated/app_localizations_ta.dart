@@ -1,4 +1,4 @@
-﻿// ignore: unused_import
+// ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
@@ -506,7 +506,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get please_sponsor => 'தயவுசெய்து ஆதரவு/நன்கொடை அளியுங்கள்';
 
   @override
-  String get Melora_description =>
+  String get spotube_description =>
       'Melora, ஒரு லேசான, பல தளங்களில் இயங்கும், அனைவருக்கும் இலவசமான spotify கிளையன்ட்';
 
   @override
@@ -1088,7 +1088,7 @@ class AppLocalizationsTa extends AppLocalizations {
   }
 
   @override
-  String get Melora_has_an_update => 'Melora க்கு ஒரு புதுப்பிப்பு உள்ளது';
+  String get spotube_has_an_update => 'Melora க்கு ஒரு புதுப்பிப்பு உள்ளது';
 
   @override
   String get download_now => 'இப்போது பதிவிறக்கு';

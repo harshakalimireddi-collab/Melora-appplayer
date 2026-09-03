@@ -1,4 +1,4 @@
-﻿// ignore: unused_import
+// ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
@@ -500,7 +500,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get please_sponsor => '请赞助/捐赠';
 
   @override
-  String get Melora_description => 'Melora，一个轻量、跨平台且完全免费的 Spotify 客户端。';
+  String get spotube_description => 'Melora，一个轻量、跨平台且完全免费的 Spotify 客户端。';
 
   @override
   String get version => '版本';
@@ -1057,7 +1057,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get Melora_has_an_update => 'Melora 有更新';
+  String get spotube_has_an_update => 'Melora 有更新';
 
   @override
   String get download_now => '立即下载';
@@ -2023,7 +2023,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get please_sponsor => '請考慮贊助或捐款';
 
   @override
-  String get Melora_description => 'Melora，一款輕量、跨平台且完全免費的 Spotify 用戶端。';
+  String get spotube_description => 'Melora，一款輕量、跨平台且完全免費的 Spotify 用戶端。';
 
   @override
   String get version => '版本';
@@ -2580,7 +2580,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   }
 
   @override
-  String get Melora_has_an_update => 'Melora 有更新版本';
+  String get spotube_has_an_update => 'Melora 有更新版本';
 
   @override
   String get download_now => '立即下載';

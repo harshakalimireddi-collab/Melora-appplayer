@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "Khách",
   "browse": "Khám phá",
   "search": "Tìm kiếm",
@@ -149,7 +149,7 @@
   "about_Melora": "Về Melora",
   "blacklist": "blacklist",
   "please_sponsor": "Vui lòng tài trợ/ủng hộ",
-  "Melora_description": "Melora, một ứng dụng Spotify nhẹ, đa nền tảng và miễn phí",
+  "spotube_description": "Melora, một ứng dụng Spotify nhẹ, đa nền tảng và miễn phí",
   "version": "Phiên bản",
   "build_number": "Số phiên bản",
   "founder": "Người sáng lập",
@@ -333,7 +333,7 @@
   "not_playing": "Không phát",
   "epic_failure": "Thất bại hoàn toàn!",
   "added_num_tracks_to_queue": "Đã thêm {tracks_length} bài hát vào danh sách phát",
-  "Melora_has_an_update": "Melora có bản cập nhật",
+  "spotube_has_an_update": "Melora có bản cập nhật",
   "download_now": "Tải về ngay",
   "nightly_version": "Melora Nightly {nightlyBuildNum} đã được phát hành",
   "release_version": "Melora v{version} đã được phát hành",

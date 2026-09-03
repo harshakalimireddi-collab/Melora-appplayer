@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "مهمان",
   "browse": "مرور",
   "search": "جستجو",
@@ -149,7 +149,7 @@
   "about_Melora": "Melora درباره",
   "blacklist": "لیست سیاه",
   "please_sponsor": "لطفا کمک/حمایت کنید",
-  "Melora_description": "یک برنامه سبک و مولتی پلتفرم و رایگان برای همه استMelora",
+  "spotube_description": "یک برنامه سبک و مولتی پلتفرم و رایگان برای همه استMelora",
   "version": "نسخه",
   "build_number": "شماره ساخت",
   "founder": "بنیانگذار",
@@ -333,7 +333,7 @@
   "not_playing": "در حال پخش نیست",
   "epic_failure": "شکست حماسی!",
   "added_num_tracks_to_queue": "{tracks_length} ترک به صف اضافه شد",
-  "Melora_has_an_update": "Melora یک بروزرسانی دارد",
+  "spotube_has_an_update": "Melora یک بروزرسانی دارد",
   "download_now": "اکنون دانلود کنید",
   "nightly_version": "نسخه شبانه Melora {nightlyBuildNum} منتشر شد",
   "release_version": "نسخه Melora v{version} منتشر شد",

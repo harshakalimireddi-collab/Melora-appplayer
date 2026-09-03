@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "अतिथि",
   "browse": "ब्राउज़ करें",
   "search": "खोजें",
@@ -147,7 +147,7 @@
   "about_Melora": "Melora के बारे में",
   "blacklist": "ब्लैकलिस्ट",
   "please_sponsor": "कृपया स्पॉन्सर / डोनेट करें",
-  "Melora_description": "Melora, एक हल्का, सभी प्लेटफॉर्मों पर चलने वाला, मुफ्त स्पॉटिफाई क्लाइंट",
+  "spotube_description": "Melora, एक हल्का, सभी प्लेटफॉर्मों पर चलने वाला, मुफ्त स्पॉटिफाई क्लाइंट",
   "version": "संस्करण",
   "build_number": "बिल्ड नंबर",
   "founder": "संस्थापक",
@@ -333,7 +333,7 @@
   "not_playing": "नहीं चल रहा",
   "epic_failure": "महान असफलता!",
   "added_num_tracks_to_queue": "{tracks_length} ट्रैक्स कतार में जोड़े गए",
-  "Melora_has_an_update": "Melora में एक अपडेट है",
+  "spotube_has_an_update": "Melora में एक अपडेट है",
   "download_now": "अभी डाउनलोड करें",
   "nightly_version": "Melora Nightly {nightlyBuildNum} जारी किया गया है",
   "release_version": "Melora v{version} जारी किया गया है",

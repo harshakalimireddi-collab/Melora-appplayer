@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "Gast",
   "browse": "Bladeren",
   "search": "Zoeken",
@@ -150,7 +150,7 @@
   "about_Melora": "Over Melora",
   "blacklist": "Zwarte lijst",
   "please_sponsor": "Sponsor/Doneer a.u.b.",
-  "Melora_description": "Melora, een lichtgewicht, cross-platform, vrij-voor-alles Spotify-client",
+  "spotube_description": "Melora, een lichtgewicht, cross-platform, vrij-voor-alles Spotify-client",
   "version": "Versie",
   "build_number": "Bouwnummer",
   "founder": "Grondlegger",
@@ -333,7 +333,7 @@
   "not_playing": "Niet aan het afspelen",
   "epic_failure": "Epische mislukking!",
   "added_num_tracks_to_queue": "{tracks_length} nummers aan de wachtrij toegevoegd",
-  "Melora_has_an_update": "Melora heeft een update",
+  "spotube_has_an_update": "Melora heeft een update",
   "download_now": "Nu downloaden",
   "nightly_version": "Melora Nightly {nightlyBuildNum} is uitgebracht",
   "release_version": "Melora v{version} is uitgebracht",

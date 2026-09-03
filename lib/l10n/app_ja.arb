@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "ゲスト",
   "browse": "閲覧",
   "search": "検索",
@@ -149,7 +149,7 @@
   "about_Melora": "Melora について",
   "blacklist": "ブラックリスト",
   "please_sponsor": "出資/寄付もお待ちします",
-  "Melora_description": "Melora は、軽量でクロスプラットフォームな、すべて無料の spotify クライアント",
+  "spotube_description": "Melora は、軽量でクロスプラットフォームな、すべて無料の spotify クライアント",
   "version": "バージョン",
   "build_number": "ビルド番号",
   "founder": "創始者",
@@ -338,7 +338,7 @@
   "not_playing": "再生なし",
   "epic_failure": "壮大なエラー！",
   "added_num_tracks_to_queue": "{tracks_length} 曲をキューに追加しました",
-  "Melora_has_an_update": "Melora の最新版あり",
+  "spotube_has_an_update": "Melora の最新版あり",
   "download_now": "今すぐダウンロード",
   "nightly_version": "Melora Nightly {nightlyBuildNum} がリリースされました",
   "release_version": "Melora v{version} がリリースされました",

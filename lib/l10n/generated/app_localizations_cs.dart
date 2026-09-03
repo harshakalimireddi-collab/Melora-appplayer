@@ -1,4 +1,4 @@
-﻿// ignore: unused_import
+// ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
@@ -502,7 +502,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get please_sponsor => 'Sponzorovat/darovat';
 
   @override
-  String get Melora_description =>
+  String get spotube_description =>
       'Melora, rychlý, multiplatformní, bezplatný Spotify klient';
 
   @override
@@ -1027,8 +1027,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get enable_connect => 'Povolit ovládání';
 
   @override
-  String get enable_connect_description =>
-      'Ovládejte Melora z jiného zařízení';
+  String get enable_connect_description => 'Ovládejte Melora z jiného zařízení';
 
   @override
   String get devices => 'Zařízení';
@@ -1076,7 +1075,7 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get Melora_has_an_update => 'Melora má aktualizaci';
+  String get spotube_has_an_update => 'Melora má aktualizaci';
 
   @override
   String get download_now => 'Stáhnout nyní';

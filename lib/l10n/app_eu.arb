@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "Gonbidatua",
   "browse": "Arakatu",
   "search": "Bilatu",
@@ -153,7 +153,7 @@
   "about_Melora": "Melora-ri buruz",
   "blacklist": "Zerrenda beltza",
   "please_sponsor": "Mesedez, babestu/diruz lagundu",
-  "Melora_description": "Melora, arina, plataforma-anitza eta doakoa den Spotify-ren bezeroa",
+  "spotube_description": "Melora, arina, plataforma-anitza eta doakoa den Spotify-ren bezeroa",
   "version": "Bertsioa",
   "build_number": "Konpilazio zenbakia",
   "founder": "Sortzailea",
@@ -333,7 +333,7 @@
   "not_playing": "Erreprodukziorik ez",
   "epic_failure": "Sekulako errorea!",
   "added_num_tracks_to_queue": "{tracks_length} kanta gehitu dira zerrendara",
-  "Melora_has_an_update": "Melora-ren eguneraketa bat dago",
+  "spotube_has_an_update": "Melora-ren eguneraketa bat dago",
   "download_now": "Orain deskargatu",
   "nightly_version": "Melora {nightlyBuildNum} Nightly-a argitaratu da",
   "release_version": "Melora v{version} argitaratu da",

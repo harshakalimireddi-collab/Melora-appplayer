@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "Convidat",
   "browse": "Explorar",
   "search": "Cercar",
@@ -147,7 +147,7 @@
   "about_Melora": "Sobre Melora",
   "blacklist": "Llista negra",
   "please_sponsor": "Si us plau, patrocina/dona",
-  "Melora_description": "Melora, un client lleuger, multiplataforma i gratuït de Spotify",
+  "spotube_description": "Melora, un client lleuger, multiplataforma i gratuït de Spotify",
   "version": "Versió",
   "build_number": "Número de compilació",
   "founder": "Fundador",
@@ -333,7 +333,7 @@
   "not_playing": "No s'està reproduint",
   "epic_failure": "Fracàs èpic!",
   "added_num_tracks_to_queue": "Afegit {tracks_length} pistes a la cua",
-  "Melora_has_an_update": "Melora té una actualització",
+  "spotube_has_an_update": "Melora té una actualització",
   "download_now": "Descarregar ara",
   "nightly_version": "Melora Nightly {nightlyBuildNum} ha estat publicat",
   "release_version": "Melora v{version} ha estat publicat",

@@ -1,4 +1,4 @@
-﻿// ignore: unused_import
+// ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
@@ -491,8 +491,7 @@ class AppLocalizationsNe extends AppLocalizations {
   String get about => 'बारेमा';
 
   @override
-  String get u_love_Melora =>
-      'हामीले थाहा पारेका छौं तपाईंलाई Melora मन पर्छ';
+  String get u_love_Melora => 'हामीले थाहा पारेका छौं तपाईंलाई Melora मन पर्छ';
 
   @override
   String get check_for_updates => 'अपडेटहरूको लागि जाँच गर्नुहोस्';
@@ -507,7 +506,7 @@ class AppLocalizationsNe extends AppLocalizations {
   String get please_sponsor => 'कृपया स्पन्सर/डोनेट गर्नुहोस्';
 
   @override
-  String get Melora_description =>
+  String get spotube_description =>
       'Melora, एक हल्का, समृद्ध, स्वतन्त्र Spotify क्लाइयन';
 
   @override
@@ -1087,7 +1086,7 @@ class AppLocalizationsNe extends AppLocalizations {
   }
 
   @override
-  String get Melora_has_an_update => 'Melora मा अपडेट छ';
+  String get spotube_has_an_update => 'Melora मा अपडेट छ';
 
   @override
   String get download_now => 'अहिले डाउनलोड गर्नुहोस्';

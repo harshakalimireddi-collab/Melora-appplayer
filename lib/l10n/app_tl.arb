@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "Bisita",
   "browse": "Mag-browse",
   "search": "Maghanap",
@@ -154,7 +154,7 @@
   "about_Melora": "Tungkol sa Melora",
   "blacklist": "Blacklist",
   "please_sponsor": "Mangyaring Mag-sponsor/Mag-donate",
-  "Melora_description": "Melora, isang magaan, cross-platform, libreng-para-sa-lahat na spotify client",
+  "spotube_description": "Melora, isang magaan, cross-platform, libreng-para-sa-lahat na spotify client",
   "version": "Bersyon",
   "build_number": "Build Number",
   "founder": "Nagtatag",
@@ -338,7 +338,7 @@
   "not_playing": "Hindi tumutugtog",
   "epic_failure": "Epic na pagkabigo!",
   "added_num_tracks_to_queue": "Nagdagdag ng {tracks_length} na mga track sa pila",
-  "Melora_has_an_update": "Ang Melora ay may update",
+  "spotube_has_an_update": "Ang Melora ay may update",
   "download_now": "I-download Ngayon",
   "nightly_version": "Ang Melora Nightly {nightlyBuildNum} ay inilabas na",
   "release_version": "Ang Melora v{version} ay inilabas na",

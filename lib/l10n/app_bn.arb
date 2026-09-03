@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "অতিথি",
   "browse": "ব্রাউজ করুন",
   "search": "অনুসন্ধান করুন",
@@ -147,7 +147,7 @@
   "about_Melora": "Melora সম্পর্কে বিস্তারিত",
   "blacklist": "কালো তালিকা",
   "please_sponsor": "স্পনসর/সহায়তা করুন",
-  "Melora_description": "Melora, একটি কর্মদক্ষ, ক্রস-প্ল্যাটফর্ম, বিনামূল্যের জন্য Spotify ক্লায়েন্ট",
+  "spotube_description": "Melora, একটি কর্মদক্ষ, ক্রস-প্ল্যাটফর্ম, বিনামূল্যের জন্য Spotify ক্লায়েন্ট",
   "version": "সংস্করণ",
   "build_number": "বিল্ড নম্বর",
   "founder": "প্রতিষ্ঠাতা",
@@ -333,7 +333,7 @@
   "not_playing": "চালানো হচ্ছে না",
   "epic_failure": "বিরাট ব্যর্থতা!",
   "added_num_tracks_to_queue": "{tracks_length} ট্র্যাক সারিতে যোগ করা হয়েছে",
-  "Melora_has_an_update": "স্পটিউবে একটি আপডেট আছে",
+  "spotube_has_an_update": "স্পটিউবে একটি আপডেট আছে",
   "download_now": "এখনই ডাউনলোড করুন",
   "nightly_version": "স্পটিউব নাইটলি {nightlyBuildNum} প্রকাশিত হয়েছে",
   "release_version": "স্পটিউব v{version} প্রকাশিত হয়েছে",

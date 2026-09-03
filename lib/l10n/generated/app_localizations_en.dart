@@ -1,4 +1,4 @@
-﻿// ignore: unused_import
+// ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
@@ -504,7 +504,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get please_sponsor => 'Please Sponsor/Donate';
 
   @override
-  String get Melora_description =>
+  String get spotube_description =>
       'Melora — An elegant, modern iOS music player experience';
 
   @override
@@ -1076,7 +1076,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get Melora_has_an_update => 'Melora has an update';
+  String get spotube_has_an_update => 'Melora has an update';
 
   @override
   String get download_now => 'Download Now';

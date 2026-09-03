@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "Guest",
   "browse": "Browse",
   "search": "Search",
@@ -152,7 +152,7 @@
   "about_Melora": "About Melora",
   "blacklist": "Blacklist",
   "please_sponsor": "Please Sponsor/Donate",
-  "Melora_description": "Melora — An elegant, modern iOS music player experience",
+  "spotube_description": "Melora — An elegant, modern iOS music player experience",
   "version": "Version",
   "build_number": "Build Number",
   "founder": "Creator",
@@ -327,7 +327,7 @@
   "not_playing": "Not playing",
   "epic_failure": "Epic failure!",
   "added_num_tracks_to_queue": "Added {tracks_length} tracks to queue",
-  "Melora_has_an_update": "Melora has an update",
+  "spotube_has_an_update": "Melora has an update",
   "download_now": "Download Now",
   "nightly_version": "Melora Nightly {nightlyBuildNum} has been released",
   "release_version": "Melora v{version} has been released",

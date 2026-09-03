@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "სტუმარი",
   "browse": "ნახვა",
   "search": "ძებნა",
@@ -150,7 +150,7 @@
   "about_Melora": "Melora-ს შესახებ",
   "blacklist": "შავი სია",
   "please_sponsor": "გთხოვთ დაგვასპონსოროთ",
-  "Melora_description": "Melora, a lightweight, cross-platform, free-for-all spotify client",
+  "spotube_description": "Melora, a lightweight, cross-platform, free-for-all spotify client",
   "version": "ვერსია",
   "build_number": "Build Number",
   "founder": "დამფუძნებელი",
@@ -333,7 +333,7 @@
   "not_playing": "არ ერთვის",
   "epic_failure": "ეპიკური მარცხი!",
   "added_num_tracks_to_queue": "დამატებული {tracks_length} ტრეკი რიგში",
-  "Melora_has_an_update": "Melora-ს აქვს განახლება",
+  "spotube_has_an_update": "Melora-ს აქვს განახლება",
   "download_now": "ჩამოტვირთეთ ახლავე",
   "nightly_version": "Melora Nightly {nightlyBuildNum} გამოშვებულია",
   "release_version": "Melora v{version} გამოშვებულია",

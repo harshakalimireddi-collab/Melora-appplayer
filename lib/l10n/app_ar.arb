@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "ضيف",
   "browse": "تصفح",
   "search": "بحث",
@@ -149,7 +149,7 @@
   "about_Melora": "حول Melora",
   "blacklist": "قائمة سوداء",
   "please_sponsor": "يرجى دعم/التبرع",
-  "Melora_description": "Melora، عميل Spotify خفيف الوزن ومتعدد المنصات ومجاني للجميع",
+  "spotube_description": "Melora، عميل Spotify خفيف الوزن ومتعدد المنصات ومجاني للجميع",
   "version": "إصدار",
   "build_number": "رقم البنية",
   "founder": "الموئسس",
@@ -333,7 +333,7 @@
   "not_playing": "غير مشغل",
   "epic_failure": "فشل كبير!",
   "added_num_tracks_to_queue": "تمت إضافة {tracks_length} مسارات إلى قائمة الانتظار",
-  "Melora_has_an_update": "يوجد تحديث لسبوتيوب",
+  "spotube_has_an_update": "يوجد تحديث لسبوتيوب",
   "download_now": "تحميل الآن",
   "nightly_version": "تم إصدار سبوتيوب الليلي {nightlyBuildNum}",
   "release_version": "تم إصدار سبوتيوب v{version}",

@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "Гість",
   "browse": "Огляд",
   "search": "Пошук",
@@ -149,7 +149,7 @@
   "about_Melora": "Про Melora",
   "blacklist": "Чорний список",
   "please_sponsor": "Будь ласка, станьте спонсором/зробіть пожертву",
-  "Melora_description": "Melora, легкий, кросплатформовий, безкоштовний клієнт Spotify",
+  "spotube_description": "Melora, легкий, кросплатформовий, безкоштовний клієнт Spotify",
   "version": "Версія",
   "build_number": "Номер збірки",
   "founder": "Засновник",
@@ -333,7 +333,7 @@
   "not_playing": "Не Відтворюється",
   "epic_failure": "Епічний провал!",
   "added_num_tracks_to_queue": "Додано {tracks_length} треків до черги",
-  "Melora_has_an_update": "Melora має оновлення",
+  "spotube_has_an_update": "Melora має оновлення",
   "download_now": "Завантажити Зараз",
   "nightly_version": "Melora Nightly {nightlyBuildNum} було випущено",
   "release_version": "Melora v{version} було випущено",

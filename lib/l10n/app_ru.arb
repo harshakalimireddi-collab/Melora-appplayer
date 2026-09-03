@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "Гость",
   "browse": "Обзор",
   "search": "Поиск",
@@ -152,7 +152,7 @@
   "about_Melora": "О Melora",
   "blacklist": "Чёрный список",
   "please_sponsor": "Стать спосором/поддержать",
-  "Melora_description": "Melora – это легкий, кросс-платформенный клиент Spotify, предоставляющий бесплатный доступ для всех пользователей",
+  "spotube_description": "Melora – это легкий, кросс-платформенный клиент Spotify, предоставляющий бесплатный доступ для всех пользователей",
   "version": "Версия",
   "build_number": "Номер сборки",
   "founder": "Создатель",
@@ -333,7 +333,7 @@
   "not_playing": "Не воспроизводится",
   "epic_failure": "Эпическое фиаско!",
   "added_num_tracks_to_queue": "Добавлено {tracks_length} треков в очередь",
-  "Melora_has_an_update": "В Melora доступно обновление",
+  "spotube_has_an_update": "В Melora доступно обновление",
   "download_now": "Скачать сейчас",
   "nightly_version": "Melora Nightly {nightlyBuildNum} выпущен",
   "release_version": "Melora v{version} выпущен",

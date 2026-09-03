@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "अतिथि",
   "browse": "ब्राउज़ गर्नुहोस्",
   "search": "खोजी गर्नुहोस्",
@@ -149,7 +149,7 @@
   "about_Melora": "Melora को बारेमा",
   "blacklist": "कालोसूची",
   "please_sponsor": "कृपया स्पन्सर/डोनेट गर्नुहोस्",
-  "Melora_description": "Melora, एक हल्का, समृद्ध, स्वतन्त्र Spotify क्लाइयन",
+  "spotube_description": "Melora, एक हल्का, समृद्ध, स्वतन्त्र Spotify क्लाइयन",
   "version": "संस्करण",
   "build_number": "निर्माण नम्बर",
   "founder": "संस्थापक",
@@ -333,7 +333,7 @@
   "not_playing": "खेलिरहेको छैन",
   "epic_failure": "महाकवि असफलता!",
   "added_num_tracks_to_queue": "{tracks_length} ट्र्याकहरू तालिकामा थपिएका छन्",
-  "Melora_has_an_update": "Melora मा अपडेट छ",
+  "spotube_has_an_update": "Melora मा अपडेट छ",
   "download_now": "अहिले डाउनलोड गर्नुहोस्",
   "nightly_version": "Melora Nightly {nightlyBuildNum} रिलिज गरिएको छ",
   "release_version": "Melora v{version} रिलिज गरिएको छ",

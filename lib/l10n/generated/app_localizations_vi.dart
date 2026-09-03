@@ -1,4 +1,4 @@
-﻿// ignore: unused_import
+// ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
@@ -504,7 +504,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get please_sponsor => 'Vui lòng tài trợ/ủng hộ';
 
   @override
-  String get Melora_description =>
+  String get spotube_description =>
       'Melora, một ứng dụng Spotify nhẹ, đa nền tảng và miễn phí';
 
   @override
@@ -1085,7 +1085,7 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get Melora_has_an_update => 'Melora có bản cập nhật';
+  String get spotube_has_an_update => 'Melora có bản cập nhật';
 
   @override
   String get download_now => 'Tải về ngay';

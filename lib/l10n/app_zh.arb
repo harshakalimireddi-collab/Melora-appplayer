@@ -1,4 +1,4 @@
-﻿{
+{
   "guest": "访客",
   "browse": "浏览",
   "search": "搜索",
@@ -147,7 +147,7 @@
   "about_Melora": "关于 Melora",
   "blacklist": "屏蔽列表",
   "please_sponsor": "请赞助/捐赠",
-  "Melora_description": "Melora，一个轻量、跨平台且完全免费的 Spotify 客户端。",
+  "spotube_description": "Melora，一个轻量、跨平台且完全免费的 Spotify 客户端。",
   "version": "版本",
   "build_number": "构建代码",
   "founder": "发起人",
@@ -333,7 +333,7 @@
   "not_playing": "未播放",
   "epic_failure": "史诗级失败！",
   "added_num_tracks_to_queue": "已将 {tracks_length} 首曲目添加到队列",
-  "Melora_has_an_update": "Melora 有更新",
+  "spotube_has_an_update": "Melora 有更新",
   "download_now": "立即下载",
   "nightly_version": "Melora Nightly {nightlyBuildNum} 已发布",
   "release_version": "Melora v{version} 已发布",
