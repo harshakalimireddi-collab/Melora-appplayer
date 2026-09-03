@@ -10,6 +10,7 @@ import 'package:melora/extensions/context.dart';
 import 'package:melora/models/metadata/metadata.dart';
 import 'package:melora/provider/metadata_plugin/library/playlists.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:melora/provider/metadata_plugin/playlist/playlist.dart';
 import 'package:melora/provider/metadata_plugin/tracks/playlist.dart';
 import 'package:melora/provider/metadata_plugin/utils/common.dart';
 
@@ -27,18 +28,29 @@ class PlaylistPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final playlist = ref
-            .watch(
-              metadataPluginSavedPlaylistsProvider.select(
-                (value) => value.whenData(
-                  (value) =>
-                      value.items.firstWhereOrNull((s) => s.id == _playlist.id),
-                ),
-              ),
-            )
-            .asData
-            ?.value ??
-        _playlist;
+    final fullPlaylist =
+        ref.watch(metadataPluginPlaylistProvider(_playlist.id)).asData?.value;
+    final playlist = fullPlaylist != null
+        ? MeloraSimplePlaylistObject(
+            id: fullPlaylist.id,
+            name: fullPlaylist.name,
+            description: fullPlaylist.description,
+            externalUri: fullPlaylist.externalUri,
+            owner: fullPlaylist.owner,
+            images: fullPlaylist.images,
+          )
+        : ref
+                .watch(
+                  metadataPluginSavedPlaylistsProvider.select(
+                    (value) => value.whenData(
+                      (value) => value.items
+                          .firstWhereOrNull((s) => s.id == _playlist.id),
+                    ),
+                  ),
+                )
+                .asData
+                ?.value ??
+            _playlist;
 
     final tracks = ref.watch(metadataPluginPlaylistTracksProvider(playlist.id));
     final tracksNotifier =

@@ -220,6 +220,7 @@ flutter:
     - assets/branding/melora-logo.png
     - assets/branding/melora-logo-light.png
     - assets/branding/melora-logo.ico
+    - assets/plugins/melora-plugin-spotify/plugin.smplug
     - assets/plugins/melora-plugin-musicbrainz-listenbrainz/plugin.smplug
     - assets/plugins/melora-plugin-youtube-audio/plugin.smplug
     - LICENSE

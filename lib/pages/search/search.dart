@@ -21,6 +21,7 @@ import 'package:melora/pages/search/tabs/tracks.dart';
 import 'package:melora/provider/metadata_plugin/search/all.dart';
 import 'package:melora/services/kv_store/kv_store.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:melora/models/metadata/metadata.dart';
 import 'package:melora/services/metadata/errors/exceptions.dart';
 
 final searchTermStateProvider = StateProvider<String>((ref) {
@@ -58,11 +59,70 @@ class SearchPage extends HookConsumerWidget {
     }, []);
 
     void onSubmitted(String value) {
-      ref.read(searchTermStateProvider.notifier).state = value;
+      final trimmed = value.trim();
       focusNode.unfocus();
-      if (value.trim().isEmpty) {
+      if (trimmed.isEmpty) return;
+
+      // Detect Spotify playlist links or URIs and navigate directly
+      final playlistMatch = RegExp(
+        r'(?:https?:\/\/open\.spotify\.com\/(?:intl-[a-z]+\/)?playlist\/|spotify:playlist:)([a-zA-Z0-9]+)',
+      ).firstMatch(trimmed);
+      if (playlistMatch != null) {
+        final playlistId = playlistMatch.group(1)!;
+        context.navigateTo(
+          PlaylistRoute(
+            id: playlistId,
+            playlist: MeloraSimplePlaylistObject(
+              id: playlistId,
+              name: "Spotify Playlist",
+              description: "Loaded from Spotify link",
+              externalUri: "https://open.spotify.com/playlist/$playlistId",
+              owner: MeloraUserObject(
+                id: "spotify",
+                name: "Spotify",
+                externalUri: "https://open.spotify.com",
+              ),
+              images: [],
+            ),
+          ),
+        );
         return;
       }
+
+      // Detect Spotify album links or URIs and navigate directly
+      final albumMatch = RegExp(
+        r'(?:https?:\/\/open\.spotify\.com\/(?:intl-[a-z]+\/)?album\/|spotify:album:)([a-zA-Z0-9]+)',
+      ).firstMatch(trimmed);
+      if (albumMatch != null) {
+        final albumId = albumMatch.group(1)!;
+        context.navigateTo(
+          AlbumRoute(
+            id: albumId,
+            album: MeloraSimpleAlbumObject(
+              id: albumId,
+              name: "Spotify Album",
+              albumType: MeloraAlbumType.album,
+              artists: [],
+              releaseDate: "",
+              externalUri: "https://open.spotify.com/album/$albumId",
+              images: [],
+            ),
+          ),
+        );
+        return;
+      }
+
+      // Detect Spotify artist links or URIs and navigate directly
+      final artistMatch = RegExp(
+        r'(?:https?:\/\/open\.spotify\.com\/(?:intl-[a-z]+\/)?artist\/|spotify:artist:)([a-zA-Z0-9]+)',
+      ).firstMatch(trimmed);
+      if (artistMatch != null) {
+        final artistId = artistMatch.group(1)!;
+        context.navigateTo(ArtistRoute(artistId: artistId));
+        return;
+      }
+
+      ref.read(searchTermStateProvider.notifier).state = value;
       KVStoreService.setRecentSearches(
         {
           value,
@@ -167,7 +227,9 @@ class SearchPage extends HookConsumerWidget {
                                     )
                                   ],
                                   textInputAction: TextInputAction.search,
-                                  placeholder: Text(context.l10n.search),
+                                  placeholder: Text(
+                                    "${context.l10n.search} or Spotify link...",
+                                  ),
                                   onSubmitted: onSubmitted,
                                 ),
                               );

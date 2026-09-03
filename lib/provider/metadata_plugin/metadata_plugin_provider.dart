@@ -106,7 +106,8 @@ class MetadataPluginNotifier extends AsyncNotifier<MetadataPluginState> {
 
     await _loadDefaultPlugins(pluginState);
 
-    return pluginState;
+    final refreshedPlugins = await database.pluginsTable.select().get();
+    return await toStatePlugins(refreshedPlugins);
   }
 
   Future<MetadataPluginState> toStatePlugins(
@@ -178,6 +179,7 @@ class MetadataPluginNotifier extends AsyncNotifier<MetadataPluginState> {
 
   Future<void> _loadDefaultPlugins(MetadataPluginState pluginState) async {
     const plugins = [
+      "melora-plugin-spotify",
       "melora-plugin-musicbrainz-listenbrainz",
       "melora-plugin-youtube-audio",
     ];
@@ -211,6 +213,34 @@ class MetadataPluginNotifier extends AsyncNotifier<MetadataPluginState> {
             await setDefaultAudioSourcePlugin(pluginConfig);
           }
         }
+      }
+    }
+
+    // Auto-select Spotify as default metadata plugin if not already selected
+    // or if the current default is Musicbrainz (which throws 401 when unauthenticated)
+    final allPlugins = await database.pluginsTable.select().get();
+    final allPluginStates = await toStatePlugins(allPlugins);
+
+    final spotifyConfig = allPluginStates.plugins.firstWhereOrNull(
+      (p) => p.name.toLowerCase().contains("spotify"),
+    );
+    final currentMetadataDefault = allPluginStates.defaultMetadataPluginConfig;
+
+    if (spotifyConfig != null &&
+        (currentMetadataDefault == null ||
+            currentMetadataDefault.name.toLowerCase().contains("musicbrainz") ||
+            currentMetadataDefault.name.toLowerCase().contains("listenbrainz"))) {
+      await setDefaultMetadataPlugin(spotifyConfig);
+    }
+
+    // Auto-select YouTube Audio as default audio source if none selected
+    final currentAudioDefault = allPluginStates.defaultAudioSourcePluginConfig;
+    if (currentAudioDefault == null) {
+      final ytConfig = allPluginStates.plugins.firstWhereOrNull(
+        (p) => p.abilities.contains(PluginAbilities.audioSource),
+      );
+      if (ytConfig != null) {
+        await setDefaultAudioSourcePlugin(ytConfig);
       }
     }
   }
