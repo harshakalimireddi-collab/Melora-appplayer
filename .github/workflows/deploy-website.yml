@@ -44,6 +44,8 @@ jobs:
       # ── 2. Setup Pages ────────────────────────────────
       - name: ⚙️ Configure GitHub Pages
         uses: actions/configure-pages@v4
+        with:
+          enablement: true
 
       # ── 3. Upload Website Files ────────────────────────
       - name: 📤 Upload website to Pages
