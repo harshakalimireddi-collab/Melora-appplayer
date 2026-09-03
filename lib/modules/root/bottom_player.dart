@@ -49,7 +49,7 @@ class BottomPlayer extends HookConsumerWidget {
     }
 
     return Container(
-      height: 72,
+      height: 74,
       decoration: const BoxDecoration(
         color: MeloraColors.surface0,
         border: Border(
@@ -58,27 +58,43 @@ class BottomPlayer extends HookConsumerWidget {
       ),
       child: Row(
         children: [
-          // ── Left: Track info ──────────────────────────────
+          // ── Left: Track info with Favorite button ─────────
           Expanded(
+            flex: 3,
             child: PlayerTrackDetails(track: playlist.activeTrack),
           ),
 
           // ── Center: Controls ──────────────────────────────
           const Flexible(
-            flex: 3,
+            flex: 5,
             child: PlayerControls(),
           ),
 
-          // ── Right: Actions + Volume ───────────────────────
-          SizedBox(
-            width: 240,
+          // ── Right: Lyrics, Queue, Device, Volume, Settings ─
+          Expanded(
+            flex: 4,
             child: Padding(
-              padding: const EdgeInsets.only(right: 12),
+              padding: const EdgeInsets.only(right: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  // Lyrics shortcut
+                  _PlayerIconBtn(
+                    icon: MeloraIcons.music,
+                    tooltip: context.l10n.lyrics,
+                    onTap: () => context.navigateTo(const LyricsRoute()),
+                  ),
+
+                  // Queue and extra actions
                   PlayerActions(
                     extraActions: [
+                      // Audio / Device selector
+                      _PlayerIconBtn(
+                        icon: MeloraIcons.speaker,
+                        tooltip: context.l10n.devices,
+                        onTap: () => context.navigateTo(const ConnectRoute()),
+                      ),
+                      // Mini Player (Desktop)
                       if (kIsDesktop)
                         _PlayerIconBtn(
                           icon: MeloraIcons.miniPlayer,
@@ -107,12 +123,19 @@ class BottomPlayer extends HookConsumerWidget {
                             );
                           },
                         ),
+                      // Settings
+                      _PlayerIconBtn(
+                        icon: MeloraIcons.settings,
+                        tooltip: context.l10n.settings,
+                        onTap: () => context.navigateTo(const SettingsRoute()),
+                      ),
                     ],
                   ),
                   const SizedBox(width: 8),
-                  // Volume
+
+                  // Volume Slider
                   SizedBox(
-                    width: 120,
+                    width: 110,
                     child: Consumer(builder: (context, ref, _) {
                       final volume = ref.watch(volumeProvider);
                       return VolumeSlider(
@@ -154,15 +177,16 @@ class _PlayerIconBtn extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          width: 36,
-          height: 36,
+          width: 34,
+          height: 34,
+          margin: const EdgeInsets.symmetric(horizontal: 2),
           decoration: BoxDecoration(
             color: Colors.transparent,
             borderRadius: MeloraRadius.smBr,
           ),
           child: Icon(
             icon,
-            size: 18,
+            size: 17,
             color: MeloraColors.textSecondary,
           ),
         ),

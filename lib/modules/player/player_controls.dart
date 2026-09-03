@@ -1,8 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:media_kit/media_kit.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import 'package:melora/collections/melora_icons.dart';
@@ -14,6 +14,7 @@ import 'package:melora/modules/player/use_progress.dart';
 import 'package:melora/provider/audio_player/audio_player.dart';
 import 'package:melora/provider/audio_player/querying_track_info.dart';
 import 'package:melora/services/audio_player/audio_player.dart';
+import 'package:melora/theme/melora_theme.dart';
 import 'package:melora/utils/platform.dart';
 
 class PlayerControls extends HookConsumerWidget {
@@ -50,9 +51,9 @@ class PlayerControls extends HookConsumerWidget {
     final theme = Theme.of(context);
 
     final buttonSize =
-        kIsMobile ? const ButtonSize(1.4) : const ButtonSize(1.2);
+        kIsMobile ? const ButtonSize(1.4) : const ButtonSize(1.1);
     final playButtonSize =
-        kIsMobile ? const ButtonSize(2.0) : const ButtonSize(1.6);
+        kIsMobile ? const ButtonSize(2.0) : const ButtonSize(1.5);
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -66,91 +67,15 @@ class PlayerControls extends HookConsumerWidget {
         shortcuts: shortcuts,
         actions: actions,
         child: Container(
-          constraints: const BoxConstraints(maxWidth: 600),
+          constraints: const BoxConstraints(maxWidth: 580),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              if (!compact)
-                HookBuilder(
-                  builder: (context) {
-                    final mediaQuery = MediaQuery.sizeOf(context);
-
-                    final (
-                      :bufferProgress,
-                      :duration,
-                      :position,
-                      :progressStatic
-                    ) = useProgress(ref);
-
-                    final progress = useState<num>(
-                      useMemoized(() => progressStatic, []),
-                    );
-
-                    useEffect(() {
-                      progress.value = progressStatic;
-                      return null;
-                    }, [progressStatic]);
-
-                    return Column(
-                      children: [
-                        Tooltip(
-                          tooltip: TooltipContainer(
-                            child: Text(context.l10n.slide_to_seek),
-                          ).call,
-                          child: SizedBox(
-                            width: mediaQuery.xlAndUp ? 600 : 500,
-                            child: Slider(
-                              hintValue: SliderValue.single(bufferProgress),
-                              value:
-                                  SliderValue.single(progress.value.toDouble()),
-                              onChanged: isFetchingActiveTrack
-                                  ? null
-                                  : (v) {
-                                      progress.value = v.value;
-                                    },
-                              onChangeEnd: (value) async {
-                                await audioPlayer.seek(
-                                  Duration(
-                                    seconds: (value.value * duration.inSeconds)
-                                        .toInt(),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                position.toHumanReadableString(),
-                                style: theme.typography.xSmall.copyWith(
-                                  color: theme.colorScheme.foreground.withValues(alpha: 0.65),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Text(
-                                duration > position
-                                    ? "-${(duration - position).toHumanReadableString()}"
-                                    : duration.toHumanReadableString(),
-                                style: theme.typography.xSmall.copyWith(
-                                  color: theme.colorScheme.foreground.withValues(alpha: 0.65),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
+              // ── Buttons Row (Top) ──────────────────────────────────
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // Shuffle
                   Consumer(builder: (context, ref, _) {
                     final shuffled = ref
                         .watch(audioPlayerProvider.select((s) => s.shuffled));
@@ -166,8 +91,10 @@ class PlayerControls extends HookConsumerWidget {
                         size: buttonSize,
                         icon: Icon(
                           MeloraIcons.shuffle,
-                          color: shuffled ? theme.colorScheme.primary : null,
-                          size: 22,
+                          color: shuffled
+                              ? MeloraColors.accentSoft
+                              : MeloraColors.textSecondary,
+                          size: 18,
                         ),
                         variance: shuffled
                             ? ButtonVariance.secondary
@@ -184,6 +111,8 @@ class PlayerControls extends HookConsumerWidget {
                       ),
                     );
                   }),
+                  const SizedBox(width: 6),
+                  // Previous
                   Tooltip(
                     tooltip: TooltipContainer(
                       child: Text(context.l10n.previous_track),
@@ -191,10 +120,16 @@ class PlayerControls extends HookConsumerWidget {
                     child: IconButton.ghost(
                       size: buttonSize,
                       enabled: !isFetchingActiveTrack,
-                      icon: const Icon(MeloraIcons.skipBack),
+                      icon: const Icon(
+                        MeloraIcons.skipBack,
+                        size: 20,
+                        color: MeloraColors.textPrimary,
+                      ),
                       onPressed: audioPlayer.skipToPrevious,
                     ),
                   ),
+                  const SizedBox(width: 8),
+                  // Play / Pause (Center circular button)
                   Tooltip(
                     tooltip: TooltipContainer(
                       child: Text(
@@ -203,37 +138,63 @@ class PlayerControls extends HookConsumerWidget {
                             : context.l10n.resume_playback,
                       ),
                     ).call,
-                    child: IconButton.primary(
-                      size: playButtonSize,
-                      shape: ButtonShape.circle,
-                      icon: isFetchingActiveTrack
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(),
-                            )
-                          : Icon(
-                              playing ? MeloraIcons.pause : MeloraIcons.play,
-                            ),
-                      onPressed: isFetchingActiveTrack
-                          ? null
-                          : Actions.handler<PlayPauseIntent>(
-                              context,
-                              PlayPauseIntent(ref),
-                            ),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0x337C5CFC),
+                            blurRadius: 12,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: IconButton.primary(
+                        size: playButtonSize,
+                        shape: ButtonShape.circle,
+                        icon: isFetchingActiveTrack
+                            ? const SizedBox(
+                                height: 18,
+                                width: 18,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              )
+                            : Icon(
+                                playing
+                                    ? MeloraIcons.pause
+                                    : MeloraIcons.play,
+                                size: 18,
+                                color: Colors.white,
+                              ),
+                        onPressed: isFetchingActiveTrack
+                            ? null
+                            : Actions.handler<PlayPauseIntent>(
+                                context,
+                                PlayPauseIntent(ref),
+                              ),
+                      ),
                     ),
                   ),
+                  const SizedBox(width: 8),
+                  // Next
                   Tooltip(
-                    tooltip:
-                        TooltipContainer(child: Text(context.l10n.next_track))
-                            .call,
+                    tooltip: TooltipContainer(
+                      child: Text(context.l10n.next_track),
+                    ).call,
                     child: IconButton.ghost(
                       size: buttonSize,
-                      icon: const Icon(MeloraIcons.skipForward),
+                      icon: const Icon(
+                        MeloraIcons.skipForward,
+                        size: 20,
+                        color: MeloraColors.textPrimary,
+                      ),
                       onPressed:
                           isFetchingActiveTrack ? null : audioPlayer.skipToNext,
                     ),
                   ),
+                  const SizedBox(width: 6),
+                  // Repeat
                   Consumer(builder: (context, ref, _) {
                     final loopMode = ref
                         .watch(audioPlayerProvider.select((s) => s.loopMode));
@@ -255,8 +216,9 @@ class PlayerControls extends HookConsumerWidget {
                               ? MeloraIcons.repeatOne
                               : MeloraIcons.repeat,
                           color: loopMode != PlaylistMode.none
-                              ? theme.colorScheme.primary
-                              : null,
+                              ? MeloraColors.accentSoft
+                              : MeloraColors.textSecondary,
+                          size: 18,
                         ),
                         variance: loopMode == PlaylistMode.single ||
                                 loopMode == PlaylistMode.loop
@@ -278,7 +240,82 @@ class PlayerControls extends HookConsumerWidget {
                   }),
                 ],
               ),
-              const SizedBox(height: 5)
+
+              // ── Progress Bar Row (Bottom) ──────────────────────────
+              if (!compact)
+                HookBuilder(
+                  builder: (context) {
+                    final (
+                      :bufferProgress,
+                      :duration,
+                      :position,
+                      :progressStatic
+                    ) = useProgress(ref);
+
+                    final progress = useState<num>(
+                      useMemoized(() => progressStatic, []),
+                    );
+
+                    useEffect(() {
+                      progress.value = progressStatic;
+                      return null;
+                    }, [progressStatic]);
+
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          Text(
+                            position.toHumanReadableString(),
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                              color: MeloraColors.textTertiary,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Tooltip(
+                              tooltip: TooltipContainer(
+                                child: Text(context.l10n.slide_to_seek),
+                              ).call,
+                              child: Slider(
+                                hintValue: SliderValue.single(bufferProgress),
+                                value: SliderValue.single(
+                                    progress.value.toDouble()),
+                                onChanged: isFetchingActiveTrack
+                                    ? null
+                                    : (v) {
+                                        progress.value = v.value;
+                                      },
+                                onChangeEnd: (value) async {
+                                  await audioPlayer.seek(
+                                    Duration(
+                                      seconds:
+                                          (value.value * duration.inSeconds)
+                                              .toInt(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            duration > position
+                                ? "-${(duration - position).toHumanReadableString()}"
+                                : duration.toHumanReadableString(),
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                              color: MeloraColors.textTertiary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
             ],
           ),
         ),

@@ -106,8 +106,8 @@ class HomePage extends HookConsumerWidget {
                     itemCount: 3,
                     itemBuilder: (context, index) {
                       return switch (index) {
-                        0 => const HomeRecentlyPlayedSection(),
-                        1 => const HomeFeaturedSection(),
+                        0 => const HomeFeaturedSection(),
+                        1 => const HomeRecentlyPlayedSection(),
                         _ => const HomeNewReleasesSection(),
                       };
                     },

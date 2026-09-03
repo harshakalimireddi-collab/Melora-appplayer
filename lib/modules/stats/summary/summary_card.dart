@@ -1,15 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/foundation.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:shadcn_flutter/shadcn_flutter_extension.dart';
 import 'package:melora/collections/formatters.dart';
+import 'package:melora/theme/melora_theme.dart';
 
 class SummaryCard extends StatelessWidget {
   final String title;
   final String unit;
   final String description;
   final VoidCallback? onTap;
-
   final ColorShades color;
 
   SummaryCard({
@@ -32,20 +30,27 @@ class SummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData(:typography, :brightness) = Theme.of(context);
-
-    final descriptionNewLines = description.split("").where((s) => s == "\n");
-
-    return Card(
-      fillColor: brightness == Brightness.dark ? color.shade100 : color.shade50,
-      filled: true,
-      borderColor: color,
-      padding: EdgeInsets.zero,
-      borderRadius: context.theme.borderRadiusLg,
-      child: Button.ghost(
-        onPressed: onTap,
+    return Container(
+      decoration: BoxDecoration(
+        color: MeloraColors.surface1,
+        borderRadius: MeloraRadius.mdBr,
+        border: Border.all(
+          color: MeloraColors.glassStroke,
+          width: 0.5,
+        ),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x18000000),
+            blurRadius: 12,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: GestureDetector(
+        onTap: onTap,
+        behavior: HitTestBehavior.opaque,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+          padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,29 +61,36 @@ class SummaryCard extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: title,
-                      style: typography.h2.copyWith(
-                        color: color.shade900,
+                      style: const TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: -0.5,
+                        color: MeloraColors.textPrimary,
                       ),
                     ),
-                    TextSpan(
-                      text: " $unit",
-                      style: typography.semiBold.copyWith(
-                        color: color.shade900,
+                    if (unit.isNotEmpty)
+                      TextSpan(
+                        text: " $unit",
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: MeloraColors.accentSoft,
+                        ),
                       ),
-                    ),
                   ],
                 ),
                 maxLines: 1,
               ),
-              const Gap(5),
-              AutoSizeText(
+              const SizedBox(height: 6),
+              Text(
                 description,
-                maxLines: description.contains("\n")
-                    ? descriptionNewLines.length + 1
-                    : 1,
-                minFontSize: 9,
-                style: typography.small.copyWith(
-                  color: color.shade900,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w400,
+                  color: MeloraColors.textSecondary,
+                  height: 1.3,
                 ),
               ),
             ],
