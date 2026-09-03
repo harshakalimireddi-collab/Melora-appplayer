@@ -1,0 +1,57 @@
+# ╔══════════════════════════════════════════════════════════════╗
+# ║              MELORA — Website Auto-Deploy                   ║
+# ║                                                              ║
+# ║  Deploys the showcase website to GitHub Pages automatically  ║
+# ║  whenever you push changes to the `website/` directory.      ║
+# ╚══════════════════════════════════════════════════════════════╝
+
+name: Deploy Website
+
+on:
+  # Auto-deploy when website files change on main
+  push:
+    branches: [main]
+    paths:
+      - 'website/**'
+
+  # Manual trigger (click "Run workflow" in GitHub Actions tab)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deployment at a time
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: 🌐 Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # ── 1. Checkout Code ──────────────────────────────
+      - name: 📦 Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Setup Pages ────────────────────────────────
+      - name: ⚙️ Configure GitHub Pages
+        uses: actions/configure-pages@v4
+
+      # ── 3. Upload Website Files ────────────────────────
+      - name: 📤 Upload website to Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: website/public
+
+      # ── 4. Deploy ─────────────────────────────────────
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

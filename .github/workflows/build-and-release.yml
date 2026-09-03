@@ -1,0 +1,253 @@
+# ╔══════════════════════════════════════════════════════════════╗
+# ║              MELORA — Build & Release Pipeline              ║
+# ║                                                              ║
+# ║  Builds for ALL platforms and creates a GitHub Release       ║
+# ║  with downloadable binaries. Triggered by version tags.      ║
+# ║                                                              ║
+# ║  Usage:                                                      ║
+# ║    git tag v4.0.0                                            ║
+# ║    git push origin main --tags                               ║
+# ╚══════════════════════════════════════════════════════════════╝
+
+name: Build & Release
+
+on:
+  # Auto-trigger on version tags
+  push:
+    tags:
+      - 'v*'
+
+  # Manual trigger from GitHub Actions tab
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. v4.0.0)'
+        required: true
+        default: 'v4.0.0'
+
+permissions:
+  contents: write
+
+env:
+  FLUTTER_VERSION: '3.35.2'
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#                         BUILD JOBS
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+jobs:
+
+  # ┌──────────────────────────────────────────────────────────┐
+  # │                    🪟 WINDOWS BUILD                      │
+  # └──────────────────────────────────────────────────────────┘
+  build-windows:
+    name: 🪟 Windows (x64)
+    runs-on: windows-latest
+
+    steps:
+      - name: 📦 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+
+      - name: 📥 Install dependencies
+        run: flutter pub get
+
+      - name: 🔨 Build Windows release
+        run: flutter build windows --release
+
+      - name: 📦 Package into ZIP
+        run: |
+          Compress-Archive `
+            -Path "build\windows\x64\runner\Release\*" `
+            -DestinationPath "Melora-Windows-x64.zip"
+
+      - name: ⬆️ Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: Melora-Windows-x64.zip
+
+
+  # ┌──────────────────────────────────────────────────────────┐
+  # │                    🤖 ANDROID BUILD                      │
+  # └──────────────────────────────────────────────────────────┘
+  build-android:
+    name: 🤖 Android (APK)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Checkout code
+        uses: actions/checkout@v4
+
+      - name: ☕ Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+
+      - name: 📥 Install dependencies
+        run: flutter pub get
+
+      - name: 🔨 Build APK
+        run: flutter build apk --release
+
+      - name: 📋 Rename APK
+        run: cp build/app/outputs/flutter-apk/app-release.apk Melora-Android.apk
+
+      - name: ⬆️ Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-build
+          path: Melora-Android.apk
+
+
+  # ┌──────────────────────────────────────────────────────────┐
+  # │                     🐧 LINUX BUILD                       │
+  # └──────────────────────────────────────────────────────────┘
+  build-linux:
+    name: 🐧 Linux (x64)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+
+      - name: 🔧 Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            clang cmake ninja-build pkg-config \
+            libgtk-3-dev liblzma-dev libstdc++-12-dev \
+            libmpv-dev mpv \
+            libappindicator3-dev libsecret-1-dev \
+            libjsoncpp-dev libnotify-dev
+
+      - name: 📥 Install Flutter dependencies
+        run: flutter pub get
+
+      - name: 🔨 Build Linux release
+        run: flutter build linux --release
+
+      - name: 📦 Package into tarball
+        run: |
+          cd build/linux/x64/release/bundle
+          tar -czf ../../../../../Melora-Linux-x64.tar.gz *
+
+      - name: ⬆️ Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-build
+          path: Melora-Linux-x64.tar.gz
+
+
+  # ┌──────────────────────────────────────────────────────────┐
+  # │                     🍎 macOS BUILD                       │
+  # └──────────────────────────────────────────────────────────┘
+  build-macos:
+    name: 🍎 macOS
+    runs-on: macos-latest
+
+    steps:
+      - name: 📦 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+
+      - name: 📥 Install dependencies
+        run: flutter pub get
+
+      - name: 🔨 Build macOS release
+        run: flutter build macos --release
+
+      - name: 📦 Package into ZIP
+        run: |
+          cd build/macos/Build/Products/Release
+          zip -r ../../../../../Melora-macOS.zip Melora.app
+
+      - name: ⬆️ Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: Melora-macOS.zip
+
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  #                     📦 CREATE RELEASE
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  # ┌──────────────────────────────────────────────────────────┐
+  # │               🚀 GITHUB RELEASE                          │
+  # │                                                          │
+  # │  Waits for all builds to finish, then creates a          │
+  # │  GitHub Release with all binaries attached.              │
+  # │                                                          │
+  # │  Downloads will be available at:                         │
+  # │  github.com/.../releases/latest/download/Melora-*.zip   │
+  # └──────────────────────────────────────────────────────────┘
+  release:
+    name: 🚀 Create GitHub Release
+    needs: [build-windows, build-android, build-linux, build-macos]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Checkout code
+        uses: actions/checkout@v4
+
+      - name: ⬇️ Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: 🚀 Create Release & Upload Binaries
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name || github.event.inputs.version }}
+          name: "Melora ${{ github.ref_name || github.event.inputs.version }}"
+          body: |
+            ## 🎵 Melora ${{ github.ref_name || github.event.inputs.version }}
+
+            ### Downloads
+
+            | Platform | File | Size |
+            |----------|------|------|
+            | 🪟 Windows (x64) | [`Melora-Windows-x64.zip`](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/download/${{ github.ref_name || github.event.inputs.version }}/Melora-Windows-x64.zip) | ~50 MB |
+            | 🤖 Android | [`Melora-Android.apk`](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/download/${{ github.ref_name || github.event.inputs.version }}/Melora-Android.apk) | ~30 MB |
+            | 🐧 Linux (x64) | [`Melora-Linux-x64.tar.gz`](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/download/${{ github.ref_name || github.event.inputs.version }}/Melora-Linux-x64.tar.gz) | ~50 MB |
+            | 🍎 macOS | [`Melora-macOS.zip`](https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/download/${{ github.ref_name || github.event.inputs.version }}/Melora-macOS.zip) | ~60 MB |
+
+            ### Auto-Update
+            Existing users will see an **"Update Available"** prompt next time they open Melora.
+
+            ---
+            *Built automatically by GitHub Actions*
+          draft: false
+          prerelease: false
+          files: |
+            artifacts/windows-build/Melora-Windows-x64.zip
+            artifacts/android-build/Melora-Android.apk
+            artifacts/linux-build/Melora-Linux-x64.tar.gz
+            artifacts/macos-build/Melora-macOS.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
