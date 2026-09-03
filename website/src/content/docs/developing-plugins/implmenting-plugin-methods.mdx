@@ -1,23 +1,23 @@
 ---
 layout: "layouts/DocLayout.astro"
 title: Implementing plugin methods
-description: Tutorial on how to implement methods in your Spotube plugin.
+description: Tutorial on how to implement methods in your melora plugin.
 order: 2
 ---
 
 In the previous section, you learned how to create a plugin project and run the example app.
-In this section, you will learn how to implement methods in your Spotube plugin.
+In this section, you will learn how to implement methods in your melora plugin.
 
 ## The `entryPoint` class
 
 The `entryPoint` (from the plugin.json) class is the main class of your plugin. You can find it in `src/plugin.ht`. It's the class
-that Spotube will instantiate when it loads your plugin. You can pretty much keep this class same as the template, unless you
+that melora will instantiate when it loads your plugin. You can pretty much keep this class same as the template, unless you
 there's something specific you want to change.
 
 ```hetu_script
 // The name of the class should match the `entryPoint` in plugin.json
 class TemplateMetadataProviderPlugin {
-  // These are required properties that Spotube will use to call the methods.
+  // These are required properties that melora will use to call the methods.
   // ==== Start of required properties ====
   var auth: AuthEndpoint
   var album: AlbumEndpoint
@@ -75,7 +75,7 @@ import { CorePlugin } from './segments/core.ht'
 ## Implementing subclasses
 
 Now that we've seen `entryPoint` class, we can look into the properties of that classes which are the actual
-classes that contains methods that Spotube calls. All of them are in `src/segments` folder
+classes that contains methods that melora calls. All of them are in `src/segments` folder
 
 > **IMPORTANT!:** hetu\*script claims it supports async/await. But unfortunately it still doesn't work yet.
 > So for now, we have to bear with .then()
@@ -88,8 +88,8 @@ In the next section, we will cover how to implement the methods in these classes
 
 {/* Urls */}
 [hetu_script_import_export_docs]: https://hetu-script.github.io/docs/en-US/grammar/import/
-[hetu_spotube_plugin]: https://github.com/KRTirtho/hetu_spotube_plugin
-[spotube_plugin_api]: /
+[hetu_melora_plugin]: https://github.com/KRTirtho/hetu_melora_plugin
+[melora_plugin_api]: /
 [hetu_std]: https://github.com/hetu-community/hetu_std
 [dart_stream_controller]: https://api.flutter.dev/flutter/dart-async/StreamController-class.html
 [hetu_struct_into_map]: https://hetu-script.github.io/docs/en-US/api_reference/hetu/#struct

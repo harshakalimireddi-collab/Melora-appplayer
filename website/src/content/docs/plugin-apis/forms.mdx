@@ -1,20 +1,20 @@
 ---
 layout: "layouts/DocLayout.astro"
 title: Forms
-description: Documentation for the Forms API for spotube plugins
+description: Documentation for the Forms API for melora plugins
 order: 1
 ---
 
-Spotube provides a Forms API that allows plugin developers to create and manage forms within the Spotube application.
+melora provides a Forms API that allows plugin developers to create and manage forms within the melora application.
 
 ## Usage
 
 Following will show a form with 2 text fields and text in between them:
 
 ```hetu_script
-import "module:spotube_plugin" as spotube
+import "module:melora_plugin" as melora
 
-spotube.SpotubeForm.show(
+melora.meloraForm.show(
   "The form page title",
   [
     {
@@ -42,7 +42,7 @@ spotube.SpotubeForm.show(
 })
 ```
 
-The method `spotube.SpotubeForm.show` takes a title and a list of form field declaration map. The map should be, well obviously a `Map`.
+The method `melora.meloraForm.show` takes a title and a list of form field declaration map. The map should be, well obviously a `Map`.
 Following are field map properties:
 
 | Property       | Type              | Description                                                                        |
@@ -56,7 +56,7 @@ Following are field map properties:
 | `regex`        | `String`          | Optional regex pattern to validate the input. (`input` type only)                  |
 | `text`         | `String`          | Optional text for `text` object type. (Only applicable for `text` type)            |
 
-The method `spotube.SpotubeForm.show` returns a following format:
+The method `melora.meloraForm.show` returns a following format:
 
 ```json
 [

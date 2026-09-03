@@ -1,13 +1,13 @@
 ---
 layout: "layouts/DocLayout.astro"
 title: Plugin Models
-description: "Different types of objects used in Spotube."
+description: "Different types of objects used in melora."
 order: 0
 ---
 
 ## Image
 
-Following is the structure of the `SpotubeImageObject`:
+Following is the structure of the `meloraImageObject`:
 
 | Property | Type            |
 | -------- | --------------- |
@@ -17,86 +17,86 @@ Following is the structure of the `SpotubeImageObject`:
 
 ## User
 
-Structure of the `SpotubeUserObject`, which is used to represent a user in Spotube returned by Spotube Plugins.
+Structure of the `meloraUserObject`, which is used to represent a user in melora returned by melora Plugins.
 
 | Property    | Type                                               |
 | ----------- | -------------------------------------------------- |
 | id          | `string`                                           |
 | name        | `string`                                           |
 | externalUri | `string`                                           |
-| images      | List of [`SpotubeImageObject`][SpotubeImageObject] |
+| images      | List of [`meloraImageObject`][meloraImageObject] |
 
 > `externalUri` is a URL that points to the user's profile on the external service (e.g. Listenbrainz)
 
 ## Artist
 
-### SpotubeSimpleArtistObject
+### meloraSimpleArtistObject
 
-Following is the structure of the `SpotubeArtistObject`:
+Following is the structure of the `meloraArtistObject`:
 
 | Property    | Type                                                         |
 | ----------- | ------------------------------------------------------------ |
 | id          | `string`                                                     |
 | name        | `string`                                                     |
 | externalUri | `string`                                                     |
-| images      | List of [`SpotubeImageObject`][SpotubeImageObject] or `null` |
+| images      | List of [`meloraImageObject`][meloraImageObject] or `null` |
 
-### SpotubeFullArtistObject
+### meloraFullArtistObject
 
-Following is the structure of the `SpotubeFullArtistObject`:
+Following is the structure of the `meloraFullArtistObject`:
 
 | Property    | Type                                                  |
 | ----------- | ----------------------------------------------------- |
 | id          | `string`                                              |
 | name        | `string`                                              |
 | externalUri | `string`                                              |
-| images      | List of [`SpotubeImageObject`][SpotubeImageObject] or |
+| images      | List of [`meloraImageObject`][meloraImageObject] or |
 | followers   | `number`                                              |
 | genres      | List of `string` or `null`                            |
 
 ## Album
 
-### SpotubeSimpleAlbumObject
+### meloraSimpleAlbumObject
 
-Following is the structure of the `SpotubeAlbumObject`:
+Following is the structure of the `meloraAlbumObject`:
 
 | Property    | Type                                                             |
 | ----------- | ---------------------------------------------------------------- |
 | id          | `string`                                                         |
 | name        | `string`                                                         |
 | externalUri | `string`                                                         |
-| images      | List of [`SpotubeImageObject`][SpotubeImageObject]               |
+| images      | List of [`meloraImageObject`][meloraImageObject]               |
 | albumType   | `album`, `single` or `compilation`                               |
-| artists     | List of [`SpotubeSimpleArtistObject`][SpotubeSimpleArtistObject] |
+| artists     | List of [`meloraSimpleArtistObject`][meloraSimpleArtistObject] |
 | releaseDate | `string` (YYYY-MM-DD format) or `null`                           |
 
-### SpotubeFullAlbumObject
+### meloraFullAlbumObject
 
-Following is the structure of the `SpotubeFullAlbumObject`:
+Following is the structure of the `meloraFullAlbumObject`:
 
 | Property    | Type                                                             |
 | ----------- | ---------------------------------------------------------------- |
 | id          | `string`                                                         |
 | name        | `string`                                                         |
 | externalUri | `string`                                                         |
-| images      | List of [`SpotubeImageObject`][SpotubeImageObject]               |
+| images      | List of [`meloraImageObject`][meloraImageObject]               |
 | albumType   | `album`, `single` or `compilation`                               |
-| artists     | List of [`SpotubeSimpleArtistObject`][SpotubeSimpleArtistObject] |
+| artists     | List of [`meloraSimpleArtistObject`][meloraSimpleArtistObject] |
 | releaseDate | `string` (YYYY-MM-DD format)                                     |
 | totalTracks | `number`                                                         |
 | recordLabel | `string` or `null`                                               |
 
 ## Track
 
-Following is the structure of the `SpotubeFullTrackObject`:
+Following is the structure of the `meloraFullTrackObject`:
 
 | Property                     | Type                                                             |
 | ---------------------------- | ---------------------------------------------------------------- |
 | id                           | `string`                                                         |
 | name                         | `string`                                                         |
 | externalUri                  | `string`                                                         |
-| artists                      | List of [`SpotubeSimpleArtistObject`][SpotubeSimpleArtistObject] |
-| album                        | [`SpotubeSimpleAlbumObject`][SpotubeSimpleAlbumObject]           |
+| artists                      | List of [`meloraSimpleArtistObject`][meloraSimpleArtistObject] |
+| album                        | [`meloraSimpleAlbumObject`][meloraSimpleAlbumObject]           |
 | durationMs (in milliseconds) | `number`                                                         |
 | explicit                     | `boolean`                                                        |
 | [isrc][isrc_wiki]            | `string`                                                         |
@@ -106,9 +106,9 @@ Following is the structure of the `SpotubeFullTrackObject`:
 
 ## Playlist
 
-### SpotubeSimplePlaylistObject
+### meloraSimplePlaylistObject
 
-Following is the structure of the `SpotubeSimplePlaylistObject`:
+Following is the structure of the `meloraSimplePlaylistObject`:
 
 | Property    | Type                                                         |
 | ----------- | ------------------------------------------------------------ |
@@ -116,12 +116,12 @@ Following is the structure of the `SpotubeSimplePlaylistObject`:
 | name        | `string`                                                     |
 | description | `string`                                                     |
 | externalUri | `string`                                                     |
-| images      | List of [`SpotubeImageObject`][SpotubeImageObject] or `null` |
-| owner       | [`SpotubeUserObject`][SpotubeUserObject]                     |
+| images      | List of [`meloraImageObject`][meloraImageObject] or `null` |
+| owner       | [`meloraUserObject`][meloraUserObject]                     |
 
-### SpotubeFullPlaylistObject
+### meloraFullPlaylistObject
 
-Following is the structure of the `SpotubeFullPlaylistObject`:
+Following is the structure of the `meloraFullPlaylistObject`:
 
 | Property      | Type                                                         |
 | ------------- | ------------------------------------------------------------ |
@@ -129,26 +129,26 @@ Following is the structure of the `SpotubeFullPlaylistObject`:
 | name          | `string`                                                     |
 | description   | `string`                                                     |
 | externalUri   | `string`                                                     |
-| images        | List of [`SpotubeImageObject`][SpotubeImageObject] or `null` |
-| owner         | [`SpotubeUserObject`][SpotubeUserObject]                     |
-| collaborators | List of [`SpotubeUserObject`][SpotubeUserObject] or `null`   |
+| images        | List of [`meloraImageObject`][meloraImageObject] or `null` |
+| owner         | [`meloraUserObject`][meloraUserObject]                     |
+| collaborators | List of [`meloraUserObject`][meloraUserObject] or `null`   |
 | collaborative | `boolean`                                                    |
 | public        | `boolean`                                                    |
 
 ## Search Response
 
-Following is the structure of the `SpotubeSearchResponseObject`:
+Following is the structure of the `meloraSearchResponseObject`:
 
 | Property  | Type                                                                 |
 | --------- | -------------------------------------------------------------------- |
-| albums    | List of [`SpotubeSimpleAlbumObject`][SpotubeSimpleAlbumObject]       |
-| artists   | List of [`SpotubeFullArtistObject`][SpotubeFullArtistObject]         |
-| playlists | List of [`SpotubeSimplePlaylistObject`][SpotubeSimplePlaylistObject] |
-| tracks    | List of [`SpotubeFullTrackObject`][SpotubeFullTrackObject]           |
+| albums    | List of [`meloraSimpleAlbumObject`][meloraSimpleAlbumObject]       |
+| artists   | List of [`meloraFullArtistObject`][meloraFullArtistObject]         |
+| playlists | List of [`meloraSimplePlaylistObject`][meloraSimplePlaylistObject] |
+| tracks    | List of [`meloraFullTrackObject`][meloraFullTrackObject]           |
 
 ## Browse Section
 
-Following is the structure of `SpotubeBrowseSectionObject`:
+Following is the structure of `meloraBrowseSectionObject`:
 
 | Property    | Type             |
 | ----------- | ---------------- |
@@ -160,15 +160,15 @@ Following is the structure of `SpotubeBrowseSectionObject`:
 
 The `items` property array can contain multiple type of `Object` in it but it will always be
 
-- [`SpotubeFullPlaylistObject`][SpotubeFullPlaylistObject]
-- [`SpotubeFullAlbumObject`][SpotubeFullAlbumObject]
-- [`SpotubeFullArtistObject`][SpotubeFullArtistObject]
+- [`meloraFullPlaylistObject`][meloraFullPlaylistObject]
+- [`meloraFullAlbumObject`][meloraFullAlbumObject]
+- [`meloraFullArtistObject`][meloraFullArtistObject]
 
 ## Pagination Response
 
-`SpotubePaginationResponseObject` is generic model. The `items` property can contain any type of `Object` in it.
+`meloraPaginationResponseObject` is generic model. The `items` property can contain any type of `Object` in it.
 
-This is the structure of `SpotubePaginationResponseObject`:
+This is the structure of `meloraPaginationResponseObject`:
 
 | Property   | Type                                            |
 | ---------- | ----------------------------------------------- |
@@ -179,12 +179,12 @@ This is the structure of `SpotubePaginationResponseObject`:
 | items      | List of generic type `T` which extends `Object` |
 
 [isrc_wiki]: https://en.wikipedia.org/wiki/International_Standard_Recording_Code
-[SpotubeImageObject]: /docs/reference/models#image
-[SpotubeSimpleArtistObject]: /docs/reference/models#spotubesimpleartistobject
-[SpotubeSimpleAlbumObject]: /docs/reference/models#spotubesimplealbumobject
-[SpotubeUserObject]: /docs/reference/models#user
-[SpotubeFullArtistObject]: /docs/reference/models#spotubefullartistobject
-[SpotubeSimplePlaylistObject]: /docs/reference/models#spotubesimpleplaylistobject
-[SpotubeFullTrackObject]: /docs/reference/models#track
-[SpotubeFullPlaylistObject]: /docs/reference/models#spotubefullplaylistobject
-[SpotubeFullAlbumObject]: /docs/reference/models#spotubefullalbumobject
+[meloraImageObject]: /docs/reference/models#image
+[meloraSimpleArtistObject]: /docs/reference/models#melorasimpleartistobject
+[meloraSimpleAlbumObject]: /docs/reference/models#melorasimplealbumobject
+[meloraUserObject]: /docs/reference/models#user
+[meloraFullArtistObject]: /docs/reference/models#melorafullartistobject
+[meloraSimplePlaylistObject]: /docs/reference/models#melorasimpleplaylistobject
+[meloraFullTrackObject]: /docs/reference/models#track
+[meloraFullPlaylistObject]: /docs/reference/models#melorafullplaylistobject
+[meloraFullAlbumObject]: /docs/reference/models#melorafullalbumobject

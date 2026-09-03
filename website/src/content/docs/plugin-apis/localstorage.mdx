@@ -1,11 +1,11 @@
 ---
 layout: "layouts/DocLayout.astro"
 title: LocalStorage
-description: Documentation for the LocalStorage API for spotube plugins
+description: Documentation for the LocalStorage API for melora plugins
 order: 2
 ---
 
-The `LocalStorage` API is a plain text key/value holding persistent storage for spotube plugins. It's similar to the `localStorage` API in web browsers.
+The `LocalStorage` API is a plain text key/value holding persistent storage for melora plugins. It's similar to the `localStorage` API in web browsers.
 The API is a 1:1 port of [shared_preferences][shared_preferences] package from [pub.dev](https://pub.dev) (Flutter package registry)
 
 The only difference is that the `LocalStorage` API is 100% asynchronous. So every method returns a `Future`
@@ -17,9 +17,9 @@ The only difference is that the `LocalStorage` API is 100% asynchronous. So ever
 Retrieve stored information by key:
 
 ```hetu_script
-import "module:spotube_plugin" as spotube
+import "module:melora_plugin" as melora
 
-var LocalStorage = spotube.LocalStorage
+var LocalStorage = melora.LocalStorage
 
 // Get a string value by key
 LocalStorage.getString("key").then((value) {

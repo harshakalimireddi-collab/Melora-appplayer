@@ -22,7 +22,7 @@ const { metadata } = Astro.props as Props;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <meta name="generator" content={Astro.generator} />
-    <title>{metadata?.title || "Spotube"}</title>
+    <title>{metadata?.title || "melora"}</title>
     <meta
       name="description"
       content={metadata?.description ||
@@ -34,18 +34,18 @@ const { metadata } = Astro.props as Props;
         "music, client, open source, music, streaming"}
     />
     <meta name="author" content={metadata?.author || "KRTirtho"} />
-    <meta property="og:image" content="/images/spotube-logo.png" />
-    <meta property="og:image:alt" content="Spotube Logo" />
+    <meta property="og:image" content="/images/melora-logo.png" />
+    <meta property="og:image:alt" content="melora Logo" />
     <meta property="og:image:type" content="image/png" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={metadata?.title || "Spotube"} />
+    <meta name="twitter:title" content={metadata?.title || "melora"} />
     <meta
       name="twitter:description"
       content={metadata?.description ||
         "A cross-platform extensible open-source music streaming platform"}
     />
-    <meta name="twitter:image" content="/images/spotube-logo.png" />
+    <meta name="twitter:image" content="/images/melora-logo.png" />
     <meta name="twitter:creator" content={metadata?.author || "KRTirtho"} />
     <meta name="twitter:site" content="@KRTirtho" />
 
@@ -67,20 +67,20 @@ const { metadata } = Astro.props as Props;
     </main>
     <footer class="w-full bg-tertiary-100-900 p-4 flex justify-between">
       <div>
-        <h3 class="h3">Spotube</h3>
+        <h3 class="h3">melora</h3>
         <p>
-          Copyright © {new Date().getFullYear()} Spotube
+          Copyright © {new Date().getFullYear()} melora
         </p>
       </div>
       <ul>
         <li>
-          <a href="https://github.com/KRTirtho/spotube">
+          <a href="https://github.com/KRTirtho/melora">
             <FaGithub className="inline mr-1" />
             Github
           </a>
         </li>
         <li>
-          <a href="https://opencollective.org/spotube">
+          <a href="https://opencollective.org/melora">
             <img
               src="https://avatars0.githubusercontent.com/u/13403593?v=4"
               alt="OpenCollective"

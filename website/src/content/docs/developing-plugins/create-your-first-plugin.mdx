@@ -10,20 +10,20 @@ This guide will help you initialize a plugin project and write your first plugin
 
 ## Initializing a plugin project
 
-[spotube-plugin-template][spotube-plugin-template] is a template repository for Spotube plugins. It's a starting point
+[melora-plugin-template][melora-plugin-template] is a template repository for melora plugins. It's a starting point
 with everything you need to get started with plugin development. You should use it to create your own plugin.
 
 Simply clone or click "Use this template" button on the GitHub repository page to create a new repository.
 
 ```bash
-$ git clone https://github.com/KRTirtho/spotube-plugin-template.git
-$ cd spotube-plugin-template
+$ git clone https://github.com/KRTirtho/melora-plugin-template.git
+$ cd melora-plugin-template
 ```
 
 ## Understanding plugins.json
 
 After cloning the repository, you will find a file named `plugins.json` in the root directory.
-This file is crucial for Spotube to recognize your plugin. It looks like this:
+This file is crucial for melora to recognize your plugin. It looks like this:
 
 ```json
 {
@@ -35,14 +35,14 @@ This file is crucial for Spotube to recognize your plugin. It looks like this:
   "entryPoint": "plugin class name",
   "apis": ["webview", "localstorage", "timezone"],
   "abilities": ["authentication", "scrobbling"],
-  "repository": "https://github.com/KRTirtho/spotube-plugin-template",
+  "repository": "https://github.com/KRTirtho/melora-plugin-template",
   "pluginApiVersion": "1.0.0"
 }
 ```
 
 | Property           | Description                                                                                                                                                                 |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`             | The type of the plugin, which is always `metadata` for Spotube plugins.                                                                                                     |
+| `type`             | The type of the plugin, which is always `metadata` for melora plugins.                                                                                                     |
 | `version`          | The version of the plugin, following [semantic versioning][semantic-version] (e.g., `1.0.0`).                                                                               |
 | `name`             | The name of the plugin                                                                                                                                                      |
 | `author`           | The name of the plugin author.                                                                                                                                              |
@@ -51,14 +51,14 @@ This file is crucial for Spotube to recognize your plugin. It looks like this:
 | `apis`             | An array of APIs that the plugin uses. This is used to determine which APIs are available to the plugin. Following APIs are available "webview", "localstorage", "timezone" |
 | `abilities`        | An array of abilities that the plugin has. This is used to determine which abilities the plugin has. Following abilities can be listed: "authentication", "scrobbling"      |
 | `repository`       | The URL of the plugin's repository. This is used to display the plugin's repository in the plugin manager.                                                                  |
-| `pluginApiVersion` | The version of the plugin API that the plugin uses. This is used to determine if the plugin is compatible with the current version of Spotube.                              |
+| `pluginApiVersion` | The version of the plugin API that the plugin uses. This is used to determine if the plugin is compatible with the current version of melora.                              |
 
 Change the values in the `plugins.json` file to match your plugin's information.
 
 ## Running the `example` app
 
 There's an `example` folder that contains a simple Flutter app that utilizes all the methods
-Spotube would call on your plugin. You can run this app to test your plugin's functionality.
+melora would call on your plugin. You can run this app to test your plugin's functionality.
 
 But first you need too compile the plugin to bytecode. You can simply do this using:
 
@@ -78,6 +78,6 @@ $ flutter run
 > We will cover how to implement the methods in the next section.
 
 {/* Links */}
-[spotube-plugin-template]: https://github.com/KRTirtho/spotube-plugin-template
+[melora-plugin-template]: https://github.com/KRTirtho/melora-plugin-template
 [semantic-version]: https://semver.org/
 [hetu_script_dev_tools]: https://pub.dev/packages/hetu_script_dev_tools

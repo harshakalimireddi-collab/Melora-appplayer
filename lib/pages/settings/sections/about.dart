@@ -36,7 +36,7 @@ class SettingsAboutSection extends HookConsumerWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: AutoSizeText(
-                  context.l10n.u_love_spotube,
+                  context.l10n.u_love_Melora,
                   maxLines: 1,
                   style: const TextStyle(
                     color: Colors.pink,

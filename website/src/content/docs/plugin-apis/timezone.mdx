@@ -1,21 +1,21 @@
 ---
 layout: "layouts/DocLayout.astro"
 title: TimeZone
-description: Documentation for the TimeZone API for spotube plugins
+description: Documentation for the TimeZone API for melora plugins
 order: 3
 ---
 
-The `TimeZone` API provides access to the current time zone of the device running Spotube. This can be useful for plugins that need to display
+The `TimeZone` API provides access to the current time zone of the device running melora. This can be useful for plugins that need to display
 or handle time-related information based on the user's local time zone.
 
 ## Usage
 
-To use the `TimeZone` API, you can import the `spotube_plugin` module and access the `TimeZone` class.
+To use the `TimeZone` API, you can import the `melora_plugin` module and access the `TimeZone` class.
 
 ```hetu_script
-import "module:spotube_plugin" as spotube
+import "module:melora_plugin" as melora
 
-var TimeZone = spotube.TimeZone
+var TimeZone = melora.TimeZone
 ```
 
 To get current local time zone for the device, you can use the `getLocalTimeZone` method:

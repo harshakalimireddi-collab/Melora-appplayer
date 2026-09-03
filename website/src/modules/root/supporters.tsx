@@ -37,7 +37,7 @@ export function Supporters() {
   useEffect(() => {
     // Fetch members data from an API or other source
     async function fetchMembers() {
-      const res = await fetch('https://opencollective.com/spotube/members/all.json');
+      const res = await fetch('https://opencollective.com/melora/members/all.json');
       const members = (await res.json()) as Member[];
       setMembers(
         members

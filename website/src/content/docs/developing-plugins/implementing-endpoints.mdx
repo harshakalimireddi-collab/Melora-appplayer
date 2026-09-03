@@ -10,7 +10,7 @@ order: 2
 > If your plugin doesn't need authentication support, you can skip this section.
 
 In the `src/segments/auth.ht` file you can find all the required method definition. These are the necessary
-methods Spotube calls in it's lifecycle.
+methods melora calls in it's lifecycle.
 
 ```hetu_script
 class AuthEndpoint {
@@ -38,17 +38,17 @@ class AuthEndpoint {
 }
 ```
 
-For this specific endpoint, you may need `WebView` or `Forms` to get user inputs. The [`hetu_spotube_plugin`][hetu_spotube_plugin] provides
+For this specific endpoint, you may need `WebView` or `Forms` to get user inputs. The [`hetu_melora_plugin`][hetu_melora_plugin] provides
 such APIs.
 
-> Learn more about it in the [Spotube Plugin API][spotube_plugin_api] section
+> Learn more about it in the [melora Plugin API][melora_plugin_api] section
 
 ### The `.authStateStream` property
 
-The `AuthEndpoint.authStateStream` property is also necessary to notify Spotube about the authentication status. [`hetu_std`][hetu_std] is a built-in
+The `AuthEndpoint.authStateStream` property is also necessary to notify melora about the authentication status. [`hetu_std`][hetu_std] is a built-in
 module and it exports `StreamController` which basically 1:1 copy of the Dart's [StreamController][dart_stream_controller].
 If the status of authentication changes you need to add a new event using the `controller.add`
-Following events are respected by Spotube:
+Following events are respected by melora:
 
 | Name        | Description                                                  |
 | ----------- | ------------------------------------------------------------ |
@@ -69,7 +69,7 @@ By the way, the event type is a `Map<String, dynamic>` in the Dart side, so make
 
 The UserEndpoint is used to fetch user information and manage user-related actions.
 In the `src/segments/user.ht` file you can find all the required method definitions. These are the necessary
-methods Spotube calls in its lifecycle.
+methods melora calls in its lifecycle.
 
 > Most of these methods should be just a mapping to an API call with minimum latency. Avoid calling plugin APIs like WebView or Forms
 > in these methods. User interactions should be avoided here generally.
@@ -122,11 +122,11 @@ These methods are pretty self-explanatory. You need to implement them to fetch u
 
 | Method              | Description                                                              | Returns                                                                                                                          |
 | ------------------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
-| `me()`              | Fetches the current user's information.                                  | [`SpotubeUserObject`][SpotubeUserObject]                                                                                         |
-| `savedTracks()`     | Fetches the user's saved tracks with pagination support.                 | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullTrackObject`][SpotubeFullTrackObject]       |
-| `savedPlaylists()`  | Fetches the user's saved playlists with pagination support.              | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullPlaylistObject`][SpotubeFullPlaylistObject] |
-| `savedAlbums()`     | Fetches the user's saved albums with pagination support.                 | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullAlbumObject`][SpotubeFullAlbumObject]       |
-| `savedArtists()`    | Fetches the user's saved artists with pagination support.                | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullArtistObject`][SpotubeFullArtistObject]     |
+| `me()`              | Fetches the current user's information.                                  | [`meloraUserObject`][meloraUserObject]                                                                                         |
+| `savedTracks()`     | Fetches the user's saved tracks with pagination support.                 | [`meloraPaginationResponseObject`][meloraPaginationResponseObject] of [`meloraFullTrackObject`][meloraFullTrackObject]       |
+| `savedPlaylists()`  | Fetches the user's saved playlists with pagination support.              | [`meloraPaginationResponseObject`][meloraPaginationResponseObject] of [`meloraFullPlaylistObject`][meloraFullPlaylistObject] |
+| `savedAlbums()`     | Fetches the user's saved albums with pagination support.                 | [`meloraPaginationResponseObject`][meloraPaginationResponseObject] of [`meloraFullAlbumObject`][meloraFullAlbumObject]       |
+| `savedArtists()`    | Fetches the user's saved artists with pagination support.                | [`meloraPaginationResponseObject`][meloraPaginationResponseObject] of [`meloraFullArtistObject`][meloraFullArtistObject]     |
 | `isSavedPlaylist()` | Checks if a playlist is saved by the user. Returns a `Future<bool>`.     | `bool`                                                                                                                           |
 | `isSavedTracks()`   | Checks if tracks are saved by the user. Returns a `Future<List<bool>>`.  | `List<bool>` (each boolean corresponds to a track ID)                                                                            |
 | `isSavedAlbums()`   | Checks if albums are saved by the user. Returns a `Future<List<bool>>`.  | `List<bool>` (each boolean corresponds to an album ID)                                                                           |
@@ -167,10 +167,10 @@ class TrackEndpoint {
 
 | Method       | Description                                                                          | Returns                                                  |
 | ------------ | ------------------------------------------------------------------------------------ | -------------------------------------------------------- |
-| `getTrack()` | Fetches track information by ID.                                                     | [SpotubeFullTrackObject][SpotubeFullTrackObject]         |
+| `getTrack()` | Fetches track information by ID.                                                     | [meloraFullTrackObject][meloraFullTrackObject]         |
 | `save()`     | Saves the specified tracks. Accepts a list of track IDs.                             | void                                                     |
 | `unsave()`   | Removes the specified tracks from saved tracks. Accepts a list of track IDs.         | void                                                     |
-| `radio()`    | Fetches related tracks based on specified tracks. Try to return a List of 50 tracks. | [List\<SpotubeFullTrackObject\>][SpotubeFullTrackObject] |
+| `radio()`    | Fetches related tracks based on specified tracks. Try to return a List of 50 tracks. | [List\<meloraFullTrackObject\>][meloraFullTrackObject] |
 
 {/* Urls */}
 
@@ -207,9 +207,9 @@ class AlbumEndpoint {
 
 | Method       | Description                                                                              | Returns                                                                                                                    |
 | ------------ | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `getAlbum()` | Fetches album information by ID.                                                         | [`SpotubeFullAlbumObject`][SpotubeFullAlbumObject]                                                                         |
-| `tracks()`   | Fetches tracks of the specified album. Accepts an ID and optional pagination parameters. | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullTrackObject`][SpotubeFullTrackObject] |
-| `releases()` | Fetches new album releases user followed artists or globally                             | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullAlbumObject`][SpotubeFullAlbumObject] |
+| `getAlbum()` | Fetches album information by ID.                                                         | [`meloraFullAlbumObject`][meloraFullAlbumObject]                                                                         |
+| `tracks()`   | Fetches tracks of the specified album. Accepts an ID and optional pagination parameters. | [`meloraPaginationResponseObject`][meloraPaginationResponseObject] of [`meloraFullTrackObject`][meloraFullTrackObject] |
+| `releases()` | Fetches new album releases user followed artists or globally                             | [`meloraPaginationResponseObject`][meloraPaginationResponseObject] of [`meloraFullAlbumObject`][meloraFullAlbumObject] |
 | `save()`     | Saves the specified albums. Accepts a list of album IDs.                                 | `void`                                                                                                                     |
 | `unsave()`   | Removes the specified albums from saved albums. Accepts a list of album IDs.             | `void`                                                                                                                     |
 
@@ -252,10 +252,10 @@ class ArtistEndpoint {
 
 | Method        | Description                                                                            | Returns                                                                                                                      |
 | ------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `getArtist()` | Fetches artist information by ID.                                                      | [`SpotubeFullArtistObject`][SpotubeFullArtistObject]                                                                         |
-| `related()`   | Fetches related artists based on the specified artist ID. Accepts optional pagination. | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullArtistObject`][SpotubeFullArtistObject] |
-| `topTracks()` | Fetches top tracks of the specified artist. Accepts optional pagination.               | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullTrackObject`][SpotubeFullTrackObject]   |
-| `albums()`    | Fetches albums of the specified artist. Accepts optional pagination.                   | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullAlbumObject`][SpotubeFullAlbumObject]   |
+| `getArtist()` | Fetches artist information by ID.                                                      | [`meloraFullArtistObject`][meloraFullArtistObject]                                                                         |
+| `related()`   | Fetches related artists based on the specified artist ID. Accepts optional pagination. | [`meloraPaginationResponseObject`][meloraPaginationResponseObject] of [`meloraFullArtistObject`][meloraFullArtistObject] |
+| `topTracks()` | Fetches top tracks of the specified artist. Accepts optional pagination.               | [`meloraPaginationResponseObject`][meloraPaginationResponseObject] of [`meloraFullTrackObject`][meloraFullTrackObject]   |
+| `albums()`    | Fetches albums of the specified artist. Accepts optional pagination.                   | [`meloraPaginationResponseObject`][meloraPaginationResponseObject] of [`meloraFullAlbumObject`][meloraFullAlbumObject]   |
 | `save()`      | Saves the specified artists. Accepts a list of artist IDs.                             | `void`                                                                                                                       |
 | `unsave()`    | Removes the specified artists from saved artists. Accepts a list of artist IDs.        | `void`                                                                                                                       |
 
@@ -321,9 +321,9 @@ class PlaylistEndpoint {
 
 | Method           | Description                                 | Returns                                                                                                                    |
 | ---------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `getPlaylist`    | Fetches a playlist by its ID.               | [`SpotubeFullPlaylistObject`][SpotubeFullPlaylistObject]                                                                   |
-| `tracks`         | Fetches tracks in a playlist.               | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullTrackObject`][SpotubeFullTrackObject] |
-| `create`         | Creates a new playlist and returns          | [`SpotubeFullPlaylistObject`][SpotubeFullPlaylistObject]                                                                   |
+| `getPlaylist`    | Fetches a playlist by its ID.               | [`meloraFullPlaylistObject`][meloraFullPlaylistObject]                                                                   |
+| `tracks`         | Fetches tracks in a playlist.               | [`meloraPaginationResponseObject`][meloraPaginationResponseObject] of [`meloraFullTrackObject`][meloraFullTrackObject] |
+| `create`         | Creates a new playlist and returns          | [`meloraFullPlaylistObject`][meloraFullPlaylistObject]                                                                   |
 | `update`         | Updates an existing playlist.               | `void`                                                                                                                     |
 | `deletePlaylist` | Deletes a playlist.                         | `void`                                                                                                                     |
 | `addTracks`      | Adds tracks to a playlist.                  | `void`                                                                                                                     |
@@ -372,11 +372,11 @@ class SearchEndpoint {
 | Method        | Description                         | Returns                                                                                                                          |
 | ------------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | `chips`       | Returns the available search chips. | `List<string>`                                                                                                                   |
-| `all()`       | Searches for all types of content.  | [`SpotubeSearchResponseObject`][SpotubeSearchResponseObject]                                                                     |
-| `albums()`    | Searches only for albums.           | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullAlbumObject`][SpotubeFullAlbumObject]       |
-| `artists()`   | Searches only for artists.          | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullArtistObject`][SpotubeFullArtistObject]     |
-| `tracks()`    | Searches only for tracks.           | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullTrackObject`][SpotubeFullTrackObject]       |
-| `playlists()` | Searches only for playlists.        | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullPlaylistObject`][SpotubeFullPlaylistObject] |
+| `all()`       | Searches for all types of content.  | [`meloraSearchResponseObject`][meloraSearchResponseObject]                                                                     |
+| `albums()`    | Searches only for albums.           | [`meloraPaginationResponseObject`][meloraPaginationResponseObject] of [`meloraFullAlbumObject`][meloraFullAlbumObject]       |
+| `artists()`   | Searches only for artists.          | [`meloraPaginationResponseObject`][meloraPaginationResponseObject] of [`meloraFullArtistObject`][meloraFullArtistObject]     |
+| `tracks()`    | Searches only for tracks.           | [`meloraPaginationResponseObject`][meloraPaginationResponseObject] of [`meloraFullTrackObject`][meloraFullTrackObject]       |
+| `playlists()` | Searches only for playlists.        | [`meloraPaginationResponseObject`][meloraPaginationResponseObject] of [`meloraFullPlaylistObject`][meloraFullPlaylistObject] |
 
 ## BrowseEndpoint
 
@@ -401,8 +401,8 @@ class BrowseEndpoint {
 
 | Method           | Description                              | Returns                                                                                                                                        |
 | ---------------- | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sections()`     | Returns the sections of the home page.   | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeBrowseSectionObject`][SpotubeBrowseSectionObject] of `Object` |
-| `sectionItems()` | Returns the items of a specific section. | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of `Object`                                                               |
+| `sections()`     | Returns the sections of the home page.   | [`meloraPaginationResponseObject`][meloraPaginationResponseObject] of [`meloraBrowseSectionObject`][meloraBrowseSectionObject] of `Object` |
+| `sectionItems()` | Returns the items of a specific section. | [`meloraPaginationResponseObject`][meloraPaginationResponseObject] of `Object`                                                               |
 
 > In `sectionItems()` The `id` it takes comes from `sections()`. It is basically used in an expanded screen to show the browse section items with pagination.
 >
@@ -410,9 +410,9 @@ class BrowseEndpoint {
 
 By the way, the `Object` can be any of the following types:
 
-- [`SpotubeFullPlaylistObject`][SpotubeFullPlaylistObject]
-- [`SpotubeFullArtistObject`][SpotubeFullArtistObject]
-- [`SpotubeFullAlbumObject`][SpotubeFullAlbumObject]
+- [`meloraFullPlaylistObject`][meloraFullPlaylistObject]
+- [`meloraFullArtistObject`][meloraFullArtistObject]
+- [`meloraFullAlbumObject`][meloraFullAlbumObject]
 
 ## CoreEndpoint
 
@@ -478,16 +478,16 @@ class CorePlugin {
 {/* Urls */}
 [scrobbling_wiki]: https://en.wikipedia.org/wiki/Last.fm
 [hetu_script_import_export_docs]: https://hetu-script.github.io/docs/en-US/grammar/import/
-[hetu_spotube_plugin]: https://github.com/KRTirtho/hetu_spotube_plugin
+[hetu_melora_plugin]: https://github.com/KRTirtho/hetu_melora_plugin
 [hetu_std]: https://github.com/hetu-community/hetu_std
 [dart_stream_controller]: https://api.flutter.dev/flutter/dart-async/StreamController-class.html
 [hetu_struct_into_map]: https://hetu-script.github.io/docs/en-US/api_reference/hetu/#struct
-[spotube_plugin_api]: /docs/plugin-apis
-[SpotubeUserObject]: /docs/reference/models#user
-[SpotubePaginationResponseObject]: /docs/reference/models#pagination-response
-[SpotubeFullAlbumObject]: /docs/reference/models#spotubefullalbumobject
-[SpotubeFullArtistObject]: /docs/reference/models#spotubefullartistobject
-[SpotubeFullTrackObject]: /docs/reference/models#track
-[SpotubeFullPlaylistObject]: /docs/reference/models#spotubefullplaylistobject
-[SpotubeSearchResponseObject]: /docs/reference/models#search-response
-[SpotubeBrowseSectionObject]: /docs/reference/models#browse-section
+[melora_plugin_api]: /docs/plugin-apis
+[meloraUserObject]: /docs/reference/models#user
+[meloraPaginationResponseObject]: /docs/reference/models#pagination-response
+[meloraFullAlbumObject]: /docs/reference/models#melorafullalbumobject
+[meloraFullArtistObject]: /docs/reference/models#melorafullartistobject
+[meloraFullTrackObject]: /docs/reference/models#track
+[meloraFullPlaylistObject]: /docs/reference/models#melorafullplaylistobject
+[meloraSearchResponseObject]: /docs/reference/models#search-response
+[meloraBrowseSectionObject]: /docs/reference/models#browse-section
