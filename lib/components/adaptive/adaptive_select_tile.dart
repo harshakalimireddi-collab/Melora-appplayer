@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart' show ListTile, ListTileControlAffinity;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:spotube/collections/spotube_icons.dart';
-import 'package:spotube/extensions/constrains.dart';
+import 'package:melora/collections/melora_icons.dart';
+import 'package:melora/extensions/constrains.dart';
 
 class AdaptiveSelectTile<T> extends HookWidget {
   final Widget title;
@@ -117,8 +117,8 @@ class AdaptiveSelectTile<T> extends HookWidget {
                           return ListTile(
                             iconColor: theme.colorScheme.primary,
                             leading: item.value == value
-                                ? const Icon(SpotubeIcons.radioChecked)
-                                : const Icon(SpotubeIcons.radioUnchecked),
+                                ? const Icon(MeloraIcons.radioChecked)
+                                : const Icon(MeloraIcons.radioUnchecked),
                             title: item.child,
                             onTap: () {
                               onChanged?.call(item.value);

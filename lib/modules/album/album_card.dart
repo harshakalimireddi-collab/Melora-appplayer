@@ -2,26 +2,26 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:spotube/collections/routes.gr.dart';
-import 'package:spotube/components/dialogs/select_device_dialog.dart';
-import 'package:spotube/components/playbutton_view/playbutton_card.dart';
-import 'package:spotube/components/playbutton_view/playbutton_tile.dart';
-import 'package:spotube/extensions/context.dart';
-import 'package:spotube/models/connect/connect.dart';
-import 'package:spotube/models/metadata/metadata.dart';
-import 'package:spotube/provider/audio_player/querying_track_info.dart';
-import 'package:spotube/provider/connect/connect.dart';
-import 'package:spotube/provider/history/history.dart';
-import 'package:spotube/provider/audio_player/audio_player.dart';
-import 'package:spotube/provider/metadata_plugin/tracks/album.dart';
-import 'package:spotube/services/audio_player/audio_player.dart';
+import 'package:melora/collections/routes.gr.dart';
+import 'package:melora/components/dialogs/select_device_dialog.dart';
+import 'package:melora/components/playbutton_view/playbutton_card.dart';
+import 'package:melora/components/playbutton_view/playbutton_tile.dart';
+import 'package:melora/extensions/context.dart';
+import 'package:melora/models/connect/connect.dart';
+import 'package:melora/models/metadata/metadata.dart';
+import 'package:melora/provider/audio_player/querying_track_info.dart';
+import 'package:melora/provider/connect/connect.dart';
+import 'package:melora/provider/history/history.dart';
+import 'package:melora/provider/audio_player/audio_player.dart';
+import 'package:melora/provider/metadata_plugin/tracks/album.dart';
+import 'package:melora/services/audio_player/audio_player.dart';
 
-extension FormattedAlbumType on SpotubeAlbumType {
+extension FormattedAlbumType on MeloraAlbumType {
   String get formatted => name.replaceFirst(name[0], name[0].toUpperCase());
 }
 
 class AlbumCard extends HookConsumerWidget {
-  final SpotubeSimpleAlbumObject album;
+  final MeloraSimpleAlbumObject album;
   final bool _isTile;
   const AlbumCard(
     this.album, {

@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:spotube/collections/env.dart';
-import 'package:spotube/collections/routes.gr.dart';
-import 'package:spotube/collections/spotube_icons.dart';
-import 'package:spotube/modules/getting_started/blur_card.dart';
-import 'package:spotube/extensions/context.dart';
-import 'package:spotube/services/kv_store/kv_store.dart';
+import 'package:melora/collections/env.dart';
+import 'package:melora/collections/routes.gr.dart';
+import 'package:melora/collections/melora_icons.dart';
+import 'package:melora/modules/getting_started/blur_card.dart';
+import 'package:melora/extensions/context.dart';
+import 'package:melora/services/kv_store/kv_store.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class GettingStartedScreenSupportSection extends HookConsumerWidget {
@@ -25,7 +25,7 @@ class GettingStartedScreenSupportSection extends HookConsumerWidget {
               children: [
                 Row(
                   children: [
-                    const Icon(SpotubeIcons.heartFilled, color: Colors.pink),
+                    const Icon(MeloraIcons.heartFilled, color: Colors.pink),
                     const SizedBox(width: 8),
                     Text(
                       context.l10n.help_project_grow,
@@ -41,7 +41,7 @@ class GettingStartedScreenSupportSection extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Button(
-                      leading: const Icon(SpotubeIcons.github),
+                      leading: const Icon(MeloraIcons.github),
                       style: ButtonVariance.primary.copyWith(
                           decoration: (context, states, value) {
                         if (states.isNotEmpty) {
@@ -56,7 +56,7 @@ class GettingStartedScreenSupportSection extends HookConsumerWidget {
                       }),
                       onPressed: () async {
                         await launchUrlString(
-                          "https://github.com/KRTirtho/spotube",
+                          "https://github.com/melora-app/melora",
                           mode: LaunchMode.externalApplication,
                         );
                       },
@@ -68,7 +68,7 @@ class GettingStartedScreenSupportSection extends HookConsumerWidget {
                     if (!Env.hideDonations) ...[
                       const Gap(16),
                       Button(
-                        leading: const Icon(SpotubeIcons.openCollective),
+                        leading: const Icon(MeloraIcons.openCollective),
                         style: ButtonVariance.primary.copyWith(
                             decoration: (context, states, value) {
                           if (states.isNotEmpty) {
@@ -83,7 +83,7 @@ class GettingStartedScreenSupportSection extends HookConsumerWidget {
                         }),
                         onPressed: () async {
                           await launchUrlString(
-                            "https://opencollective.com/spotube",
+                            "https://opencollective.com/melora",
                             mode: LaunchMode.externalApplication,
                           );
                         },
@@ -105,7 +105,7 @@ class GettingStartedScreenSupportSection extends HookConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Button.primary(
-                  leading: const Icon(SpotubeIcons.extensions),
+                  leading: const Icon(MeloraIcons.extensions),
                   onPressed: () async {
                     await KVStoreService.setDoneGettingStarted(true);
                     if (context.mounted) {

@@ -1,6 +1,6 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:spotube/services/kv_store/kv_store.dart';
-import 'package:spotube/utils/platform.dart';
+import 'package:melora/services/kv_store/kv_store.dart';
+import 'package:melora/utils/platform.dart';
 import 'package:window_manager/window_manager.dart';
 
 class WindowSize {
@@ -38,28 +38,29 @@ class WindowManagerTools with WidgetsBindingObserver {
     _instance = WindowManagerTools._();
     WidgetsBinding.instance.addObserver(instance);
 
-    await windowManager.waitUntilReadyToShow(
+    windowManager.waitUntilReadyToShow(
       const WindowOptions(
-        title: "Spotube",
-        backgroundColor: Colors.transparent,
-        minimumSize: Size(300, 700),
-        titleBarStyle: TitleBarStyle.hidden,
+        title: "Melora",
+        size: Size(1280, 800),
+        minimumSize: Size(400, 700),
+        titleBarStyle: TitleBarStyle.normal,
         center: true,
+        skipTaskbar: false,
       ),
       () async {
-        final savedSize = KVStoreService.windowSize;
         await windowManager.setResizable(true);
-        if (savedSize?.maximized == true &&
-            !(await windowManager.isMaximized())) {
-          await windowManager.maximize();
-        } else if (savedSize != null) {
-          await windowManager.setSize(Size(savedSize.width, savedSize.height));
-        }
-
-        await windowManager.focus();
+        await windowManager.setSize(const Size(1280, 800));
+        await windowManager.center();
         await windowManager.show();
+        await windowManager.focus();
       },
     );
+
+    await windowManager.setSize(const Size(1280, 800));
+    await windowManager.center();
+    await windowManager.show();
+    await windowManager.focus();
+    await windowManager.focus();
   }
 
   Size? _prevSize;

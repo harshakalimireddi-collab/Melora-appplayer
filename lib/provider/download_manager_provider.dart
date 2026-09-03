@@ -7,15 +7,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:path/path.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart' hide join;
-import 'package:spotube/collections/routes.dart';
-import 'package:spotube/components/dialogs/replace_downloaded_dialog.dart';
-import 'package:spotube/extensions/dio.dart';
-import 'package:spotube/models/metadata/metadata.dart';
-import 'package:spotube/provider/metadata_plugin/audio_source/quality_presets.dart';
-import 'package:spotube/provider/server/sourced_track_provider.dart';
-import 'package:spotube/provider/user_preferences/user_preferences_provider.dart';
-import 'package:spotube/services/logger/logger.dart';
-import 'package:spotube/utils/service_utils.dart';
+import 'package:melora/collections/routes.dart';
+import 'package:melora/components/dialogs/replace_downloaded_dialog.dart';
+import 'package:melora/extensions/dio.dart';
+import 'package:melora/models/metadata/metadata.dart';
+import 'package:melora/provider/metadata_plugin/audio_source/quality_presets.dart';
+import 'package:melora/provider/server/sourced_track_provider.dart';
+import 'package:melora/provider/user_preferences/user_preferences_provider.dart';
+import 'package:melora/services/logger/logger.dart';
+import 'package:melora/utils/service_utils.dart';
 
 enum DownloadStatus {
   queued,
@@ -26,7 +26,7 @@ enum DownloadStatus {
 }
 
 class DownloadTask {
-  final SpotubeFullTrackObject track;
+  final MeloraFullTrackObject track;
   final DownloadStatus status;
   final CancelToken cancelToken;
   final int? totalSizeBytes;
@@ -45,7 +45,7 @@ class DownloadTask {
             downloadedBytesStreamController ?? StreamController.broadcast();
 
   DownloadTask copyWith({
-    SpotubeFullTrackObject? track,
+    MeloraFullTrackObject? track,
     DownloadStatus? status,
     CancelToken? cancelToken,
     int? totalSizeBytes,
@@ -86,7 +86,7 @@ class DownloadManagerNotifier extends Notifier<List<DownloadTask>> {
     return state.firstWhereOrNull((element) => element.track.id == trackId);
   }
 
-  void addToQueue(SpotubeFullTrackObject track) {
+  void addToQueue(MeloraFullTrackObject track) {
     if (state.any((element) => element.track.id == track.id)) return;
     state = [
       ...state,
@@ -102,7 +102,7 @@ class DownloadManagerNotifier extends Notifier<List<DownloadTask>> {
     _startDownloading(); // No await should be invoked to avoid stuck UI
   }
 
-  void addAllToQueue(List<SpotubeFullTrackObject> tracks) {
+  void addAllToQueue(List<MeloraFullTrackObject> tracks) {
     state = [
       ...state,
       ...tracks.map((e) => DownloadTask(
@@ -116,7 +116,7 @@ class DownloadManagerNotifier extends Notifier<List<DownloadTask>> {
     _startDownloading(); // No await should be invoked to avoid stuck UI
   }
 
-  void retry(SpotubeFullTrackObject track) {
+  void retry(MeloraFullTrackObject track) {
     if (state.firstWhereOrNull((e) => e.track.id == track.id)?.status
         case DownloadStatus.canceled || DownloadStatus.failed) {
       _setStatus(track, DownloadStatus.queued);
@@ -124,7 +124,7 @@ class DownloadManagerNotifier extends Notifier<List<DownloadTask>> {
     }
   }
 
-  void cancel(SpotubeFullTrackObject track) {
+  void cancel(MeloraFullTrackObject track) {
     if (state.firstWhereOrNull((e) => e.track.id == track.id)?.status ==
         DownloadStatus.failed) {
       return;
@@ -141,7 +141,7 @@ class DownloadManagerNotifier extends Notifier<List<DownloadTask>> {
     state = [];
   }
 
-  void _setStatus(SpotubeFullTrackObject track, DownloadStatus status) {
+  void _setStatus(MeloraFullTrackObject track, DownloadStatus status) {
     state = state.map((e) {
       if (e.track.id == track.id) {
         if ((status == DownloadStatus.canceled) && e.cancelToken.isCancelled) {

@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:media_kit/media_kit.dart' hide Track;
-import 'package:spotube/models/metadata/metadata.dart';
+import 'package:melora/models/metadata/metadata.dart';
 
 part 'state.freezed.dart';
 part 'state.g.dart';
@@ -15,7 +15,7 @@ class AudioPlayerState with _$AudioPlayerState {
     required bool shuffled,
     required List<String> collections,
     @Default(0) int currentIndex,
-    @Default([]) List<SpotubeTrackObject> tracks,
+    @Default([]) List<MeloraTrackObject> tracks,
   }) = _AudioPlayerState;
 
   factory AudioPlayerState({
@@ -24,12 +24,12 @@ class AudioPlayerState with _$AudioPlayerState {
     required bool shuffled,
     required List<String> collections,
     int currentIndex = 0,
-    List<SpotubeTrackObject> tracks = const [],
+    List<MeloraTrackObject> tracks = const [],
   }) {
     assert(
       tracks.every((track) =>
-          track is SpotubeFullTrackObject || track is SpotubeLocalTrackObject),
-      'All tracks must be either SpotubeFullTrackObject or SpotubeLocalTrackObject',
+          track is MeloraFullTrackObject || track is MeloraLocalTrackObject),
+      'All tracks must be either MeloraFullTrackObject or MeloraLocalTrackObject',
     );
 
     return AudioPlayerState._inner(
@@ -45,22 +45,22 @@ class AudioPlayerState with _$AudioPlayerState {
   factory AudioPlayerState.fromJson(Map<String, dynamic> json) =>
       _$AudioPlayerStateFromJson(json);
 
-  SpotubeTrackObject? get activeTrack {
+  MeloraTrackObject? get activeTrack {
     if (currentIndex < 0 || currentIndex >= tracks.length) return null;
     return tracks[currentIndex];
   }
 
-  bool containsTrack(SpotubeTrackObject track) {
+  bool containsTrack(MeloraTrackObject track) {
     return tracks.isNotEmpty &&
         tracks.any(
           (t) =>
-              t is SpotubeLocalTrackObject && track is SpotubeLocalTrackObject
+              t is MeloraLocalTrackObject && track is MeloraLocalTrackObject
                   ? t.path == track.path
                   : t.id == track.id,
         );
   }
 
-  bool containsTracks(List<SpotubeTrackObject> tracks) {
+  bool containsTracks(List<MeloraTrackObject> tracks) {
     return this.tracks.isNotEmpty && tracks.every(containsTrack);
   }
 

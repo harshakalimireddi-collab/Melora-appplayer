@@ -14,16 +14,16 @@ class ColorConverter extends TypeConverter<Color, int> {
   }
 }
 
-class SpotubeColorConverter extends TypeConverter<SpotubeColor, String> {
-  const SpotubeColorConverter();
+class MeloraColorConverter extends TypeConverter<MeloraColor, String> {
+  const MeloraColorConverter();
 
   @override
-  SpotubeColor fromSql(String fromDb) {
-    return SpotubeColor.fromString(fromDb);
+  MeloraColor fromSql(String fromDb) {
+    return MeloraColor.fromString(fromDb);
   }
 
   @override
-  String toSql(SpotubeColor value) {
+  String toSql(MeloraColor value) {
     return value.toString();
   }
 }

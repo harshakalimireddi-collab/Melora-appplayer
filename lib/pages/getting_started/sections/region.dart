@@ -1,12 +1,12 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:spotube/collections/language_codes.dart';
-import 'package:spotube/collections/markets.dart';
-import 'package:spotube/collections/spotube_icons.dart';
-import 'package:spotube/modules/getting_started/blur_card.dart';
-import 'package:spotube/extensions/context.dart';
-import 'package:spotube/l10n/l10n.dart';
-import 'package:spotube/provider/user_preferences/user_preferences_provider.dart';
+import 'package:melora/collections/language_codes.dart';
+import 'package:melora/collections/markets.dart';
+import 'package:melora/collections/melora_icons.dart';
+import 'package:melora/modules/getting_started/blur_card.dart';
+import 'package:melora/extensions/context.dart';
+import 'package:melora/l10n/l10n.dart';
+import 'package:melora/provider/user_preferences/user_preferences_provider.dart';
 
 class GettingStartedPageLanguageRegionSection extends HookConsumerWidget {
   final void Function() onNext;
@@ -42,7 +42,7 @@ class GettingStartedPageLanguageRegionSection extends HookConsumerWidget {
               Row(
                 children: [
                   const Icon(
-                    SpotubeIcons.language,
+                    MeloraIcons.language,
                     size: 16,
                   ),
                   const SizedBox(width: 8),
@@ -180,7 +180,7 @@ class GettingStartedPageLanguageRegionSection extends HookConsumerWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: Button.primary(
-                  trailing: const Icon(SpotubeIcons.angleRight),
+                  trailing: const Icon(MeloraIcons.angleRight),
                   onPressed: onNext,
                   child: Text(context.l10n.next),
                 ),

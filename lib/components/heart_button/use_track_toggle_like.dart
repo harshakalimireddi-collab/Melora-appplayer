@@ -1,14 +1,14 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:spotube/models/metadata/metadata.dart';
-import 'package:spotube/provider/metadata_plugin/library/tracks.dart';
+import 'package:melora/models/metadata/metadata.dart';
+import 'package:melora/provider/metadata_plugin/library/tracks.dart';
 
 typedef UseTrackToggleLike = ({
   bool isLiked,
   bool isLoading,
-  Future<void> Function(SpotubeTrackObject track) toggleTrackLike,
+  Future<void> Function(MeloraTrackObject track) toggleTrackLike,
 });
 
-UseTrackToggleLike useTrackToggleLike(SpotubeTrackObject track, WidgetRef ref) {
+UseTrackToggleLike useTrackToggleLike(MeloraTrackObject track, WidgetRef ref) {
   final savedTracksNotifier =
       ref.watch(metadataPluginSavedTracksProvider.notifier);
 

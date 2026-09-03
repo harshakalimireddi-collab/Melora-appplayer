@@ -3,20 +3,20 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/shadcn_flutter_extension.dart';
-import 'package:spotube/extensions/context.dart';
+import 'package:melora/extensions/context.dart';
 
-import 'package:spotube/provider/user_preferences/user_preferences_provider.dart';
+import 'package:melora/provider/user_preferences/user_preferences_provider.dart';
 
-class SpotubeColor extends Color {
+class MeloraColor extends Color {
   final String name;
 
-  const SpotubeColor(super.color, {required this.name});
+  const MeloraColor(super.color, {required this.name});
 
-  const SpotubeColor.from(super.value, {required this.name});
+  const MeloraColor.from(super.value, {required this.name});
 
-  factory SpotubeColor.fromString(String string) {
+  factory MeloraColor.fromString(String string) {
     final slices = string.split(":");
-    return SpotubeColor(int.parse(slices.last), name: slices.first);
+    return MeloraColor(int.parse(slices.last), name: slices.first);
   }
 
   @override
@@ -25,19 +25,19 @@ class SpotubeColor extends Color {
   }
 }
 
-final Set<SpotubeColor> colorsMap = {
-  SpotubeColor(Colors.slate.value, name: "slate"),
-  SpotubeColor(Colors.gray.value, name: "gray"),
-  SpotubeColor(Colors.zinc.value, name: "zinc"),
-  SpotubeColor(Colors.neutral.value, name: "neutral"),
-  SpotubeColor(Colors.stone.value, name: "stone"),
-  SpotubeColor(Colors.red.value, name: "red"),
-  SpotubeColor(Colors.orange.value, name: "orange"),
-  SpotubeColor(Colors.yellow.value, name: "yellow"),
-  SpotubeColor(Colors.green.value, name: "green"),
-  SpotubeColor(Colors.blue.value, name: "blue"),
-  SpotubeColor(Colors.violet.value, name: "violet"),
-  SpotubeColor(Colors.rose.value, name: "rose"),
+final Set<MeloraColor> colorsMap = {
+  MeloraColor(Colors.slate.value, name: "slate"),
+  MeloraColor(Colors.gray.value, name: "gray"),
+  MeloraColor(Colors.zinc.value, name: "zinc"),
+  MeloraColor(Colors.neutral.value, name: "neutral"),
+  MeloraColor(Colors.stone.value, name: "stone"),
+  MeloraColor(Colors.red.value, name: "red"),
+  MeloraColor(Colors.orange.value, name: "orange"),
+  MeloraColor(Colors.yellow.value, name: "yellow"),
+  MeloraColor(Colors.green.value, name: "green"),
+  MeloraColor(Colors.blue.value, name: "blue"),
+  MeloraColor(Colors.violet.value, name: "violet"),
+  MeloraColor(Colors.rose.value, name: "rose"),
 };
 
 final colorSchemeMap = {

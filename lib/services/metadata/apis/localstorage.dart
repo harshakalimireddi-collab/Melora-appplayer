@@ -8,7 +8,7 @@ class SharedPreferencesLocalStorage implements Localstorage {
   SharedPreferencesLocalStorage(this._prefs, this.pluginSlug);
 
   String prefix(String key) {
-    return 'spotube_plugin.$pluginSlug.$key';
+    return 'melora_plugin.$pluginSlug.$key';
   }
 
   @override

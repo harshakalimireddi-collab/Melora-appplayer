@@ -2,20 +2,20 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:spotube/models/metadata/metadata.dart';
-import 'package:spotube/provider/audio_player/audio_player.dart';
-import 'package:spotube/provider/audio_player/state.dart';
-import 'package:spotube/provider/discord_provider.dart';
-import 'package:spotube/provider/history/history.dart';
-import 'package:spotube/provider/metadata_plugin/core/scrobble.dart';
-import 'package:spotube/provider/metadata_plugin/metadata_plugin_provider.dart';
-import 'package:spotube/provider/server/sourced_track_provider.dart';
-import 'package:spotube/provider/skip_segments/skip_segments.dart';
-import 'package:spotube/provider/scrobbler/scrobbler.dart';
-import 'package:spotube/provider/user_preferences/user_preferences_provider.dart';
-import 'package:spotube/services/audio_player/audio_player.dart';
-import 'package:spotube/services/audio_services/audio_services.dart';
-import 'package:spotube/services/logger/logger.dart';
+import 'package:melora/models/metadata/metadata.dart';
+import 'package:melora/provider/audio_player/audio_player.dart';
+import 'package:melora/provider/audio_player/state.dart';
+import 'package:melora/provider/discord_provider.dart';
+import 'package:melora/provider/history/history.dart';
+import 'package:melora/provider/metadata_plugin/core/scrobble.dart';
+import 'package:melora/provider/metadata_plugin/metadata_plugin_provider.dart';
+import 'package:melora/provider/server/sourced_track_provider.dart';
+import 'package:melora/provider/skip_segments/skip_segments.dart';
+import 'package:melora/provider/scrobbler/scrobbler.dart';
+import 'package:melora/provider/user_preferences/user_preferences_provider.dart';
+import 'package:melora/services/audio_player/audio_player.dart';
+import 'package:melora/services/audio_services/audio_services.dart';
+import 'package:melora/services/logger/logger.dart';
 
 class AudioPlayerStreamListeners {
   final Ref ref;
@@ -86,8 +86,8 @@ class AudioPlayerStreamListeners {
     String? lastScrobbled;
     return audioPlayer.positionStream.listen((position) async {
       try {
-        final uid = audioPlayerState.activeTrack is SpotubeLocalTrackObject
-            ? (audioPlayerState.activeTrack as SpotubeLocalTrackObject).path
+        final uid = audioPlayerState.activeTrack is MeloraLocalTrackObject
+            ? (audioPlayerState.activeTrack as MeloraLocalTrackObject).path
             : audioPlayerState.activeTrack?.id;
 
         /// According to Listenbrainz and Last.fm, a scrobble should be sent
@@ -120,7 +120,7 @@ class AudioPlayerStreamListeners {
           );
           activeTrack = activeTrack.copyWith(
             artists: artists
-                .map((e) => SpotubeSimpleArtistObject.fromJson(e.toJson()))
+                .map((e) => MeloraSimpleArtistObject.fromJson(e.toJson()))
                 .toList(),
           );
         }
@@ -149,13 +149,13 @@ class AudioPlayerStreamListeners {
 
         if (nextTrack == null ||
             lastTrack == nextTrack.id ||
-            nextTrack is SpotubeLocalTrackObject) {
+            nextTrack is MeloraLocalTrackObject) {
           return;
         }
 
         try {
           await ref.read(
-            sourcedTrackProvider(nextTrack as SpotubeFullTrackObject).future,
+            sourcedTrackProvider(nextTrack as MeloraFullTrackObject).future,
           );
         } finally {
           lastTrack = nextTrack.id;

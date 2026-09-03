@@ -4,23 +4,23 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:spotube/collections/routes.dart';
-import 'package:spotube/collections/routes.gr.dart';
-import 'package:spotube/components/dialogs/playlist_add_track_dialog.dart';
-import 'package:spotube/components/dialogs/prompt_dialog.dart';
-import 'package:spotube/components/dialogs/track_details_dialog.dart';
-import 'package:spotube/extensions/context.dart';
-import 'package:spotube/models/database/database.dart';
-import 'package:spotube/models/metadata/metadata.dart';
-import 'package:spotube/provider/audio_player/audio_player.dart';
-import 'package:spotube/provider/blacklist_provider.dart';
-import 'package:spotube/provider/download_manager_provider.dart';
-import 'package:spotube/provider/local_tracks/local_tracks_provider.dart';
-import 'package:spotube/provider/metadata_plugin/core/auth.dart';
-import 'package:spotube/provider/metadata_plugin/library/playlists.dart';
-import 'package:spotube/provider/metadata_plugin/library/tracks.dart';
-import 'package:spotube/provider/metadata_plugin/metadata_plugin_provider.dart';
-import 'package:spotube/services/metadata/errors/exceptions.dart';
+import 'package:melora/collections/routes.dart';
+import 'package:melora/collections/routes.gr.dart';
+import 'package:melora/components/dialogs/playlist_add_track_dialog.dart';
+import 'package:melora/components/dialogs/prompt_dialog.dart';
+import 'package:melora/components/dialogs/track_details_dialog.dart';
+import 'package:melora/extensions/context.dart';
+import 'package:melora/models/database/database.dart';
+import 'package:melora/models/metadata/metadata.dart';
+import 'package:melora/provider/audio_player/audio_player.dart';
+import 'package:melora/provider/blacklist_provider.dart';
+import 'package:melora/provider/download_manager_provider.dart';
+import 'package:melora/provider/local_tracks/local_tracks_provider.dart';
+import 'package:melora/provider/metadata_plugin/core/auth.dart';
+import 'package:melora/provider/metadata_plugin/library/playlists.dart';
+import 'package:melora/provider/metadata_plugin/library/tracks.dart';
+import 'package:melora/provider/metadata_plugin/metadata_plugin_provider.dart';
+import 'package:melora/services/metadata/errors/exceptions.dart';
 
 enum TrackOptionValue {
   album,
@@ -40,7 +40,7 @@ enum TrackOptionValue {
 
 class TrackOptionsActions {
   final Ref ref;
-  final SpotubeTrackObject track;
+  final MeloraTrackObject track;
 
   TrackOptionsActions(this.ref, this.track);
 
@@ -143,7 +143,7 @@ class TrackOptionsActions {
         );
         break;
       case TrackOptionValue.delete:
-        await File((track as SpotubeLocalTrackObject).path).delete();
+        await File((track as MeloraLocalTrackObject).path).delete();
         ref.invalidate(localTracksProvider);
         break;
       case TrackOptionValue.addToQueue:
@@ -236,18 +236,18 @@ class TrackOptionsActions {
         actionShare(context);
         break;
       case TrackOptionValue.details:
-        if (track is! SpotubeFullTrackObject) break;
+        if (track is! MeloraFullTrackObject) break;
         showDialog(
           context: context,
           builder: (context) => ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 400),
-            child: TrackDetailsDialog(track: track as SpotubeFullTrackObject),
+            child: TrackDetailsDialog(track: track as MeloraFullTrackObject),
           ),
         );
         break;
       case TrackOptionValue.download:
-        if (track is SpotubeLocalTrackObject) break;
-        downloadManager.addToQueue(track as SpotubeFullTrackObject);
+        if (track is MeloraLocalTrackObject) break;
+        downloadManager.addToQueue(track as MeloraFullTrackObject);
         break;
       case TrackOptionValue.startRadio:
         actionStartRadio(context);
@@ -267,12 +267,12 @@ typedef TrackOptionFlags = ({
 });
 
 final trackOptionActionsProvider =
-    Provider.family<TrackOptionsActions, SpotubeTrackObject>(
+    Provider.family<TrackOptionsActions, MeloraTrackObject>(
   (ref, track) => TrackOptionsActions(ref, track),
 );
 
 final trackOptionsStateProvider =
-    Provider.family<TrackOptionFlags, SpotubeTrackObject>((ref, track) {
+    Provider.family<TrackOptionFlags, MeloraTrackObject>((ref, track) {
   ref.watch(downloadManagerProvider);
   ref.watch(blacklistProvider);
 
@@ -287,7 +287,7 @@ final trackOptionsStateProvider =
       ? null
       : downloadManager.getTaskByTrackId(playlist.activeTrack!.id);
   final isInDownloadQueue = playlist.activeTrack == null ||
-          playlist.activeTrack! is SpotubeLocalTrackObject
+          playlist.activeTrack! is MeloraLocalTrackObject
       ? false
       : const [
           DownloadStatus.queued,

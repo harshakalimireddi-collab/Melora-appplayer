@@ -1,43 +1,43 @@
 import 'dart:io';
 
 import 'package:media_kit/media_kit.dart' hide Track;
-import 'package:spotube/models/metadata/metadata.dart';
-import 'package:spotube/services/logger/logger.dart';
+import 'package:melora/models/metadata/metadata.dart';
+import 'package:melora/services/logger/logger.dart';
 import 'package:flutter/foundation.dart';
-import 'package:spotube/services/audio_player/custom_player.dart';
+import 'package:melora/services/audio_player/custom_player.dart';
 import 'dart:async';
 
 import 'package:media_kit/media_kit.dart' as mk;
 
-import 'package:spotube/services/audio_player/playback_state.dart';
-import 'package:spotube/utils/platform.dart';
+import 'package:melora/services/audio_player/playback_state.dart';
+import 'package:melora/utils/platform.dart';
 
 part 'audio_players_streams_mixin.dart';
 part 'audio_player_impl.dart';
 
-class SpotubeMedia extends mk.Media {
+class MeloraMedia extends mk.Media {
   static int serverPort = 0;
 
   static String get _host =>
       kIsWindows ? "localhost" : InternetAddress.anyIPv4.address;
 
-  final SpotubeTrackObject track;
-  SpotubeMedia(this.track)
+  final MeloraTrackObject track;
+  MeloraMedia(this.track)
       : assert(
-          track is SpotubeLocalTrackObject || track is SpotubeFullTrackObject,
+          track is MeloraLocalTrackObject || track is MeloraFullTrackObject,
           "Track must be a either a local track or a full track object with ISRC",
         ),
         // If the track is a local track, use its path, otherwise use the server URL
         super(
-          track is SpotubeLocalTrackObject
+          track is MeloraLocalTrackObject
               ? track.path
               : "http://$_host:$serverPort/stream/${track.id}",
           extras: track.toJson(),
         );
 
-  factory SpotubeMedia.media(Media media) {
+  factory MeloraMedia.media(Media media) {
     assert(media.extras != null, "[Media] must have extra metadata set");
-    return SpotubeMedia(SpotubeTrackObject.fromJson(media.extras!));
+    return MeloraMedia(MeloraTrackObject.fromJson(media.extras!));
   }
 }
 
@@ -47,7 +47,7 @@ abstract class AudioPlayerInterface {
   AudioPlayerInterface()
       : _mkPlayer = CustomPlayer(
           configuration: const mk.PlayerConfiguration(
-            title: "Spotube",
+            title: "Melora",
             logLevel: kDebugMode ? mk.MPVLogLevel.info : mk.MPVLogLevel.error,
             async: true,
           ),

@@ -1,14 +1,14 @@
 part of 'metadata.dart';
 
 @freezed
-class SpotubeUserObject with _$SpotubeUserObject {
-  factory SpotubeUserObject({
+class MeloraUserObject with _$MeloraUserObject {
+  factory MeloraUserObject({
     required final String id,
     required final String name,
-    @Default([]) final List<SpotubeImageObject> images,
+    @Default([]) final List<MeloraImageObject> images,
     required final String externalUri,
-  }) = _SpotubeUserObject;
+  }) = _MeloraUserObject;
 
-  factory SpotubeUserObject.fromJson(Map<String, dynamic> json) =>
-      _$SpotubeUserObjectFromJson(json);
+  factory MeloraUserObject.fromJson(Map<String, dynamic> json) =>
+      _$MeloraUserObjectFromJson(json);
 }

@@ -1,9 +1,9 @@
 part of 'audio_player.dart';
 
-final audioPlayer = SpotubeAudioPlayer();
+final audioPlayer = MeloraAudioPlayer();
 
-class SpotubeAudioPlayer extends AudioPlayerInterface
-    with SpotubeAudioPlayersStreams {
+class MeloraAudioPlayer extends AudioPlayerInterface
+    with MeloraAudioPlayersStreams {
   Future<void> pause() async {
     await _mkPlayer.pause();
   }

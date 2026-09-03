@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:spotube/models/metadata/metadata.dart';
-import 'package:spotube/provider/metadata_plugin/utils/paginated.dart';
-import 'package:spotube/services/dio/dio.dart';
+import 'package:melora/models/metadata/metadata.dart';
+import 'package:melora/provider/metadata_plugin/utils/paginated.dart';
+import 'package:melora/services/dio/dio.dart';
 
 class MetadataPluginRepositoriesNotifier
     extends PaginatedAsyncNotifier<MetadataPluginRepository> {
@@ -14,7 +14,7 @@ class MetadataPluginRepositoriesNotifier
     final gitubSearch = globalDio.get(
       "https://api.github.com/search/repositories",
       queryParameters: {
-        "q": "topic:spotube-plugin",
+        "q": "topic:melora-plugin",
         "sort": "stars",
         "order": "desc",
         "page": offset,
@@ -25,7 +25,7 @@ class MetadataPluginRepositoriesNotifier
     final codebergSearch = globalDio.get(
       "https://codeberg.org/api/v1/repos/search",
       queryParameters: {
-        "q": "spotube-plugin",
+        "q": "melora-plugin",
         "topic": "true",
         "sort": "stars",
         "order": "desc",
@@ -62,7 +62,7 @@ class MetadataPluginRepositoriesNotifier
       return _hasMore[response.requestOptions.uri.host] ?? false;
     });
 
-    return SpotubePaginationResponseObject(
+    return MeloraPaginationResponseObject(
       items: repos,
       total: responses.fold<int>(
         0,
@@ -85,6 +85,6 @@ class MetadataPluginRepositoriesNotifier
 
 final metadataPluginRepositoriesProvider = AsyncNotifierProvider<
     MetadataPluginRepositoriesNotifier,
-    SpotubePaginationResponseObject<MetadataPluginRepository>>(
+    MeloraPaginationResponseObject<MetadataPluginRepository>>(
   () => MetadataPluginRepositoriesNotifier(),
 );

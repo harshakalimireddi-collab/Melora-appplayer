@@ -1,4 +1,4 @@
-# Code of Conduct - Spotube
+# Code of Conduct - Melora
 
 ## Our Pledge
 

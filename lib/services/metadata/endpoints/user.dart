@@ -1,6 +1,6 @@
 import 'package:hetu_script/hetu_script.dart';
 import 'package:hetu_script/values.dart';
-import 'package:spotube/models/metadata/metadata.dart';
+import 'package:melora/models/metadata/metadata.dart';
 
 class MetadataPluginUserEndpoint {
   final Hetu hetu;
@@ -10,15 +10,15 @@ class MetadataPluginUserEndpoint {
       (hetu.fetch("metadataPlugin") as HTInstance).memberGet("user")
           as HTInstance;
 
-  Future<SpotubeUserObject> me() async {
+  Future<MeloraUserObject> me() async {
     final raw = await hetuMetadataUser.invoke("me") as Map;
 
-    return SpotubeUserObject.fromJson(
+    return MeloraUserObject.fromJson(
       raw.cast<String, dynamic>(),
     );
   }
 
-  Future<SpotubePaginationResponseObject<SpotubeFullTrackObject>> savedTracks({
+  Future<MeloraPaginationResponseObject<MeloraFullTrackObject>> savedTracks({
     int? offset,
     int? limit,
   }) async {
@@ -30,14 +30,14 @@ class MetadataPluginUserEndpoint {
       }..removeWhere((key, value) => value == null),
     ) as Map;
 
-    return SpotubePaginationResponseObject<SpotubeFullTrackObject>.fromJson(
+    return MeloraPaginationResponseObject<MeloraFullTrackObject>.fromJson(
       raw.cast<String, dynamic>(),
       (Map json) =>
-          SpotubeFullTrackObject.fromJson(json.cast<String, dynamic>()),
+          MeloraFullTrackObject.fromJson(json.cast<String, dynamic>()),
     );
   }
 
-  Future<SpotubePaginationResponseObject<SpotubeSimplePlaylistObject>>
+  Future<MeloraPaginationResponseObject<MeloraSimplePlaylistObject>>
       savedPlaylists({
     int? offset,
     int? limit,
@@ -50,15 +50,15 @@ class MetadataPluginUserEndpoint {
       }..removeWhere((key, value) => value == null),
     ) as Map;
 
-    return SpotubePaginationResponseObject<
-        SpotubeSimplePlaylistObject>.fromJson(
+    return MeloraPaginationResponseObject<
+        MeloraSimplePlaylistObject>.fromJson(
       raw.cast<String, dynamic>(),
       (Map json) =>
-          SpotubeSimplePlaylistObject.fromJson(json.cast<String, dynamic>()),
+          MeloraSimplePlaylistObject.fromJson(json.cast<String, dynamic>()),
     );
   }
 
-  Future<SpotubePaginationResponseObject<SpotubeSimpleAlbumObject>>
+  Future<MeloraPaginationResponseObject<MeloraSimpleAlbumObject>>
       savedAlbums({
     int? offset,
     int? limit,
@@ -71,14 +71,14 @@ class MetadataPluginUserEndpoint {
       }..removeWhere((key, value) => value == null),
     ) as Map;
 
-    return SpotubePaginationResponseObject<SpotubeSimpleAlbumObject>.fromJson(
+    return MeloraPaginationResponseObject<MeloraSimpleAlbumObject>.fromJson(
       raw.cast<String, dynamic>(),
       (Map json) =>
-          SpotubeSimpleAlbumObject.fromJson(json.cast<String, dynamic>()),
+          MeloraSimpleAlbumObject.fromJson(json.cast<String, dynamic>()),
     );
   }
 
-  Future<SpotubePaginationResponseObject<SpotubeFullArtistObject>>
+  Future<MeloraPaginationResponseObject<MeloraFullArtistObject>>
       savedArtists({
     int? offset,
     int? limit,
@@ -91,10 +91,10 @@ class MetadataPluginUserEndpoint {
       }..removeWhere((key, value) => value == null),
     ) as Map;
 
-    return SpotubePaginationResponseObject<SpotubeFullArtistObject>.fromJson(
+    return MeloraPaginationResponseObject<MeloraFullArtistObject>.fromJson(
       raw.cast<String, dynamic>(),
       (Map json) =>
-          SpotubeFullArtistObject.fromJson(json.cast<String, dynamic>()),
+          MeloraFullArtistObject.fromJson(json.cast<String, dynamic>()),
     );
   }
 

@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:scrobblenaut/scrobblenaut.dart';
-import 'package:spotube/collections/env.dart';
-import 'package:spotube/models/database/database.dart';
-import 'package:spotube/models/metadata/metadata.dart';
-import 'package:spotube/provider/database/database.dart';
-import 'package:spotube/services/logger/logger.dart';
+import 'package:melora/collections/env.dart';
+import 'package:melora/models/database/database.dart';
+import 'package:melora/models/metadata/metadata.dart';
+import 'package:melora/provider/database/database.dart';
+import 'package:melora/services/logger/logger.dart';
 
 class ScrobblerNotifier extends AsyncNotifier<Scrobblenaut?> {
-  final StreamController<SpotubeTrackObject> _scrobbleController =
-      StreamController<SpotubeTrackObject>.broadcast();
+  final StreamController<MeloraTrackObject> _scrobbleController =
+      StreamController<MeloraTrackObject>.broadcast();
   @override
   build() async {
     final database = ref.watch(databaseProvider);
@@ -107,18 +107,18 @@ class ScrobblerNotifier extends AsyncNotifier<Scrobblenaut?> {
     await database.delete(database.scrobblerTable).go();
   }
 
-  void scrobble(SpotubeTrackObject track) {
+  void scrobble(MeloraTrackObject track) {
     _scrobbleController.add(track);
   }
 
-  Future<void> love(SpotubeTrackObject track) async {
+  Future<void> love(MeloraTrackObject track) async {
     await state.asData?.value?.track.love(
       artist: track.artists.asString(),
       track: track.name,
     );
   }
 
-  Future<void> unlove(SpotubeTrackObject track) async {
+  Future<void> unlove(MeloraTrackObject track) async {
     await state.asData?.value?.track.unLove(
       artist: track.artists.asString(),
       track: track.name,

@@ -3,23 +3,23 @@ import 'dart:ui';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:spotube/collections/fake.dart';
-import 'package:spotube/collections/routes.gr.dart';
-import 'package:spotube/collections/spotube_icons.dart';
-import 'package:spotube/components/heart_button/heart_button.dart';
-import 'package:spotube/components/image/universal_image.dart';
-import 'package:spotube/components/links/artist_link.dart';
-import 'package:spotube/components/links/link_text.dart';
-import 'package:spotube/components/titlebar/titlebar.dart';
-import 'package:spotube/components/track_tile/track_options_button.dart';
-import 'package:spotube/extensions/context.dart';
-import 'package:spotube/extensions/list.dart';
-import 'package:spotube/models/metadata/metadata.dart';
-import 'package:spotube/provider/audio_player/audio_player.dart';
-import 'package:spotube/provider/metadata_plugin/tracks/track.dart';
-import 'package:spotube/services/audio_player/audio_player.dart';
+import 'package:melora/collections/fake.dart';
+import 'package:melora/collections/routes.gr.dart';
+import 'package:melora/collections/melora_icons.dart';
+import 'package:melora/components/heart_button/heart_button.dart';
+import 'package:melora/components/image/universal_image.dart';
+import 'package:melora/components/links/artist_link.dart';
+import 'package:melora/components/links/link_text.dart';
+import 'package:melora/components/titlebar/titlebar.dart';
+import 'package:melora/components/track_tile/track_options_button.dart';
+import 'package:melora/extensions/context.dart';
+import 'package:melora/extensions/list.dart';
+import 'package:melora/models/metadata/metadata.dart';
+import 'package:melora/provider/audio_player/audio_player.dart';
+import 'package:melora/provider/metadata_plugin/tracks/track.dart';
+import 'package:melora/services/audio_player/audio_player.dart';
 
-import 'package:spotube/extensions/constrains.dart';
+import 'package:melora/extensions/constrains.dart';
 import 'package:auto_route/auto_route.dart';
 
 @RoutePage()
@@ -140,7 +140,7 @@ class TrackPage extends HookConsumerWidget {
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const Icon(SpotubeIcons.album),
+                                    const Icon(MeloraIcons.album),
                                     const Gap(5),
                                     Flexible(
                                       child: LinkText(
@@ -158,7 +158,7 @@ class TrackPage extends HookConsumerWidget {
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const Icon(SpotubeIcons.artist),
+                                    const Icon(MeloraIcons.artist),
                                     const Gap(5),
                                     Flexible(
                                       child: ArtistLink(
@@ -183,7 +183,7 @@ class TrackPage extends HookConsumerWidget {
                                               .containsBy(track, (t) => t.id))
                                         Button.outline(
                                           leading:
-                                              const Icon(SpotubeIcons.queueAdd),
+                                              const Icon(MeloraIcons.queueAdd),
                                           child: Text(context.l10n.queue),
                                           onPressed: () {
                                             playlistNotifier.addTrack(track);
@@ -199,7 +199,7 @@ class TrackPage extends HookConsumerWidget {
                                           ).call,
                                           child: IconButton.outline(
                                             icon: const Icon(
-                                                SpotubeIcons.lightning),
+                                                MeloraIcons.lightning),
                                             onPressed: () {
                                               playlistNotifier
                                                   .addTracksAtFirst([track]);
@@ -219,8 +219,8 @@ class TrackPage extends HookConsumerWidget {
                                           shape: ButtonShape.circle,
                                           icon: Icon(
                                             isActive
-                                                ? SpotubeIcons.pause
-                                                : SpotubeIcons.play,
+                                                ? MeloraIcons.pause
+                                                : MeloraIcons.play,
                                           ),
                                           onPressed: onPlay,
                                         ),

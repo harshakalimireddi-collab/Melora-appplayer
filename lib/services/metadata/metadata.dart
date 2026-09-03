@@ -3,29 +3,29 @@ import 'dart:typed_data';
 import 'package:auto_route/auto_route.dart';
 import 'package:hetu_otp_util/hetu_otp_util.dart';
 import 'package:hetu_script/hetu_script.dart';
-import 'package:hetu_spotube_plugin/hetu_spotube_plugin.dart' as spotube_plugin;
+import 'package:hetu_spotube_plugin/hetu_spotube_plugin.dart' as melora_plugin;
 import 'package:hetu_spotube_plugin/hetu_spotube_plugin.dart'
     hide YouTubeEngine;
 import 'package:hetu_std/hetu_std.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:spotube/collections/routes.dart';
-import 'package:spotube/collections/routes.gr.dart';
-import 'package:spotube/components/titlebar/titlebar.dart';
-import 'package:spotube/models/metadata/metadata.dart';
-import 'package:spotube/services/metadata/apis/localstorage.dart';
-import 'package:spotube/services/metadata/endpoints/album.dart';
-import 'package:spotube/services/metadata/endpoints/artist.dart';
-import 'package:spotube/services/metadata/endpoints/audio_source.dart';
-import 'package:spotube/services/metadata/endpoints/auth.dart';
-import 'package:spotube/services/metadata/endpoints/browse.dart';
-import 'package:spotube/services/metadata/endpoints/playlist.dart';
-import 'package:spotube/services/metadata/endpoints/search.dart';
-import 'package:spotube/services/metadata/endpoints/track.dart';
-import 'package:spotube/services/metadata/endpoints/core.dart';
-import 'package:spotube/services/metadata/endpoints/user.dart';
-import 'package:spotube/services/youtube_engine/youtube_engine.dart';
+import 'package:melora/collections/routes.dart';
+import 'package:melora/collections/routes.gr.dart';
+import 'package:melora/components/titlebar/titlebar.dart';
+import 'package:melora/models/metadata/metadata.dart';
+import 'package:melora/services/metadata/apis/localstorage.dart';
+import 'package:melora/services/metadata/endpoints/album.dart';
+import 'package:melora/services/metadata/endpoints/artist.dart';
+import 'package:melora/services/metadata/endpoints/audio_source.dart';
+import 'package:melora/services/metadata/endpoints/auth.dart';
+import 'package:melora/services/metadata/endpoints/browse.dart';
+import 'package:melora/services/metadata/endpoints/playlist.dart';
+import 'package:melora/services/metadata/endpoints/search.dart';
+import 'package:melora/services/metadata/endpoints/track.dart';
+import 'package:melora/services/metadata/endpoints/core.dart';
+import 'package:melora/services/metadata/endpoints/user.dart';
+import 'package:melora/services/youtube_engine/youtube_engine.dart';
 
 const defaultMetadataLimit = "20";
 
@@ -82,7 +82,7 @@ class MetadataPlugin {
         );
       },
       createYoutubeEngine: () {
-        return spotube_plugin.YouTubeEngine(
+        return melora_plugin.YouTubeEngine(
           search: (query) async {
             final result = await youtubeEngine.searchVideos(query);
             return result

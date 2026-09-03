@@ -1,12 +1,12 @@
 import 'package:riverpod/riverpod.dart';
-import 'package:spotube/models/metadata/metadata.dart';
-import 'package:spotube/provider/metadata_plugin/core/auth.dart';
-import 'package:spotube/provider/metadata_plugin/utils/paginated.dart';
+import 'package:melora/models/metadata/metadata.dart';
+import 'package:melora/provider/metadata_plugin/core/auth.dart';
+import 'package:melora/provider/metadata_plugin/utils/paginated.dart';
 
 class MetadataPluginSavedArtistNotifier
-    extends PaginatedAsyncNotifier<SpotubeFullArtistObject> {
+    extends PaginatedAsyncNotifier<MeloraFullArtistObject> {
   @override
-  Future<SpotubePaginationResponseObject<SpotubeFullArtistObject>> fetch(
+  Future<MeloraPaginationResponseObject<MeloraFullArtistObject>> fetch(
     int offset,
     int limit,
   ) async {
@@ -24,7 +24,7 @@ class MetadataPluginSavedArtistNotifier
     return await fetch(0, 20);
   }
 
-  Future<void> addFavorite(List<SpotubeFullArtistObject> artists) async {
+  Future<void> addFavorite(List<MeloraFullArtistObject> artists) async {
     if (artists.isEmpty || state.value == null) return;
     final oldState = state.value;
 
@@ -46,7 +46,7 @@ class MetadataPluginSavedArtistNotifier
     }
   }
 
-  Future<void> removeFavorite(List<SpotubeFullArtistObject> artists) async {
+  Future<void> removeFavorite(List<MeloraFullArtistObject> artists) async {
     if (artists.isEmpty || state.value == null) return;
 
     final oldState = state.value;
@@ -73,7 +73,7 @@ class MetadataPluginSavedArtistNotifier
 
 final metadataPluginSavedArtistsProvider = AsyncNotifierProvider<
     MetadataPluginSavedArtistNotifier,
-    SpotubePaginationResponseObject<SpotubeFullArtistObject>>(
+    MeloraPaginationResponseObject<MeloraFullArtistObject>>(
   () => MetadataPluginSavedArtistNotifier(),
 );
 

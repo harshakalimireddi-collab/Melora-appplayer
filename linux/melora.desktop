@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Melora
+Exec=/usr/bin/melora
+Icon=/usr/share/icons/melora/melora-logo.png
+Comment=Melora - Your personal music streaming app
+Terminal=false
+Categories=Audio;Music;Player;AudioVideo;
+# MimeType=x-scheme-handler/melora;

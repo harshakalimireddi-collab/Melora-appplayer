@@ -14,20 +14,20 @@ import 'package:flutter/widgets.dart';
 class $AssetsBrandingGen {
   const $AssetsBrandingGen();
 
-  /// File path: assets/branding/spotube-logo-light.png
-  AssetGenImage get spotubeLogoLight =>
-      const AssetGenImage('assets/branding/spotube-logo-light.png');
+  /// File path: assets/branding/melora-logo-light.png
+  AssetGenImage get meloraLogoLight =>
+      const AssetGenImage('assets/branding/melora-logo-light.png');
 
-  /// File path: assets/branding/spotube-logo.ico
-  String get spotubeLogoIco => 'assets/branding/spotube-logo.ico';
+  /// File path: assets/branding/melora-logo.ico
+  String get meloraLogoIco => 'assets/branding/melora-logo.ico';
 
-  /// File path: assets/branding/spotube-logo.png
-  AssetGenImage get spotubeLogoPng =>
-      const AssetGenImage('assets/branding/spotube-logo.png');
+  /// File path: assets/branding/melora-logo.png
+  AssetGenImage get meloraLogoPng =>
+      const AssetGenImage('assets/branding/melora-logo.png');
 
   /// List of all assets
   List<dynamic> get values =>
-      [spotubeLogoLight, spotubeLogoIco, spotubeLogoPng];
+      [meloraLogoLight, meloraLogoIco, meloraLogoPng];
 }
 
 class $AssetsImagesGen {
@@ -69,14 +69,14 @@ class $AssetsImagesGen {
 class $AssetsPluginsGen {
   const $AssetsPluginsGen();
 
-  /// Directory path: assets/plugins/spotube-plugin-musicbrainz-listenbrainz
-  $AssetsPluginsSpotubePluginMusicbrainzListenbrainzGen
-      get spotubePluginMusicbrainzListenbrainz =>
-          const $AssetsPluginsSpotubePluginMusicbrainzListenbrainzGen();
+  /// Directory path: assets/plugins/melora-plugin-musicbrainz-listenbrainz
+  $AssetsPluginsMeloraPluginMusicbrainzListenbrainzGen
+      get MeloraPluginMusicbrainzListenbrainz =>
+          const $AssetsPluginsMeloraPluginMusicbrainzListenbrainzGen();
 
-  /// Directory path: assets/plugins/spotube-plugin-youtube-audio
-  $AssetsPluginsSpotubePluginYoutubeAudioGen get spotubePluginYoutubeAudio =>
-      const $AssetsPluginsSpotubePluginYoutubeAudioGen();
+  /// Directory path: assets/plugins/melora-plugin-youtube-audio
+  $AssetsPluginsMeloraPluginYoutubeAudioGen get MeloraPluginYoutubeAudio =>
+      const $AssetsPluginsMeloraPluginYoutubeAudioGen();
 }
 
 class $AssetsImagesLogosGen {
@@ -98,23 +98,23 @@ class $AssetsImagesLogosGen {
   List<AssetGenImage> get values => [dabMusic, invidious, jiosaavn];
 }
 
-class $AssetsPluginsSpotubePluginMusicbrainzListenbrainzGen {
-  const $AssetsPluginsSpotubePluginMusicbrainzListenbrainzGen();
+class $AssetsPluginsMeloraPluginMusicbrainzListenbrainzGen {
+  const $AssetsPluginsMeloraPluginMusicbrainzListenbrainzGen();
 
-  /// File path: assets/plugins/spotube-plugin-musicbrainz-listenbrainz/plugin.smplug
+  /// File path: assets/plugins/melora-plugin-musicbrainz-listenbrainz/plugin.smplug
   String get plugin =>
-      'assets/plugins/spotube-plugin-musicbrainz-listenbrainz/plugin.smplug';
+      'assets/plugins/melora-plugin-musicbrainz-listenbrainz/plugin.smplug';
 
   /// List of all assets
   List<String> get values => [plugin];
 }
 
-class $AssetsPluginsSpotubePluginYoutubeAudioGen {
-  const $AssetsPluginsSpotubePluginYoutubeAudioGen();
+class $AssetsPluginsMeloraPluginYoutubeAudioGen {
+  const $AssetsPluginsMeloraPluginYoutubeAudioGen();
 
-  /// File path: assets/plugins/spotube-plugin-youtube-audio/plugin.smplug
+  /// File path: assets/plugins/melora-plugin-youtube-audio/plugin.smplug
   String get plugin =>
-      'assets/plugins/spotube-plugin-youtube-audio/plugin.smplug';
+      'assets/plugins/melora-plugin-youtube-audio/plugin.smplug';
 
   /// List of all assets
   List<String> get values => [plugin];

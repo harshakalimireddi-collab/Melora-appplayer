@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:drift/extensions/json1.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:spotube/models/database/database.dart';
-import 'package:spotube/provider/database/database.dart';
+import 'package:melora/models/database/database.dart';
+import 'package:melora/provider/database/database.dart';
 
 class PlaybackHistorySummary {
   final Duration duration;

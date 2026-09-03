@@ -1,16 +1,16 @@
 import 'package:collection/collection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:spotube/collections/language_codes.dart';
-import 'package:spotube/collections/markets.dart';
-import 'package:spotube/collections/spotube_icons.dart';
-import 'package:spotube/models/metadata/market.dart';
-import 'package:spotube/modules/settings/section_card_with_heading.dart';
-import 'package:spotube/components/adaptive/adaptive_select_tile.dart';
-import 'package:spotube/extensions/constrains.dart';
-import 'package:spotube/extensions/context.dart';
-import 'package:spotube/l10n/l10n.dart';
-import 'package:spotube/provider/user_preferences/user_preferences_provider.dart';
+import 'package:melora/collections/language_codes.dart';
+import 'package:melora/collections/markets.dart';
+import 'package:melora/collections/melora_icons.dart';
+import 'package:melora/models/metadata/market.dart';
+import 'package:melora/modules/settings/section_card_with_heading.dart';
+import 'package:melora/components/adaptive/adaptive_select_tile.dart';
+import 'package:melora/extensions/constrains.dart';
+import 'package:melora/extensions/context.dart';
+import 'package:melora/l10n/l10n.dart';
+import 'package:melora/provider/user_preferences/user_preferences_provider.dart';
 
 final localWithName = L10n.all.map((e) {
   final isoCodeName =
@@ -40,7 +40,7 @@ class SettingsLanguageRegionSection extends HookConsumerWidget {
             preferencesNotifier.setLocale(locale);
           },
           title: Text(context.l10n.language),
-          secondary: const Icon(SpotubeIcons.language),
+          secondary: const Icon(MeloraIcons.language),
           options: [
             SelectItemButton(
               value: const Locale("system", "system"),
@@ -52,7 +52,7 @@ class SettingsLanguageRegionSection extends HookConsumerWidget {
         ),
         AdaptiveSelectTile<Market>(
           breakLayout: mediaQuery.lgAndUp,
-          secondary: const Icon(SpotubeIcons.shoppingBag),
+          secondary: const Icon(MeloraIcons.shoppingBag),
           title: Text(context.l10n.market_place_region),
           subtitle: Text(context.l10n.recommendation_country),
           value: preferences.market,

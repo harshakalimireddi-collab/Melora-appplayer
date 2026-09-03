@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:encrypt/encrypt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:spotube/models/database/database.dart';
-import 'package:spotube/services/wm_tools/wm_tools.dart';
+import 'package:melora/models/database/database.dart';
+import 'package:melora/services/wm_tools/wm_tools.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class KVStoreService {

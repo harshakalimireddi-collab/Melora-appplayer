@@ -6,78 +6,78 @@ part of 'metadata.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$SpotubeAudioSourceContainerPresetLossyImpl
-    _$$SpotubeAudioSourceContainerPresetLossyImplFromJson(Map json) =>
-        _$SpotubeAudioSourceContainerPresetLossyImpl(
-          type: $enumDecode(_$SpotubeMediaCompressionTypeEnumMap, json['type']),
+_$MeloraAudioSourceContainerPresetLossyImpl
+    _$$MeloraAudioSourceContainerPresetLossyImplFromJson(Map json) =>
+        _$MeloraAudioSourceContainerPresetLossyImpl(
+          type: $enumDecode(_$MeloraMediaCompressionTypeEnumMap, json['type']),
           name: json['name'] as String,
           qualities: (json['qualities'] as List<dynamic>)
-              .map((e) => SpotubeAudioLossyContainerQuality.fromJson(
+              .map((e) => MeloraAudioLossyContainerQuality.fromJson(
                   Map<String, dynamic>.from(e as Map)))
               .toList(),
         );
 
-Map<String, dynamic> _$$SpotubeAudioSourceContainerPresetLossyImplToJson(
-        _$SpotubeAudioSourceContainerPresetLossyImpl instance) =>
+Map<String, dynamic> _$$MeloraAudioSourceContainerPresetLossyImplToJson(
+        _$MeloraAudioSourceContainerPresetLossyImpl instance) =>
     <String, dynamic>{
-      'type': _$SpotubeMediaCompressionTypeEnumMap[instance.type]!,
+      'type': _$MeloraMediaCompressionTypeEnumMap[instance.type]!,
       'name': instance.name,
       'qualities': instance.qualities.map((e) => e.toJson()).toList(),
     };
 
-const _$SpotubeMediaCompressionTypeEnumMap = {
-  SpotubeMediaCompressionType.lossy: 'lossy',
-  SpotubeMediaCompressionType.lossless: 'lossless',
+const _$MeloraMediaCompressionTypeEnumMap = {
+  MeloraMediaCompressionType.lossy: 'lossy',
+  MeloraMediaCompressionType.lossless: 'lossless',
 };
 
-_$SpotubeAudioSourceContainerPresetLosslessImpl
-    _$$SpotubeAudioSourceContainerPresetLosslessImplFromJson(Map json) =>
-        _$SpotubeAudioSourceContainerPresetLosslessImpl(
-          type: $enumDecode(_$SpotubeMediaCompressionTypeEnumMap, json['type']),
+_$MeloraAudioSourceContainerPresetLosslessImpl
+    _$$MeloraAudioSourceContainerPresetLosslessImplFromJson(Map json) =>
+        _$MeloraAudioSourceContainerPresetLosslessImpl(
+          type: $enumDecode(_$MeloraMediaCompressionTypeEnumMap, json['type']),
           name: json['name'] as String,
           qualities: (json['qualities'] as List<dynamic>)
-              .map((e) => SpotubeAudioLosslessContainerQuality.fromJson(
+              .map((e) => MeloraAudioLosslessContainerQuality.fromJson(
                   Map<String, dynamic>.from(e as Map)))
               .toList(),
         );
 
-Map<String, dynamic> _$$SpotubeAudioSourceContainerPresetLosslessImplToJson(
-        _$SpotubeAudioSourceContainerPresetLosslessImpl instance) =>
+Map<String, dynamic> _$$MeloraAudioSourceContainerPresetLosslessImplToJson(
+        _$MeloraAudioSourceContainerPresetLosslessImpl instance) =>
     <String, dynamic>{
-      'type': _$SpotubeMediaCompressionTypeEnumMap[instance.type]!,
+      'type': _$MeloraMediaCompressionTypeEnumMap[instance.type]!,
       'name': instance.name,
       'qualities': instance.qualities.map((e) => e.toJson()).toList(),
     };
 
-_$SpotubeAudioLossyContainerQualityImpl
-    _$$SpotubeAudioLossyContainerQualityImplFromJson(Map json) =>
-        _$SpotubeAudioLossyContainerQualityImpl(
+_$MeloraAudioLossyContainerQualityImpl
+    _$$MeloraAudioLossyContainerQualityImplFromJson(Map json) =>
+        _$MeloraAudioLossyContainerQualityImpl(
           bitrate: (json['bitrate'] as num).toInt(),
         );
 
-Map<String, dynamic> _$$SpotubeAudioLossyContainerQualityImplToJson(
-        _$SpotubeAudioLossyContainerQualityImpl instance) =>
+Map<String, dynamic> _$$MeloraAudioLossyContainerQualityImplToJson(
+        _$MeloraAudioLossyContainerQualityImpl instance) =>
     <String, dynamic>{
       'bitrate': instance.bitrate,
     };
 
-_$SpotubeAudioLosslessContainerQualityImpl
-    _$$SpotubeAudioLosslessContainerQualityImplFromJson(Map json) =>
-        _$SpotubeAudioLosslessContainerQualityImpl(
+_$MeloraAudioLosslessContainerQualityImpl
+    _$$MeloraAudioLosslessContainerQualityImplFromJson(Map json) =>
+        _$MeloraAudioLosslessContainerQualityImpl(
           bitDepth: (json['bitDepth'] as num).toInt(),
           sampleRate: (json['sampleRate'] as num).toInt(),
         );
 
-Map<String, dynamic> _$$SpotubeAudioLosslessContainerQualityImplToJson(
-        _$SpotubeAudioLosslessContainerQualityImpl instance) =>
+Map<String, dynamic> _$$MeloraAudioLosslessContainerQualityImplToJson(
+        _$MeloraAudioLosslessContainerQualityImpl instance) =>
     <String, dynamic>{
       'bitDepth': instance.bitDepth,
       'sampleRate': instance.sampleRate,
     };
 
-_$SpotubeAudioSourceMatchObjectImpl
-    _$$SpotubeAudioSourceMatchObjectImplFromJson(Map json) =>
-        _$SpotubeAudioSourceMatchObjectImpl(
+_$MeloraAudioSourceMatchObjectImpl
+    _$$MeloraAudioSourceMatchObjectImplFromJson(Map json) =>
+        _$MeloraAudioSourceMatchObjectImpl(
           id: json['id'] as String,
           title: json['title'] as String,
           artists: (json['artists'] as List<dynamic>)
@@ -88,8 +88,8 @@ _$SpotubeAudioSourceMatchObjectImpl
           externalUri: json['externalUri'] as String,
         );
 
-Map<String, dynamic> _$$SpotubeAudioSourceMatchObjectImplToJson(
-        _$SpotubeAudioSourceMatchObjectImpl instance) =>
+Map<String, dynamic> _$$MeloraAudioSourceMatchObjectImplToJson(
+        _$MeloraAudioSourceMatchObjectImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
@@ -99,54 +99,54 @@ Map<String, dynamic> _$$SpotubeAudioSourceMatchObjectImplToJson(
       'externalUri': instance.externalUri,
     };
 
-_$SpotubeAudioSourceStreamObjectImpl
-    _$$SpotubeAudioSourceStreamObjectImplFromJson(Map json) =>
-        _$SpotubeAudioSourceStreamObjectImpl(
+_$MeloraAudioSourceStreamObjectImpl
+    _$$MeloraAudioSourceStreamObjectImplFromJson(Map json) =>
+        _$MeloraAudioSourceStreamObjectImpl(
           url: json['url'] as String,
           container: json['container'] as String,
-          type: $enumDecode(_$SpotubeMediaCompressionTypeEnumMap, json['type']),
+          type: $enumDecode(_$MeloraMediaCompressionTypeEnumMap, json['type']),
           codec: json['codec'] as String?,
           bitrate: (json['bitrate'] as num?)?.toDouble(),
           bitDepth: (json['bitDepth'] as num?)?.toInt(),
           sampleRate: (json['sampleRate'] as num?)?.toDouble(),
         );
 
-Map<String, dynamic> _$$SpotubeAudioSourceStreamObjectImplToJson(
-        _$SpotubeAudioSourceStreamObjectImpl instance) =>
+Map<String, dynamic> _$$MeloraAudioSourceStreamObjectImplToJson(
+        _$MeloraAudioSourceStreamObjectImpl instance) =>
     <String, dynamic>{
       'url': instance.url,
       'container': instance.container,
-      'type': _$SpotubeMediaCompressionTypeEnumMap[instance.type]!,
+      'type': _$MeloraMediaCompressionTypeEnumMap[instance.type]!,
       'codec': instance.codec,
       'bitrate': instance.bitrate,
       'bitDepth': instance.bitDepth,
       'sampleRate': instance.sampleRate,
     };
 
-_$SpotubeFullAlbumObjectImpl _$$SpotubeFullAlbumObjectImplFromJson(Map json) =>
-    _$SpotubeFullAlbumObjectImpl(
+_$MeloraFullAlbumObjectImpl _$$MeloraFullAlbumObjectImplFromJson(Map json) =>
+    _$MeloraFullAlbumObjectImpl(
       id: json['id'] as String,
       name: json['name'] as String,
       artists: (json['artists'] as List<dynamic>)
-          .map((e) => SpotubeSimpleArtistObject.fromJson(
+          .map((e) => MeloraSimpleArtistObject.fromJson(
               Map<String, dynamic>.from(e as Map)))
           .toList(),
       images: (json['images'] as List<dynamic>?)
-              ?.map((e) => SpotubeImageObject.fromJson(
+              ?.map((e) => MeloraImageObject.fromJson(
                   Map<String, dynamic>.from(e as Map)))
               .toList() ??
           const [],
       releaseDate: json['releaseDate'] as String,
       externalUri: json['externalUri'] as String,
       totalTracks: (json['totalTracks'] as num).toInt(),
-      albumType: $enumDecode(_$SpotubeAlbumTypeEnumMap, json['albumType']),
+      albumType: $enumDecode(_$MeloraAlbumTypeEnumMap, json['albumType']),
       recordLabel: json['recordLabel'] as String?,
       genres:
           (json['genres'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
-Map<String, dynamic> _$$SpotubeFullAlbumObjectImplToJson(
-        _$SpotubeFullAlbumObjectImpl instance) =>
+Map<String, dynamic> _$$MeloraFullAlbumObjectImplToJson(
+        _$MeloraFullAlbumObjectImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
@@ -155,56 +155,56 @@ Map<String, dynamic> _$$SpotubeFullAlbumObjectImplToJson(
       'releaseDate': instance.releaseDate,
       'externalUri': instance.externalUri,
       'totalTracks': instance.totalTracks,
-      'albumType': _$SpotubeAlbumTypeEnumMap[instance.albumType]!,
+      'albumType': _$MeloraAlbumTypeEnumMap[instance.albumType]!,
       'recordLabel': instance.recordLabel,
       'genres': instance.genres,
     };
 
-const _$SpotubeAlbumTypeEnumMap = {
-  SpotubeAlbumType.album: 'album',
-  SpotubeAlbumType.single: 'single',
-  SpotubeAlbumType.compilation: 'compilation',
+const _$MeloraAlbumTypeEnumMap = {
+  MeloraAlbumType.album: 'album',
+  MeloraAlbumType.single: 'single',
+  MeloraAlbumType.compilation: 'compilation',
 };
 
-_$SpotubeSimpleAlbumObjectImpl _$$SpotubeSimpleAlbumObjectImplFromJson(
+_$MeloraSimpleAlbumObjectImpl _$$MeloraSimpleAlbumObjectImplFromJson(
         Map json) =>
-    _$SpotubeSimpleAlbumObjectImpl(
+    _$MeloraSimpleAlbumObjectImpl(
       id: json['id'] as String,
       name: json['name'] as String,
       externalUri: json['externalUri'] as String,
       artists: (json['artists'] as List<dynamic>)
-          .map((e) => SpotubeSimpleArtistObject.fromJson(
+          .map((e) => MeloraSimpleArtistObject.fromJson(
               Map<String, dynamic>.from(e as Map)))
           .toList(),
       images: (json['images'] as List<dynamic>?)
-              ?.map((e) => SpotubeImageObject.fromJson(
+              ?.map((e) => MeloraImageObject.fromJson(
                   Map<String, dynamic>.from(e as Map)))
               .toList() ??
           const [],
-      albumType: $enumDecode(_$SpotubeAlbumTypeEnumMap, json['albumType']),
+      albumType: $enumDecode(_$MeloraAlbumTypeEnumMap, json['albumType']),
       releaseDate: json['releaseDate'] as String?,
     );
 
-Map<String, dynamic> _$$SpotubeSimpleAlbumObjectImplToJson(
-        _$SpotubeSimpleAlbumObjectImpl instance) =>
+Map<String, dynamic> _$$MeloraSimpleAlbumObjectImplToJson(
+        _$MeloraSimpleAlbumObjectImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'externalUri': instance.externalUri,
       'artists': instance.artists.map((e) => e.toJson()).toList(),
       'images': instance.images.map((e) => e.toJson()).toList(),
-      'albumType': _$SpotubeAlbumTypeEnumMap[instance.albumType]!,
+      'albumType': _$MeloraAlbumTypeEnumMap[instance.albumType]!,
       'releaseDate': instance.releaseDate,
     };
 
-_$SpotubeFullArtistObjectImpl _$$SpotubeFullArtistObjectImplFromJson(
+_$MeloraFullArtistObjectImpl _$$MeloraFullArtistObjectImplFromJson(
         Map json) =>
-    _$SpotubeFullArtistObjectImpl(
+    _$MeloraFullArtistObjectImpl(
       id: json['id'] as String,
       name: json['name'] as String,
       externalUri: json['externalUri'] as String,
       images: (json['images'] as List<dynamic>?)
-              ?.map((e) => SpotubeImageObject.fromJson(
+              ?.map((e) => MeloraImageObject.fromJson(
                   Map<String, dynamic>.from(e as Map)))
               .toList() ??
           const [],
@@ -213,8 +213,8 @@ _$SpotubeFullArtistObjectImpl _$$SpotubeFullArtistObjectImplFromJson(
       followers: (json['followers'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$$SpotubeFullArtistObjectImplToJson(
-        _$SpotubeFullArtistObjectImpl instance) =>
+Map<String, dynamic> _$$MeloraFullArtistObjectImplToJson(
+        _$MeloraFullArtistObjectImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
@@ -224,20 +224,20 @@ Map<String, dynamic> _$$SpotubeFullArtistObjectImplToJson(
       'followers': instance.followers,
     };
 
-_$SpotubeSimpleArtistObjectImpl _$$SpotubeSimpleArtistObjectImplFromJson(
+_$MeloraSimpleArtistObjectImpl _$$MeloraSimpleArtistObjectImplFromJson(
         Map json) =>
-    _$SpotubeSimpleArtistObjectImpl(
+    _$MeloraSimpleArtistObjectImpl(
       id: json['id'] as String,
       name: json['name'] as String,
       externalUri: json['externalUri'] as String,
       images: (json['images'] as List<dynamic>?)
           ?.map((e) =>
-              SpotubeImageObject.fromJson(Map<String, dynamic>.from(e as Map)))
+              MeloraImageObject.fromJson(Map<String, dynamic>.from(e as Map)))
           .toList(),
     );
 
-Map<String, dynamic> _$$SpotubeSimpleArtistObjectImplToJson(
-        _$SpotubeSimpleArtistObjectImpl instance) =>
+Map<String, dynamic> _$$MeloraSimpleArtistObjectImplToJson(
+        _$MeloraSimpleArtistObjectImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
@@ -245,12 +245,12 @@ Map<String, dynamic> _$$SpotubeSimpleArtistObjectImplToJson(
       'images': instance.images?.map((e) => e.toJson()).toList(),
     };
 
-_$SpotubeBrowseSectionObjectImpl<T>
-    _$$SpotubeBrowseSectionObjectImplFromJson<T>(
+_$MeloraBrowseSectionObjectImpl<T>
+    _$$MeloraBrowseSectionObjectImplFromJson<T>(
   Map json,
   T Function(Object? json) fromJsonT,
 ) =>
-        _$SpotubeBrowseSectionObjectImpl<T>(
+        _$MeloraBrowseSectionObjectImpl<T>(
           id: json['id'] as String,
           title: json['title'] as String,
           externalUri: json['externalUri'] as String,
@@ -258,8 +258,8 @@ _$SpotubeBrowseSectionObjectImpl<T>
           items: (json['items'] as List<dynamic>).map(fromJsonT).toList(),
         );
 
-Map<String, dynamic> _$$SpotubeBrowseSectionObjectImplToJson<T>(
-  _$SpotubeBrowseSectionObjectImpl<T> instance,
+Map<String, dynamic> _$$MeloraBrowseSectionObjectImplToJson<T>(
+  _$MeloraBrowseSectionObjectImpl<T> instance,
   Object? Function(T value) toJsonT,
 ) =>
     <String, dynamic>{
@@ -316,27 +316,27 @@ Map<String, dynamic> _$$MetadataFormFieldTextObjectImplToJson(
       'text': instance.text,
     };
 
-_$SpotubeImageObjectImpl _$$SpotubeImageObjectImplFromJson(Map json) =>
-    _$SpotubeImageObjectImpl(
+_$MeloraImageObjectImpl _$$MeloraImageObjectImplFromJson(Map json) =>
+    _$MeloraImageObjectImpl(
       url: json['url'] as String,
       width: (json['width'] as num?)?.toInt(),
       height: (json['height'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$$SpotubeImageObjectImplToJson(
-        _$SpotubeImageObjectImpl instance) =>
+Map<String, dynamic> _$$MeloraImageObjectImplToJson(
+        _$MeloraImageObjectImpl instance) =>
     <String, dynamic>{
       'url': instance.url,
       'width': instance.width,
       'height': instance.height,
     };
 
-_$SpotubePaginationResponseObjectImpl<T>
-    _$$SpotubePaginationResponseObjectImplFromJson<T>(
+_$MeloraPaginationResponseObjectImpl<T>
+    _$$MeloraPaginationResponseObjectImplFromJson<T>(
   Map json,
   T Function(Object? json) fromJsonT,
 ) =>
-        _$SpotubePaginationResponseObjectImpl<T>(
+        _$MeloraPaginationResponseObjectImpl<T>(
           limit: (json['limit'] as num).toInt(),
           nextOffset: (json['nextOffset'] as num?)?.toInt(),
           total: (json['total'] as num).toInt(),
@@ -344,8 +344,8 @@ _$SpotubePaginationResponseObjectImpl<T>
           items: (json['items'] as List<dynamic>).map(fromJsonT).toList(),
         );
 
-Map<String, dynamic> _$$SpotubePaginationResponseObjectImplToJson<T>(
-  _$SpotubePaginationResponseObjectImpl<T> instance,
+Map<String, dynamic> _$$MeloraPaginationResponseObjectImplToJson<T>(
+  _$MeloraPaginationResponseObjectImpl<T> instance,
   Object? Function(T value) toJsonT,
 ) =>
     <String, dynamic>{
@@ -356,22 +356,22 @@ Map<String, dynamic> _$$SpotubePaginationResponseObjectImplToJson<T>(
       'items': instance.items.map(toJsonT).toList(),
     };
 
-_$SpotubeFullPlaylistObjectImpl _$$SpotubeFullPlaylistObjectImplFromJson(
+_$MeloraFullPlaylistObjectImpl _$$MeloraFullPlaylistObjectImplFromJson(
         Map json) =>
-    _$SpotubeFullPlaylistObjectImpl(
+    _$MeloraFullPlaylistObjectImpl(
       id: json['id'] as String,
       name: json['name'] as String,
       description: json['description'] as String,
       externalUri: json['externalUri'] as String,
-      owner: SpotubeUserObject.fromJson(
+      owner: MeloraUserObject.fromJson(
           Map<String, dynamic>.from(json['owner'] as Map)),
       images: (json['images'] as List<dynamic>?)
-              ?.map((e) => SpotubeImageObject.fromJson(
+              ?.map((e) => MeloraImageObject.fromJson(
                   Map<String, dynamic>.from(e as Map)))
               .toList() ??
           const [],
       collaborators: (json['collaborators'] as List<dynamic>?)
-              ?.map((e) => SpotubeUserObject.fromJson(
+              ?.map((e) => MeloraUserObject.fromJson(
                   Map<String, dynamic>.from(e as Map)))
               .toList() ??
           const [],
@@ -379,8 +379,8 @@ _$SpotubeFullPlaylistObjectImpl _$$SpotubeFullPlaylistObjectImplFromJson(
       public: json['public'] as bool? ?? false,
     );
 
-Map<String, dynamic> _$$SpotubeFullPlaylistObjectImplToJson(
-        _$SpotubeFullPlaylistObjectImpl instance) =>
+Map<String, dynamic> _$$MeloraFullPlaylistObjectImplToJson(
+        _$MeloraFullPlaylistObjectImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
@@ -393,24 +393,24 @@ Map<String, dynamic> _$$SpotubeFullPlaylistObjectImplToJson(
       'public': instance.public,
     };
 
-_$SpotubeSimplePlaylistObjectImpl _$$SpotubeSimplePlaylistObjectImplFromJson(
+_$MeloraSimplePlaylistObjectImpl _$$MeloraSimplePlaylistObjectImplFromJson(
         Map json) =>
-    _$SpotubeSimplePlaylistObjectImpl(
+    _$MeloraSimplePlaylistObjectImpl(
       id: json['id'] as String,
       name: json['name'] as String,
       description: json['description'] as String,
       externalUri: json['externalUri'] as String,
-      owner: SpotubeUserObject.fromJson(
+      owner: MeloraUserObject.fromJson(
           Map<String, dynamic>.from(json['owner'] as Map)),
       images: (json['images'] as List<dynamic>?)
-              ?.map((e) => SpotubeImageObject.fromJson(
+              ?.map((e) => MeloraImageObject.fromJson(
                   Map<String, dynamic>.from(e as Map)))
               .toList() ??
           const [],
     );
 
-Map<String, dynamic> _$$SpotubeSimplePlaylistObjectImplToJson(
-        _$SpotubeSimplePlaylistObjectImpl instance) =>
+Map<String, dynamic> _$$MeloraSimplePlaylistObjectImplToJson(
+        _$MeloraSimplePlaylistObjectImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
@@ -420,29 +420,29 @@ Map<String, dynamic> _$$SpotubeSimplePlaylistObjectImplToJson(
       'images': instance.images.map((e) => e.toJson()).toList(),
     };
 
-_$SpotubeSearchResponseObjectImpl _$$SpotubeSearchResponseObjectImplFromJson(
+_$MeloraSearchResponseObjectImpl _$$MeloraSearchResponseObjectImplFromJson(
         Map json) =>
-    _$SpotubeSearchResponseObjectImpl(
+    _$MeloraSearchResponseObjectImpl(
       albums: (json['albums'] as List<dynamic>)
-          .map((e) => SpotubeSimpleAlbumObject.fromJson(
+          .map((e) => MeloraSimpleAlbumObject.fromJson(
               Map<String, dynamic>.from(e as Map)))
           .toList(),
       artists: (json['artists'] as List<dynamic>)
-          .map((e) => SpotubeFullArtistObject.fromJson(
+          .map((e) => MeloraFullArtistObject.fromJson(
               Map<String, dynamic>.from(e as Map)))
           .toList(),
       playlists: (json['playlists'] as List<dynamic>)
-          .map((e) => SpotubeSimplePlaylistObject.fromJson(
+          .map((e) => MeloraSimplePlaylistObject.fromJson(
               Map<String, dynamic>.from(e as Map)))
           .toList(),
       tracks: (json['tracks'] as List<dynamic>)
-          .map((e) => SpotubeFullTrackObject.fromJson(
+          .map((e) => MeloraFullTrackObject.fromJson(
               Map<String, dynamic>.from(e as Map)))
           .toList(),
     );
 
-Map<String, dynamic> _$$SpotubeSearchResponseObjectImplToJson(
-        _$SpotubeSearchResponseObjectImpl instance) =>
+Map<String, dynamic> _$$MeloraSearchResponseObjectImplToJson(
+        _$MeloraSearchResponseObjectImpl instance) =>
     <String, dynamic>{
       'albums': instance.albums.map((e) => e.toJson()).toList(),
       'artists': instance.artists.map((e) => e.toJson()).toList(),
@@ -450,26 +450,26 @@ Map<String, dynamic> _$$SpotubeSearchResponseObjectImplToJson(
       'tracks': instance.tracks.map((e) => e.toJson()).toList(),
     };
 
-_$SpotubeLocalTrackObjectImpl _$$SpotubeLocalTrackObjectImplFromJson(
+_$MeloraLocalTrackObjectImpl _$$MeloraLocalTrackObjectImplFromJson(
         Map json) =>
-    _$SpotubeLocalTrackObjectImpl(
+    _$MeloraLocalTrackObjectImpl(
       id: json['id'] as String,
       name: json['name'] as String,
       externalUri: json['externalUri'] as String,
       artists: (json['artists'] as List<dynamic>?)
-              ?.map((e) => SpotubeSimpleArtistObject.fromJson(
+              ?.map((e) => MeloraSimpleArtistObject.fromJson(
                   Map<String, dynamic>.from(e as Map)))
               .toList() ??
           const [],
-      album: SpotubeSimpleAlbumObject.fromJson(
+      album: MeloraSimpleAlbumObject.fromJson(
           Map<String, dynamic>.from(json['album'] as Map)),
       durationMs: (json['durationMs'] as num).toInt(),
       path: json['path'] as String,
       $type: json['runtimeType'] as String?,
     );
 
-Map<String, dynamic> _$$SpotubeLocalTrackObjectImplToJson(
-        _$SpotubeLocalTrackObjectImpl instance) =>
+Map<String, dynamic> _$$MeloraLocalTrackObjectImplToJson(
+        _$MeloraLocalTrackObjectImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
@@ -481,17 +481,17 @@ Map<String, dynamic> _$$SpotubeLocalTrackObjectImplToJson(
       'runtimeType': instance.$type,
     };
 
-_$SpotubeFullTrackObjectImpl _$$SpotubeFullTrackObjectImplFromJson(Map json) =>
-    _$SpotubeFullTrackObjectImpl(
+_$MeloraFullTrackObjectImpl _$$MeloraFullTrackObjectImplFromJson(Map json) =>
+    _$MeloraFullTrackObjectImpl(
       id: json['id'] as String,
       name: json['name'] as String,
       externalUri: json['externalUri'] as String,
       artists: (json['artists'] as List<dynamic>?)
-              ?.map((e) => SpotubeSimpleArtistObject.fromJson(
+              ?.map((e) => MeloraSimpleArtistObject.fromJson(
                   Map<String, dynamic>.from(e as Map)))
               .toList() ??
           const [],
-      album: SpotubeSimpleAlbumObject.fromJson(
+      album: MeloraSimpleAlbumObject.fromJson(
           Map<String, dynamic>.from(json['album'] as Map)),
       durationMs: (json['durationMs'] as num).toInt(),
       isrc: json['isrc'] as String,
@@ -499,8 +499,8 @@ _$SpotubeFullTrackObjectImpl _$$SpotubeFullTrackObjectImplFromJson(Map json) =>
       $type: json['runtimeType'] as String?,
     );
 
-Map<String, dynamic> _$$SpotubeFullTrackObjectImplToJson(
-        _$SpotubeFullTrackObjectImpl instance) =>
+Map<String, dynamic> _$$MeloraFullTrackObjectImplToJson(
+        _$MeloraFullTrackObjectImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
@@ -513,20 +513,20 @@ Map<String, dynamic> _$$SpotubeFullTrackObjectImplToJson(
       'runtimeType': instance.$type,
     };
 
-_$SpotubeUserObjectImpl _$$SpotubeUserObjectImplFromJson(Map json) =>
-    _$SpotubeUserObjectImpl(
+_$MeloraUserObjectImpl _$$MeloraUserObjectImplFromJson(Map json) =>
+    _$MeloraUserObjectImpl(
       id: json['id'] as String,
       name: json['name'] as String,
       images: (json['images'] as List<dynamic>?)
-              ?.map((e) => SpotubeImageObject.fromJson(
+              ?.map((e) => MeloraImageObject.fromJson(
                   Map<String, dynamic>.from(e as Map)))
               .toList() ??
           const [],
       externalUri: json['externalUri'] as String,
     );
 
-Map<String, dynamic> _$$SpotubeUserObjectImplToJson(
-        _$SpotubeUserObjectImpl instance) =>
+Map<String, dynamic> _$$MeloraUserObjectImplToJson(
+        _$MeloraUserObjectImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,

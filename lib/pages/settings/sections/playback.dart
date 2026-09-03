@@ -6,20 +6,20 @@ import 'package:flutter/material.dart' show ListTile;
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:spotube/collections/routes.gr.dart';
-import 'package:spotube/collections/spotube_icons.dart';
-import 'package:spotube/components/adaptive/adaptive_select_tile.dart';
-import 'package:spotube/models/database/database.dart';
-import 'package:spotube/modules/settings/playback/edit_connect_port_dialog.dart';
-import 'package:spotube/modules/settings/section_card_with_heading.dart';
-import 'package:spotube/extensions/context.dart';
-import 'package:spotube/modules/settings/youtube_engine_not_installed_dialog.dart';
-import 'package:spotube/provider/metadata_plugin/audio_source/quality_presets.dart';
-import 'package:spotube/provider/user_preferences/user_preferences_provider.dart';
-import 'package:spotube/services/kv_store/kv_store.dart';
-import 'package:spotube/services/youtube_engine/yt_dlp_engine.dart';
+import 'package:melora/collections/routes.gr.dart';
+import 'package:melora/collections/melora_icons.dart';
+import 'package:melora/components/adaptive/adaptive_select_tile.dart';
+import 'package:melora/models/database/database.dart';
+import 'package:melora/modules/settings/playback/edit_connect_port_dialog.dart';
+import 'package:melora/modules/settings/section_card_with_heading.dart';
+import 'package:melora/extensions/context.dart';
+import 'package:melora/modules/settings/youtube_engine_not_installed_dialog.dart';
+import 'package:melora/provider/metadata_plugin/audio_source/quality_presets.dart';
+import 'package:melora/provider/user_preferences/user_preferences_provider.dart';
+import 'package:melora/services/kv_store/kv_store.dart';
+import 'package:melora/services/youtube_engine/yt_dlp_engine.dart';
 
-import 'package:spotube/utils/platform.dart';
+import 'package:melora/utils/platform.dart';
 
 class SettingsPlaybackSection extends HookConsumerWidget {
   const SettingsPlaybackSection({super.key});
@@ -37,7 +37,7 @@ class SettingsPlaybackSection extends HookConsumerWidget {
       heading: context.l10n.playback,
       children: [
         AdaptiveSelectTile<YoutubeClientEngine>(
-          secondary: const Icon(SpotubeIcons.engine),
+          secondary: const Icon(MeloraIcons.engine),
           title: Text(context.l10n.youtube_engine),
           value: preferences.youtubeClientEngine,
           options: YoutubeClientEngine.values
@@ -67,7 +67,7 @@ class SettingsPlaybackSection extends HookConsumerWidget {
         ),
         if (sourcePresets.presets.isNotEmpty) ...[
           AdaptiveSelectTile(
-            secondary: const Icon(SpotubeIcons.plugin),
+            secondary: const Icon(MeloraIcons.plugin),
             title: Text(context.l10n.streaming_music_format),
             value: sourcePresets.selectedStreamingContainerIndex,
             options: [
@@ -81,7 +81,7 @@ class SettingsPlaybackSection extends HookConsumerWidget {
             },
           ),
           AdaptiveSelectTile(
-            secondary: const Icon(SpotubeIcons.audioQuality),
+            secondary: const Icon(MeloraIcons.audioQuality),
             title: Text(context.l10n.streaming_music_quality),
             value: sourcePresets.selectedStreamingQualityIndex,
             options: [
@@ -98,7 +98,7 @@ class SettingsPlaybackSection extends HookConsumerWidget {
             },
           ),
           AdaptiveSelectTile(
-            secondary: const Icon(SpotubeIcons.plugin),
+            secondary: const Icon(MeloraIcons.plugin),
             title: Text(context.l10n.download_music_format),
             value: sourcePresets.selectedDownloadingContainerIndex,
             options: [
@@ -112,7 +112,7 @@ class SettingsPlaybackSection extends HookConsumerWidget {
             },
           ),
           AdaptiveSelectTile(
-            secondary: const Icon(SpotubeIcons.audioQuality),
+            secondary: const Icon(MeloraIcons.audioQuality),
             title: Text(context.l10n.download_music_quality),
             value: sourcePresets.selectedStreamingQualityIndex,
             options: [
@@ -149,23 +149,23 @@ class SettingsPlaybackSection extends HookConsumerWidget {
                     ],
                   ),
                 ),
-          leading: const Icon(SpotubeIcons.cache),
+          leading: const Icon(MeloraIcons.cache),
           trailing: Switch(
             value: preferences.cacheMusic,
             onChanged: preferencesNotifier.setCacheMusic,
           ),
         ),
         ListTile(
-          leading: const Icon(SpotubeIcons.playlistRemove),
+          leading: const Icon(MeloraIcons.playlistRemove),
           title: Text(context.l10n.blacklist),
           subtitle: Text(context.l10n.blacklist_description),
           onTap: () {
             context.navigateTo(const BlackListRoute());
           },
-          trailing: const Icon(SpotubeIcons.angleRight),
+          trailing: const Icon(MeloraIcons.angleRight),
         ),
         ListTile(
-          leading: const Icon(SpotubeIcons.normalize),
+          leading: const Icon(MeloraIcons.normalize),
           title: Text(context.l10n.normalize_audio),
           trailing: Switch(
             value: preferences.normalizeAudio,
@@ -173,7 +173,7 @@ class SettingsPlaybackSection extends HookConsumerWidget {
           ),
         ),
         ListTile(
-            leading: const Icon(SpotubeIcons.repeat),
+            leading: const Icon(MeloraIcons.repeat),
             title: Text(context.l10n.endless_playback),
             trailing: Switch(
               value: preferences.endlessPlayback,
@@ -182,7 +182,7 @@ class SettingsPlaybackSection extends HookConsumerWidget {
         ListTile(
           title: Text(context.l10n.enable_connect),
           subtitle: Text(context.l10n.enable_connect_description),
-          leading: const Icon(SpotubeIcons.connect),
+          leading: const Icon(MeloraIcons.connect),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             spacing: 10,
@@ -192,7 +192,7 @@ class SettingsPlaybackSection extends HookConsumerWidget {
                   child: Text(context.l10n.edit_port),
                 ).call,
                 child: IconButton.outline(
-                  icon: const Icon(SpotubeIcons.edit),
+                  icon: const Icon(MeloraIcons.edit),
                   size: ButtonSize.small,
                   onPressed: () {
                     showDialog(

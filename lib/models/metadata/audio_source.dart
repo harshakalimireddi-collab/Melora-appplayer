@@ -2,33 +2,33 @@ part of 'metadata.dart';
 
 final oneOptionalDecimalFormatter = NumberFormat('0.#', 'en_US');
 
-enum SpotubeMediaCompressionType {
+enum MeloraMediaCompressionType {
   lossy,
   lossless,
 }
 
 @Freezed(unionKey: 'type')
-class SpotubeAudioSourceContainerPreset
-    with _$SpotubeAudioSourceContainerPreset {
-  const SpotubeAudioSourceContainerPreset._();
+class MeloraAudioSourceContainerPreset
+    with _$MeloraAudioSourceContainerPreset {
+  const MeloraAudioSourceContainerPreset._();
 
   @FreezedUnionValue("lossy")
-  factory SpotubeAudioSourceContainerPreset.lossy({
-    required SpotubeMediaCompressionType type,
+  factory MeloraAudioSourceContainerPreset.lossy({
+    required MeloraMediaCompressionType type,
     required String name,
-    required List<SpotubeAudioLossyContainerQuality> qualities,
-  }) = SpotubeAudioSourceContainerPresetLossy;
+    required List<MeloraAudioLossyContainerQuality> qualities,
+  }) = MeloraAudioSourceContainerPresetLossy;
 
   @FreezedUnionValue("lossless")
-  factory SpotubeAudioSourceContainerPreset.lossless({
-    required SpotubeMediaCompressionType type,
+  factory MeloraAudioSourceContainerPreset.lossless({
+    required MeloraMediaCompressionType type,
     required String name,
-    required List<SpotubeAudioLosslessContainerQuality> qualities,
-  }) = SpotubeAudioSourceContainerPresetLossless;
+    required List<MeloraAudioLosslessContainerQuality> qualities,
+  }) = MeloraAudioSourceContainerPresetLossless;
 
-  factory SpotubeAudioSourceContainerPreset.fromJson(
+  factory MeloraAudioSourceContainerPreset.fromJson(
           Map<String, dynamic> json) =>
-      _$SpotubeAudioSourceContainerPresetFromJson(json);
+      _$MeloraAudioSourceContainerPresetFromJson(json);
 
   String getFileExtension() {
     return switch (name) {
@@ -40,17 +40,17 @@ class SpotubeAudioSourceContainerPreset
 }
 
 @freezed
-class SpotubeAudioLossyContainerQuality
-    with _$SpotubeAudioLossyContainerQuality {
-  const SpotubeAudioLossyContainerQuality._();
+class MeloraAudioLossyContainerQuality
+    with _$MeloraAudioLossyContainerQuality {
+  const MeloraAudioLossyContainerQuality._();
 
-  factory SpotubeAudioLossyContainerQuality({
+  factory MeloraAudioLossyContainerQuality({
     required int bitrate, // bits per second
-  }) = _SpotubeAudioLossyContainerQuality;
+  }) = _MeloraAudioLossyContainerQuality;
 
-  factory SpotubeAudioLossyContainerQuality.fromJson(
+  factory MeloraAudioLossyContainerQuality.fromJson(
           Map<String, dynamic> json) =>
-      _$SpotubeAudioLossyContainerQualityFromJson(json);
+      _$MeloraAudioLossyContainerQualityFromJson(json);
 
   @override
   toString() {
@@ -59,18 +59,18 @@ class SpotubeAudioLossyContainerQuality
 }
 
 @freezed
-class SpotubeAudioLosslessContainerQuality
-    with _$SpotubeAudioLosslessContainerQuality {
-  const SpotubeAudioLosslessContainerQuality._();
+class MeloraAudioLosslessContainerQuality
+    with _$MeloraAudioLosslessContainerQuality {
+  const MeloraAudioLosslessContainerQuality._();
 
-  factory SpotubeAudioLosslessContainerQuality({
+  factory MeloraAudioLosslessContainerQuality({
     required int bitDepth, // bit
     required int sampleRate, // hz
-  }) = _SpotubeAudioLosslessContainerQuality;
+  }) = _MeloraAudioLosslessContainerQuality;
 
-  factory SpotubeAudioLosslessContainerQuality.fromJson(
+  factory MeloraAudioLosslessContainerQuality.fromJson(
           Map<String, dynamic> json) =>
-      _$SpotubeAudioLosslessContainerQualityFromJson(json);
+      _$MeloraAudioLosslessContainerQualityFromJson(json);
 
   @override
   toString() {
@@ -79,32 +79,32 @@ class SpotubeAudioLosslessContainerQuality
 }
 
 @freezed
-class SpotubeAudioSourceMatchObject with _$SpotubeAudioSourceMatchObject {
-  factory SpotubeAudioSourceMatchObject({
+class MeloraAudioSourceMatchObject with _$MeloraAudioSourceMatchObject {
+  factory MeloraAudioSourceMatchObject({
     required String id,
     required String title,
     required List<String> artists,
     required Duration duration,
     String? thumbnail,
     required String externalUri,
-  }) = _SpotubeAudioSourceMatchObject;
+  }) = _MeloraAudioSourceMatchObject;
 
-  factory SpotubeAudioSourceMatchObject.fromJson(Map<String, dynamic> json) =>
-      _$SpotubeAudioSourceMatchObjectFromJson(json);
+  factory MeloraAudioSourceMatchObject.fromJson(Map<String, dynamic> json) =>
+      _$MeloraAudioSourceMatchObjectFromJson(json);
 }
 
 @freezed
-class SpotubeAudioSourceStreamObject with _$SpotubeAudioSourceStreamObject {
-  factory SpotubeAudioSourceStreamObject({
+class MeloraAudioSourceStreamObject with _$MeloraAudioSourceStreamObject {
+  factory MeloraAudioSourceStreamObject({
     required String url,
     required String container,
-    required SpotubeMediaCompressionType type,
+    required MeloraMediaCompressionType type,
     String? codec,
     double? bitrate,
     int? bitDepth,
     double? sampleRate,
-  }) = _SpotubeAudioSourceStreamObject;
+  }) = _MeloraAudioSourceStreamObject;
 
-  factory SpotubeAudioSourceStreamObject.fromJson(Map<String, dynamic> json) =>
-      _$SpotubeAudioSourceStreamObjectFromJson(json);
+  factory MeloraAudioSourceStreamObject.fromJson(Map<String, dynamic> json) =>
+      _$MeloraAudioSourceStreamObjectFromJson(json);
 }

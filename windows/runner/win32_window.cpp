@@ -131,7 +131,14 @@ bool Win32Window::CreateAndShow(const std::wstring& title,
     return false;
   }
 
-  return OnCreate();
+  if (!OnCreate()) {
+    return false;
+  }
+
+  ShowWindow(window, SW_SHOW);
+  UpdateWindow(window);
+
+  return true;
 }
 
 // static

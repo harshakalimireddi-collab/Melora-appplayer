@@ -4,15 +4,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/shadcn_flutter_extension.dart';
-import 'package:spotube/collections/spotube_icons.dart';
-import 'package:spotube/models/metadata/metadata.dart';
-import 'package:spotube/modules/lyrics/zoom_controls.dart';
-import 'package:spotube/components/shimmers/shimmer_lyrics.dart';
-import 'package:spotube/extensions/constrains.dart';
-import 'package:spotube/extensions/context.dart';
+import 'package:melora/collections/melora_icons.dart';
+import 'package:melora/models/metadata/metadata.dart';
+import 'package:melora/modules/lyrics/zoom_controls.dart';
+import 'package:melora/components/shimmers/shimmer_lyrics.dart';
+import 'package:melora/extensions/constrains.dart';
+import 'package:melora/extensions/context.dart';
 
-import 'package:spotube/provider/audio_player/audio_player.dart';
-import 'package:spotube/provider/lyrics/synced.dart';
+import 'package:melora/provider/audio_player/audio_player.dart';
+import 'package:melora/provider/lyrics/synced.dart';
 
 class PlainLyrics extends HookConsumerWidget {
   final PaletteColor palette;
@@ -84,7 +84,7 @@ class PlainLyrics extends HookConsumerWidget {
                                   textAlign: TextAlign.center,
                                 ),
                                 const Gap(26),
-                                const Icon(SpotubeIcons.noLyrics, size: 60),
+                                const Icon(MeloraIcons.noLyrics, size: 60),
                               ],
                             ),
                           );

@@ -1,15 +1,15 @@
 part of 'metadata.dart';
 
 @freezed
-class SpotubeImageObject with _$SpotubeImageObject {
-  factory SpotubeImageObject({
+class MeloraImageObject with _$MeloraImageObject {
+  factory MeloraImageObject({
     required String url,
     int? width,
     int? height,
-  }) = _SpotubeImageObject;
+  }) = _MeloraImageObject;
 
-  factory SpotubeImageObject.fromJson(Map<String, dynamic> json) =>
-      _$SpotubeImageObjectFromJson(json);
+  factory MeloraImageObject.fromJson(Map<String, dynamic> json) =>
+      _$MeloraImageObjectFromJson(json);
 }
 
 enum ImagePlaceholder {
@@ -27,7 +27,7 @@ final placeholderUrlMap = {
       "https://avatars.dicebear.com/api/bottts/${PrimitiveUtils.uuid.v4()}.png",
 };
 
-extension SpotubeImageExtensions on List<SpotubeImageObject>? {
+extension MeloraImageExtensions on List<MeloraImageObject>? {
   /// Returns the URL of the image at the specified index.
   String asUrlString({
     int index = 1,

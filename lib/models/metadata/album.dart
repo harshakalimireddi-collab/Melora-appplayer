@@ -1,42 +1,42 @@
 part of 'metadata.dart';
 
-enum SpotubeAlbumType {
+enum MeloraAlbumType {
   album,
   single,
   compilation,
 }
 
 @freezed
-class SpotubeFullAlbumObject with _$SpotubeFullAlbumObject {
-  factory SpotubeFullAlbumObject({
+class MeloraFullAlbumObject with _$MeloraFullAlbumObject {
+  factory MeloraFullAlbumObject({
     required String id,
     required String name,
-    required List<SpotubeSimpleArtistObject> artists,
-    @Default([]) List<SpotubeImageObject> images,
+    required List<MeloraSimpleArtistObject> artists,
+    @Default([]) List<MeloraImageObject> images,
     required String releaseDate,
     required String externalUri,
     required int totalTracks,
-    required SpotubeAlbumType albumType,
+    required MeloraAlbumType albumType,
     String? recordLabel,
     List<String>? genres,
-  }) = _SpotubeFullAlbumObject;
+  }) = _MeloraFullAlbumObject;
 
-  factory SpotubeFullAlbumObject.fromJson(Map<String, dynamic> json) =>
-      _$SpotubeFullAlbumObjectFromJson(json);
+  factory MeloraFullAlbumObject.fromJson(Map<String, dynamic> json) =>
+      _$MeloraFullAlbumObjectFromJson(json);
 }
 
 @freezed
-class SpotubeSimpleAlbumObject with _$SpotubeSimpleAlbumObject {
-  factory SpotubeSimpleAlbumObject({
+class MeloraSimpleAlbumObject with _$MeloraSimpleAlbumObject {
+  factory MeloraSimpleAlbumObject({
     required String id,
     required String name,
     required String externalUri,
-    required List<SpotubeSimpleArtistObject> artists,
-    @Default([]) List<SpotubeImageObject> images,
-    required SpotubeAlbumType albumType,
+    required List<MeloraSimpleArtistObject> artists,
+    @Default([]) List<MeloraImageObject> images,
+    required MeloraAlbumType albumType,
     String? releaseDate,
-  }) = _SpotubeSimpleAlbumObject;
+  }) = _MeloraSimpleAlbumObject;
 
-  factory SpotubeSimpleAlbumObject.fromJson(Map<String, dynamic> json) =>
-      _$SpotubeSimpleAlbumObjectFromJson(json);
+  factory MeloraSimpleAlbumObject.fromJson(Map<String, dynamic> json) =>
+      _$MeloraSimpleAlbumObjectFromJson(json);
 }

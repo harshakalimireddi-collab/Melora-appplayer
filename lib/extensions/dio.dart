@@ -22,7 +22,7 @@ extension ChunkDownloaderDioExtension on Dio {
     final tempSaveDir = Directory(
       join(
         tempRootDir.path,
-        'Spotube',
+        'Melora',
         '.chunk_dl_${targetFile.uri.pathSegments.last}',
       ),
     );
@@ -133,7 +133,7 @@ extension ChunkDownloaderDioExtension on Dio {
         await for (final chunk in resp.data!.stream) {
           sink.add(chunk);
           downloaded += chunk.length;
-          onReceiveProgress?.call(downloaded, totalLength);
+          onReceiveProgress?.call(downloaded, totalLength ?? -1);
         }
 
         await sink.close();

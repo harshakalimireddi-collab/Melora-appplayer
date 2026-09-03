@@ -1044,7 +1044,7 @@ abstract class AppLocalizations {
   /// No description provided for @u_love_spotube.
   ///
   /// In en, this message translates to:
-  /// **'We know you love Spotube'**
+  /// **'We know you love Melora'**
   String get u_love_spotube;
 
   /// No description provided for @check_for_updates.
@@ -1056,7 +1056,7 @@ abstract class AppLocalizations {
   /// No description provided for @about_spotube.
   ///
   /// In en, this message translates to:
-  /// **'About Spotube'**
+  /// **'About Melora'**
   String get about_spotube;
 
   /// No description provided for @blacklist.
@@ -1074,7 +1074,7 @@ abstract class AppLocalizations {
   /// No description provided for @spotube_description.
   ///
   /// In en, this message translates to:
-  /// **'Open source extensible music streaming platform and app, based on BYOMM (Bring your own music metadata) concept'**
+  /// **'Melora — An elegant, modern iOS music player experience'**
   String get spotube_description;
 
   /// No description provided for @version.
@@ -1092,7 +1092,7 @@ abstract class AppLocalizations {
   /// No description provided for @founder.
   ///
   /// In en, this message translates to:
-  /// **'Founder'**
+  /// **'Creator'**
   String get founder;
 
   /// No description provided for @repository.
@@ -1110,19 +1110,19 @@ abstract class AppLocalizations {
   /// No description provided for @made_with.
   ///
   /// In en, this message translates to:
-  /// **'Made with ❤️ in Bangladesh🇧🇩'**
+  /// **'Crafted with ❤️'**
   String get made_with;
 
   /// No description provided for @kingkor_roy_tirtho.
   ///
   /// In en, this message translates to:
-  /// **'Kingkor Roy Tirtho'**
+  /// **'Harsha Vardhan'**
   String get kingkor_roy_tirtho;
 
   /// No description provided for @copyright.
   ///
   /// In en, this message translates to:
-  /// **'© 2021-{current_year} Kingkor Roy Tirtho'**
+  /// **'© 2026 Harsha Vardhan'**
   String copyright(Object current_year);
 
   /// No description provided for @license.

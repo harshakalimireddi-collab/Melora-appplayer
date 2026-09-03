@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:spotube/collections/routes.gr.dart';
-import 'package:spotube/components/links/anchor_button.dart';
-import 'package:spotube/extensions/context.dart';
-import 'package:spotube/models/metadata/metadata.dart';
+import 'package:melora/collections/routes.gr.dart';
+import 'package:melora/components/links/anchor_button.dart';
+import 'package:melora/extensions/context.dart';
+import 'package:melora/models/metadata/metadata.dart';
 
 class ArtistLink extends StatelessWidget {
-  final List<SpotubeSimpleArtistObject> artists;
+  final List<MeloraSimpleArtistObject> artists;
   final WrapCrossAlignment crossAxisAlignment;
   final WrapAlignment mainAxisAlignment;
   final TextStyle textStyle;

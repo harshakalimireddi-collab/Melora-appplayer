@@ -1,58 +1,58 @@
 part of 'metadata.dart';
 
 @freezed
-class SpotubeTrackObject with _$SpotubeTrackObject {
-  factory SpotubeTrackObject.local({
+class MeloraTrackObject with _$MeloraTrackObject {
+  factory MeloraTrackObject.local({
     required String id,
     required String name,
     required String externalUri,
-    @Default([]) List<SpotubeSimpleArtistObject> artists,
-    required SpotubeSimpleAlbumObject album,
+    @Default([]) List<MeloraSimpleArtistObject> artists,
+    required MeloraSimpleAlbumObject album,
     required int durationMs,
     required String path,
-  }) = SpotubeLocalTrackObject;
+  }) = MeloraLocalTrackObject;
 
-  factory SpotubeTrackObject.full({
+  factory MeloraTrackObject.full({
     required String id,
     required String name,
     required String externalUri,
-    @Default([]) List<SpotubeSimpleArtistObject> artists,
-    required SpotubeSimpleAlbumObject album,
+    @Default([]) List<MeloraSimpleArtistObject> artists,
+    required MeloraSimpleAlbumObject album,
     required int durationMs,
     required String isrc,
     required bool explicit,
-  }) = SpotubeFullTrackObject;
+  }) = MeloraFullTrackObject;
 
-  factory SpotubeTrackObject.localTrackFromFile(
+  factory MeloraTrackObject.localTrackFromFile(
     File file, {
     Metadata? metadata,
     String? art,
   }) {
-    return SpotubeLocalTrackObject(
+    return MeloraLocalTrackObject(
       id: file.absolute.path,
       name: metadata?.title ?? basenameWithoutExtension(file.path),
       externalUri: "file://${file.absolute.path}",
       artists: metadata?.artist?.split(",").map((a) {
-            return SpotubeSimpleArtistObject(
+            return MeloraSimpleArtistObject(
               id: a.trim(),
               name: a.trim(),
               externalUri: "file://${file.absolute.path}",
             );
           }).toList() ??
           [
-            SpotubeSimpleArtistObject(
+            MeloraSimpleArtistObject(
               id: "unknown",
               name: "Unknown Artist",
               externalUri: "file://${file.absolute.path}",
             ),
           ],
-      album: SpotubeSimpleAlbumObject(
-        albumType: SpotubeAlbumType.album,
+      album: MeloraSimpleAlbumObject(
+        albumType: MeloraAlbumType.album,
         id: metadata?.album ?? "unknown",
         name: metadata?.album ?? "Unknown Album",
         externalUri: "file://${file.absolute.path}",
         artists: [
-          SpotubeSimpleArtistObject(
+          MeloraSimpleArtistObject(
             id: metadata?.albumArtist ?? "unknown",
             name: metadata?.albumArtist ?? "Unknown Artist",
             externalUri: "file://${file.absolute.path}",
@@ -62,7 +62,7 @@ class SpotubeTrackObject with _$SpotubeTrackObject {
             metadata?.year != null ? "${metadata!.year}-01-01" : "1970-01-01",
         images: [
           if (art != null)
-            SpotubeImageObject(
+            MeloraImageObject(
               url: art,
               width: 300,
               height: 300,
@@ -74,21 +74,21 @@ class SpotubeTrackObject with _$SpotubeTrackObject {
     );
   }
 
-  factory SpotubeTrackObject.fromJson(Map<String, dynamic> json) =>
-      _$SpotubeTrackObjectFromJson(
+  factory MeloraTrackObject.fromJson(Map<String, dynamic> json) =>
+      _$MeloraTrackObjectFromJson(
         json.containsKey("path")
             ? {...json, "runtimeType": "local"}
             : {...json, "runtimeType": "full"},
       );
 }
 
-extension AsMediaListSpotubeTrackObject on Iterable<SpotubeTrackObject> {
-  List<SpotubeMedia> asMediaList() {
-    return map((track) => SpotubeMedia(track)).toList();
+extension AsMediaListMeloraTrackObject on Iterable<MeloraTrackObject> {
+  List<MeloraMedia> asMediaList() {
+    return map((track) => MeloraMedia(track)).toList();
   }
 }
 
-extension ToMetadataSpotubeFullTrackObject on SpotubeFullTrackObject {
+extension ToMetadataMeloraFullTrackObject on MeloraFullTrackObject {
   Metadata toMetadata({
     required int fileLength,
     Uint8List? imageBytes,

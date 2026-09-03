@@ -1,7 +1,7 @@
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:spotube/components/image/universal_image.dart';
-import 'package:spotube/extensions/constrains.dart';
-import 'package:spotube/extensions/context.dart';
+import 'package:melora/components/image/universal_image.dart';
+import 'package:melora/extensions/constrains.dart';
+import 'package:melora/extensions/context.dart';
 
 class ConfirmDownloadDialog extends StatelessWidget {
   const ConfirmDownloadDialog({super.key});

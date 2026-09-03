@@ -1,16 +1,16 @@
 import 'package:collection/collection.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:spotube/models/metadata/metadata.dart';
-import 'package:spotube/pages/library/user_local_tracks/user_local_tracks.dart';
-import 'package:spotube/provider/metadata_plugin/library/tracks.dart';
-import 'package:spotube/provider/metadata_plugin/tracks/album.dart';
-import 'package:spotube/provider/metadata_plugin/tracks/playlist.dart';
-import 'package:spotube/utils/service_utils.dart';
+import 'package:melora/models/metadata/metadata.dart';
+import 'package:melora/pages/library/user_local_tracks/user_local_tracks.dart';
+import 'package:melora/provider/metadata_plugin/library/tracks.dart';
+import 'package:melora/provider/metadata_plugin/tracks/album.dart';
+import 'package:melora/provider/metadata_plugin/tracks/playlist.dart';
+import 'package:melora/utils/service_utils.dart';
 
 class PresentationState {
-  final List<SpotubeTrackObject> selectedTracks;
-  final List<SpotubeTrackObject> presentationTracks;
+  final List<MeloraTrackObject> selectedTracks;
+  final List<MeloraTrackObject> presentationTracks;
   final SortBy sortBy;
 
   const PresentationState({
@@ -20,8 +20,8 @@ class PresentationState {
   });
 
   PresentationState copyWith({
-    List<SpotubeTrackObject>? selectedTracks,
-    List<SpotubeTrackObject>? presentationTracks,
+    List<MeloraTrackObject>? selectedTracks,
+    List<MeloraTrackObject>? presentationTracks,
     SortBy? sortBy,
   }) {
     return PresentationState(
@@ -36,7 +36,7 @@ class PresentationStateNotifier
     extends AutoDisposeFamilyNotifier<PresentationState, Object> {
   @override
   PresentationState build(collection) {
-    if (arg case SpotubeSimplePlaylistObject() || SpotubeSimpleAlbumObject()) {
+    if (arg case MeloraSimplePlaylistObject() || MeloraSimpleAlbumObject()) {
       if (isSavedTrackPlaylist) {
         ref.listen(
           metadataPluginSavedTracksProvider,
@@ -53,11 +53,11 @@ class PresentationStateNotifier
         );
       } else {
         ref.listen(
-          arg is SpotubeSimplePlaylistObject
+          arg is MeloraSimplePlaylistObject
               ? metadataPluginPlaylistTracksProvider(
-                  (arg as SpotubeSimplePlaylistObject).id)
+                  (arg as MeloraSimplePlaylistObject).id)
               : metadataPluginAlbumTracksProvider(
-                  (arg as SpotubeSimpleAlbumObject).id),
+                  (arg as MeloraSimpleAlbumObject).id),
           (previous, next) {
             next.whenData((value) {
               state = state.copyWith(
@@ -80,39 +80,39 @@ class PresentationStateNotifier
   }
 
   bool get isSavedTrackPlaylist =>
-      arg is SpotubeSimplePlaylistObject &&
-      (arg as SpotubeSimplePlaylistObject).id == "user-liked-tracks";
+      arg is MeloraSimplePlaylistObject &&
+      (arg as MeloraSimplePlaylistObject).id == "user-liked-tracks";
 
-  List<SpotubeTrackObject> get tracks {
+  List<MeloraTrackObject> get tracks {
     assert(
-      arg is SpotubeSimplePlaylistObject || arg is SpotubeSimpleAlbumObject,
-      "arg must be SpotubeSimplePlaylistObject or SpotubeSimpleAlbumObject",
+      arg is MeloraSimplePlaylistObject || arg is MeloraSimpleAlbumObject,
+      "arg must be MeloraSimplePlaylistObject or MeloraSimpleAlbumObject",
     );
 
-    final isPlaylist = arg is SpotubeSimplePlaylistObject;
+    final isPlaylist = arg is MeloraSimplePlaylistObject;
 
     final tracks = switch ((isPlaylist, isSavedTrackPlaylist)) {
           (true, true) =>
             ref.read(metadataPluginSavedTracksProvider).asData?.value.items,
           (true, false) => ref
               .read(metadataPluginPlaylistTracksProvider(
-                  (arg as SpotubeSimplePlaylistObject).id))
+                  (arg as MeloraSimplePlaylistObject).id))
               .asData
               ?.value
               .items,
           _ => ref
               .read(metadataPluginAlbumTracksProvider(
-                  (arg as SpotubeSimpleAlbumObject).id))
+                  (arg as MeloraSimpleAlbumObject).id))
               .asData
               ?.value
               .items,
         } ??
-        <SpotubeFullTrackObject>[];
+        <MeloraFullTrackObject>[];
 
     return tracks;
   }
 
-  void selectTrack(SpotubeTrackObject track) {
+  void selectTrack(MeloraTrackObject track) {
     if (state.selectedTracks.any((e) => e.id == track.id)) {
       return;
     }
@@ -128,7 +128,7 @@ class PresentationStateNotifier
     );
   }
 
-  void deselectTrack(SpotubeTrackObject track) {
+  void deselectTrack(MeloraTrackObject track) {
     state = state.copyWith(
       selectedTracks: state.selectedTracks.where((e) => e != track).toList(),
     );

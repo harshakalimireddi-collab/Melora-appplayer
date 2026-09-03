@@ -1,12 +1,12 @@
-name: spotube
-description: Open source extensible music streaming platform and app, based on BYOMM (Bring your own music metadata) concept
+name: melora
+description: Melora - Your personal music streaming app
 
 publish_to: "none"
 
 version: 5.1.2+45
 
-homepage: https://spotube.krtirtho.dev
-repository: https://github.com/KRTirtho/spotube
+homepage: https://melora.app
+repository: https://github.com/melora-app/melora
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -171,7 +171,7 @@ dev_dependencies:
   pub_api_client: ^3.0.0
   io: ^1.0.4
   drift_dev: ^2.21.0
-  test: any
+  # test: any
   auto_route_generator: ^9.0.0
 
 dependency_overrides:
@@ -179,7 +179,7 @@ dependency_overrides:
     git:
       url: https://github.com/KRTirtho/Bonsoir.git
       path: packages/bonsoir_android
-  meta: 1.16.0
+  # meta: 1.16.0
   web: ^1.1.0
   flutter_svg: ^2.0.17
   intl: any
@@ -217,11 +217,11 @@ flutter:
   assets:
     - assets/images/
     - assets/images/logos/
-    - assets/branding/spotube-logo.png
-    - assets/branding/spotube-logo-light.png
-    - assets/branding/spotube-logo.ico
-    - assets/plugins/spotube-plugin-musicbrainz-listenbrainz/plugin.smplug
-    - assets/plugins/spotube-plugin-youtube-audio/plugin.smplug
+    - assets/branding/melora-logo.png
+    - assets/branding/melora-logo-light.png
+    - assets/branding/melora-logo.ico
+    - assets/plugins/melora-plugin-musicbrainz-listenbrainz/plugin.smplug
+    - assets/plugins/melora-plugin-youtube-audio/plugin.smplug
     - LICENSE
     - packages/flutter_undraw/assets/undraw/access_denied.svg
     - packages/flutter_undraw/assets/undraw/fixing_bugs.svg
@@ -273,10 +273,10 @@ flutter_gen:
 
 flutter_native_splash:
   background_image: assets/bengali-patterns-bg.jpg
-  image: assets/spotube-logo.png
+  image: assets/melora-logo.png
   branding: assets/branding.png
   android_12:
-    image: assets/spotube-logo_android12.png
+    image: assets/melora-logo_android12.png
     branding: assets/branding.png
     color: "#000000"
     icon_background_color: "#000000"

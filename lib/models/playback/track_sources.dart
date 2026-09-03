@@ -1,15 +1,15 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:spotube/models/metadata/metadata.dart';
+import 'package:melora/models/metadata/metadata.dart';
 
 part 'track_sources.g.dart';
 
 @JsonSerializable()
 class BasicSourcedTrack {
-  final SpotubeFullTrackObject query;
-  final SpotubeAudioSourceMatchObject info;
+  final MeloraFullTrackObject query;
+  final MeloraAudioSourceMatchObject info;
   final String source;
-  final List<SpotubeAudioSourceStreamObject> sources;
-  final List<SpotubeAudioSourceMatchObject> siblings;
+  final List<MeloraAudioSourceStreamObject> sources;
+  final List<MeloraAudioSourceMatchObject> siblings;
   BasicSourcedTrack({
     required this.query,
     required this.source,

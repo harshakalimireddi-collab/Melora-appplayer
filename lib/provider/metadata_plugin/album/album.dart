@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:spotube/models/metadata/metadata.dart';
-import 'package:spotube/provider/metadata_plugin/metadata_plugin_provider.dart';
-import 'package:spotube/provider/metadata_plugin/utils/common.dart';
-import 'package:spotube/services/metadata/errors/exceptions.dart';
+import 'package:melora/models/metadata/metadata.dart';
+import 'package:melora/provider/metadata_plugin/metadata_plugin_provider.dart';
+import 'package:melora/provider/metadata_plugin/utils/common.dart';
+import 'package:melora/services/metadata/errors/exceptions.dart';
 
 final metadataPluginAlbumProvider =
-    FutureProvider.autoDispose.family<SpotubeFullAlbumObject, String>(
+    FutureProvider.autoDispose.family<MeloraFullAlbumObject, String>(
   (ref, id) async {
     ref.cacheFor();
 

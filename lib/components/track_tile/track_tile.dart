@@ -7,24 +7,24 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:spotube/collections/routes.gr.dart';
-import 'package:spotube/collections/spotube_icons.dart';
-import 'package:spotube/components/hover_builder.dart';
-import 'package:spotube/components/image/universal_image.dart';
-import 'package:spotube/components/links/artist_link.dart';
-import 'package:spotube/components/links/link_text.dart';
-import 'package:spotube/components/track_tile/track_options_button.dart';
-import 'package:spotube/components/ui/button_tile.dart';
-import 'package:spotube/extensions/constrains.dart';
-import 'package:spotube/extensions/duration.dart';
-import 'package:spotube/models/metadata/metadata.dart';
-import 'package:spotube/provider/audio_player/querying_track_info.dart';
-import 'package:spotube/provider/audio_player/state.dart';
-import 'package:spotube/provider/blacklist_provider.dart';
-import 'package:spotube/utils/platform.dart';
+import 'package:melora/collections/routes.gr.dart';
+import 'package:melora/collections/melora_icons.dart';
+import 'package:melora/components/hover_builder.dart';
+import 'package:melora/components/image/universal_image.dart';
+import 'package:melora/components/links/artist_link.dart';
+import 'package:melora/components/links/link_text.dart';
+import 'package:melora/components/track_tile/track_options_button.dart';
+import 'package:melora/components/ui/button_tile.dart';
+import 'package:melora/extensions/constrains.dart';
+import 'package:melora/extensions/duration.dart';
+import 'package:melora/models/metadata/metadata.dart';
+import 'package:melora/provider/audio_player/querying_track_info.dart';
+import 'package:melora/provider/audio_player/state.dart';
+import 'package:melora/provider/blacklist_provider.dart';
+import 'package:melora/utils/platform.dart';
 
 final isBlacklistedProvider =
-    Provider.autoDispose.family<bool, SpotubeTrackObject>(
+    Provider.autoDispose.family<bool, MeloraTrackObject>(
   (ref, track) {
     ref.watch(blacklistProvider);
     final blacklist = ref.read(blacklistProvider.notifier);
@@ -37,7 +37,7 @@ final _overlay = ValueNotifier<OverlayCompleter<dynamic>?>(null);
 class TrackTile extends HookConsumerWidget {
   /// [index] will not be shown if null
   final int? index;
-  final SpotubeTrackObject track;
+  final MeloraTrackObject track;
   final bool selected;
   final bool selectionMode;
   final ValueChanged<bool?>? onChanged;
@@ -207,11 +207,11 @@ class TrackTile extends HookConsumerWidget {
                                       child: CircularProgressIndicator(),
                                     ),
                                   (_, _, true, _, _) => Icon(
-                                      SpotubeIcons.pause,
+                                      MeloraIcons.pause,
                                       color: theme.colorScheme.primary,
                                     ),
                                   (_, _, _, true, _) => const Icon(
-                                      SpotubeIcons.play,
+                                      MeloraIcons.play,
                                       color: Colors.white,
                                     ),
                                   _ => const SizedBox.shrink(),
@@ -233,7 +233,7 @@ class TrackTile extends HookConsumerWidget {
                   child: AbsorbPointer(
                     absorbing: selectionMode,
                     child: switch (track) {
-                    SpotubeLocalTrackObject() => Text(
+                    MeloraLocalTrackObject() => Text(
                         track.name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -270,7 +270,7 @@ class TrackTile extends HookConsumerWidget {
                   Expanded(
                     flex: 4,
                     child: switch (track) {
-                      SpotubeLocalTrackObject() => Text(
+                      MeloraLocalTrackObject() => Text(
                           track.album.name,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -294,7 +294,7 @@ class TrackTile extends HookConsumerWidget {
             ),
             subtitle: Align(
               alignment: Alignment.centerLeft,
-                    child: track is SpotubeLocalTrackObject
+                    child: track is MeloraLocalTrackObject
                   ? Text(
                       track.artists.asString(),
                     )

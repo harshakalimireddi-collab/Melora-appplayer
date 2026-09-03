@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter
+enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <!-- == PACKAGE SPECIFIC SECTION == -->
+    <id>Melora</id>
+    <version>%{{Melora_VERSION}}%</version>
+    <packageSourceUrl>https://github.com/KRTirtho/Melora/tree/master/choco-struct</packageSourceUrl>
+    <owners>Kingkor Roy Tirtho</owners>
+    <!-- ============================== -->
+
+    <!-- == SOFTWARE SPECIFIC SECTION == -->
+    <title>Melora (Install)</title>
+    <authors>Kingkor Roy Tirtho</authors>
+    <projectUrl>https://Melora.krtirtho.dev</projectUrl>
+    <iconUrl>
+      https://rawcdn.githack.com/KRTirtho/Melora/7edb0bb834eb18c05551e30a891720a6abf53dbe/assets/branding/Melora-logo.png</iconUrl>
+    <copyright>2022 Melora</copyright>
+    <!-- If there is a license Url available, it is required for the community feed -->
+    <licenseUrl>https://github.com/KRTirtho/Melora/blob/master/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <projectSourceUrl>https://github.com/KRTirtho/Melora</projectSourceUrl>
+    <docsUrl>https://Melora.krtirtho.dev</docsUrl>
+    <bugTrackerUrl>https://github.com/KRTirtho/Melora/issues/new</bugTrackerUrl>
+    <tags>Melora music audio youtube flutter</tags>
+    <summary>🎧 Open source music client that doesn't require Premium nor uses Electron! Available
+      for both desktop &amp; mobile! </summary>
+    <description>
+      Melora is a Flutter based lightweight music client. It utilizes the power
+      of music metadata providers &amp; Youtube's public API &amp; creates a hazardless, performant
+      &amp; resource
+      friendly User Experience
+
+      # Features
+      - Open source/libre software
+      - Anonymous/guest login
+      - Cross platform support
+      - No telemetry, diagnostics or user data collection
+      - Lightweight &amp; resource-friendly
+      - Native performance (Thanks to Flutter+Skia)
+      - Playback control is done locally instead of on the server
+      - Small size &amp; less data usage
+      - No ads since it uses all public &amp; free APIs (It is still recommended
+      to support the creators by watching/liking/subscribing to the artists' YouTube channels or
+      liking their tracks on different music platforms.)
+      - Time synced lyrics
+      - Downloadable tracks
+    </description>
+    <releaseNotes>https://github.com/KRTirtho/Melora/releases/tag/v%{{Melora_VERSION}}%</releaseNotes>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>

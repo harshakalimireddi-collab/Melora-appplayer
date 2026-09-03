@@ -489,13 +489,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get about => 'About';
 
   @override
-  String get u_love_spotube => 'We know you love Spotube';
+  String get u_love_spotube => 'We know you love Melora';
 
   @override
   String get check_for_updates => 'Check for updates';
 
   @override
-  String get about_spotube => 'About Spotube';
+  String get about_spotube => 'About Melora';
 
   @override
   String get blacklist => 'Blacklist';
@@ -505,7 +505,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get spotube_description =>
-      'Open source extensible music streaming platform and app, based on BYOMM (Bring your own music metadata) concept';
+      'Melora — An elegant, modern iOS music player experience';
 
   @override
   String get version => 'Version';
@@ -514,7 +514,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get build_number => 'Build Number';
 
   @override
-  String get founder => 'Founder';
+  String get founder => 'Creator';
 
   @override
   String get repository => 'Repository';
@@ -523,14 +523,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bug_issues => 'Bug+Issues';
 
   @override
-  String get made_with => 'Made with ❤️ in Bangladesh🇧🇩';
+  String get made_with => 'Crafted with ❤️';
 
   @override
-  String get kingkor_roy_tirtho => 'Kingkor Roy Tirtho';
+  String get kingkor_roy_tirtho => 'Harsha Vardhan';
 
   @override
   String copyright(Object current_year) {
-    return '© 2021-$current_year Kingkor Roy Tirtho';
+    return '© 2026 Harsha Vardhan';
   }
 
   @override

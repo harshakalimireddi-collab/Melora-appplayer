@@ -5,16 +5,16 @@ import 'package:media_kit/media_kit.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 
-import 'package:spotube/collections/spotube_icons.dart';
-import 'package:spotube/collections/intents.dart';
-import 'package:spotube/extensions/constrains.dart';
-import 'package:spotube/extensions/context.dart';
-import 'package:spotube/extensions/duration.dart';
-import 'package:spotube/modules/player/use_progress.dart';
-import 'package:spotube/provider/audio_player/audio_player.dart';
-import 'package:spotube/provider/audio_player/querying_track_info.dart';
-import 'package:spotube/services/audio_player/audio_player.dart';
-import 'package:spotube/utils/platform.dart';
+import 'package:melora/collections/melora_icons.dart';
+import 'package:melora/collections/intents.dart';
+import 'package:melora/extensions/constrains.dart';
+import 'package:melora/extensions/context.dart';
+import 'package:melora/extensions/duration.dart';
+import 'package:melora/modules/player/use_progress.dart';
+import 'package:melora/provider/audio_player/audio_player.dart';
+import 'package:melora/provider/audio_player/querying_track_info.dart';
+import 'package:melora/services/audio_player/audio_player.dart';
+import 'package:melora/utils/platform.dart';
 
 class PlayerControls extends HookConsumerWidget {
   final PaletteGenerator? palette;
@@ -50,7 +50,9 @@ class PlayerControls extends HookConsumerWidget {
     final theme = Theme.of(context);
 
     final buttonSize =
-        kIsMobile ? const ButtonSize(1.5) : const ButtonSize(1.2);
+        kIsMobile ? const ButtonSize(1.4) : const ButtonSize(1.2);
+    final playButtonSize =
+        kIsMobile ? const ButtonSize(2.0) : const ButtonSize(1.6);
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -125,11 +127,19 @@ class PlayerControls extends HookConsumerWidget {
                             children: [
                               Text(
                                 position.toHumanReadableString(),
-                                style: theme.typography.xSmall,
+                                style: theme.typography.xSmall.copyWith(
+                                  color: theme.colorScheme.foreground.withValues(alpha: 0.65),
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                               Text(
-                                duration.toHumanReadableString(),
-                                style: theme.typography.xSmall,
+                                duration > position
+                                    ? "-${(duration - position).toHumanReadableString()}"
+                                    : duration.toHumanReadableString(),
+                                style: theme.typography.xSmall.copyWith(
+                                  color: theme.colorScheme.foreground.withValues(alpha: 0.65),
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ],
                           ),
@@ -155,7 +165,7 @@ class PlayerControls extends HookConsumerWidget {
                       child: IconButton(
                         size: buttonSize,
                         icon: Icon(
-                          SpotubeIcons.shuffle,
+                          MeloraIcons.shuffle,
                           color: shuffled ? theme.colorScheme.primary : null,
                           size: 22,
                         ),
@@ -181,7 +191,7 @@ class PlayerControls extends HookConsumerWidget {
                     child: IconButton.ghost(
                       size: buttonSize,
                       enabled: !isFetchingActiveTrack,
-                      icon: const Icon(SpotubeIcons.skipBack),
+                      icon: const Icon(MeloraIcons.skipBack),
                       onPressed: audioPlayer.skipToPrevious,
                     ),
                   ),
@@ -194,7 +204,7 @@ class PlayerControls extends HookConsumerWidget {
                       ),
                     ).call,
                     child: IconButton.primary(
-                      size: buttonSize,
+                      size: playButtonSize,
                       shape: ButtonShape.circle,
                       icon: isFetchingActiveTrack
                           ? const SizedBox(
@@ -203,7 +213,7 @@ class PlayerControls extends HookConsumerWidget {
                               child: CircularProgressIndicator(),
                             )
                           : Icon(
-                              playing ? SpotubeIcons.pause : SpotubeIcons.play,
+                              playing ? MeloraIcons.pause : MeloraIcons.play,
                             ),
                       onPressed: isFetchingActiveTrack
                           ? null
@@ -219,7 +229,7 @@ class PlayerControls extends HookConsumerWidget {
                             .call,
                     child: IconButton.ghost(
                       size: buttonSize,
-                      icon: const Icon(SpotubeIcons.skipForward),
+                      icon: const Icon(MeloraIcons.skipForward),
                       onPressed:
                           isFetchingActiveTrack ? null : audioPlayer.skipToNext,
                     ),
@@ -242,8 +252,8 @@ class PlayerControls extends HookConsumerWidget {
                         size: buttonSize,
                         icon: Icon(
                           loopMode == PlaylistMode.single
-                              ? SpotubeIcons.repeatOne
-                              : SpotubeIcons.repeat,
+                              ? MeloraIcons.repeatOne
+                              : MeloraIcons.repeat,
                           color: loopMode != PlaylistMode.none
                               ? theme.colorScheme.primary
                               : null,

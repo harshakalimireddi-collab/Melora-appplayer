@@ -291,8 +291,8 @@
             "default_client_dart": null,
             "dsl_features": [],
             "type_converter": {
-              "dart_expr": "const SpotubeColorConverter()",
-              "dart_type_name": "SpotubeColor"
+              "dart_expr": "const MeloraColorConverter()",
+              "dart_type_name": "MeloraColor"
             }
           },
           {
@@ -827,8 +827,8 @@
             "default_client_dart": null,
             "dsl_features": [],
             "type_converter": {
-              "dart_expr": "const SpotubeTrackObjectListConverter()",
-              "dart_type_name": "List<SpotubeTrackObject>"
+              "dart_expr": "const MeloraTrackObjectListConverter()",
+              "dart_type_name": "List<MeloraTrackObject>"
             }
           },
           {

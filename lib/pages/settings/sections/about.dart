@@ -4,13 +4,13 @@ import 'package:flutter/material.dart' show ListTile;
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart' hide ButtonStyle;
-import 'package:spotube/collections/env.dart';
-import 'package:spotube/collections/routes.gr.dart';
-import 'package:spotube/collections/spotube_icons.dart';
-import 'package:spotube/modules/settings/section_card_with_heading.dart';
-import 'package:spotube/components/adaptive/adaptive_list_tile.dart';
-import 'package:spotube/extensions/context.dart';
-import 'package:spotube/provider/user_preferences/user_preferences_provider.dart';
+import 'package:melora/collections/env.dart';
+import 'package:melora/collections/routes.gr.dart';
+import 'package:melora/collections/melora_icons.dart';
+import 'package:melora/modules/settings/section_card_with_heading.dart';
+import 'package:melora/components/adaptive/adaptive_list_tile.dart';
+import 'package:melora/extensions/context.dart';
+import 'package:melora/provider/user_preferences/user_preferences_provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class SettingsAboutSection extends HookConsumerWidget {
@@ -27,7 +27,7 @@ class SettingsAboutSection extends HookConsumerWidget {
         if (!Env.hideDonations)
           AdaptiveListTile(
             leading: const Icon(
-              SpotubeIcons.heart,
+              MeloraIcons.heart,
               color: Colors.pink,
             ),
             title: SizedBox(
@@ -67,17 +67,17 @@ class SettingsAboutSection extends HookConsumerWidget {
               ),
               onPressed: () {
                 launchUrlString(
-                  "https://opencollective.com/spotube",
+                  "https://opencollective.com/melora",
                   mode: LaunchMode.externalApplication,
                 );
               },
-              leading: const Icon(SpotubeIcons.heart),
+              leading: const Icon(MeloraIcons.heart),
               child: Text(context.l10n.please_sponsor),
             ),
           ),
         if (Env.enableUpdateChecker)
           ListTile(
-            leading: const Icon(SpotubeIcons.update),
+            leading: const Icon(MeloraIcons.update),
             title: Text(context.l10n.check_for_updates),
             trailing: Switch(
               value: preferences.checkUpdate,
@@ -86,11 +86,12 @@ class SettingsAboutSection extends HookConsumerWidget {
             ),
           ),
         ListTile(
-          leading: const Icon(SpotubeIcons.info),
-          title: Text(context.l10n.about_spotube),
-          trailing: const Icon(SpotubeIcons.angleRight),
+          leading: const Icon(MeloraIcons.info),
+          title: const Text("About Melora"),
+          subtitle: const Text("Built by Harsha Vardhan"),
+          trailing: const Icon(MeloraIcons.angleRight),
           onTap: () {
-            context.navigateTo(const AboutSpotubeRoute());
+            context.navigateTo(const AboutMeloraRoute());
           },
         )
       ],

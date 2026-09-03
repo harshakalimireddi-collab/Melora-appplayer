@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter_discord_rpc/flutter_discord_rpc.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:spotube/models/metadata/metadata.dart';
-import 'package:spotube/provider/audio_player/audio_player.dart';
-import 'package:spotube/provider/user_preferences/user_preferences_provider.dart';
-import 'package:spotube/services/audio_player/audio_player.dart';
-import 'package:spotube/services/logger/logger.dart';
-import 'package:spotube/utils/platform.dart';
+import 'package:melora/models/metadata/metadata.dart';
+import 'package:melora/provider/audio_player/audio_player.dart';
+import 'package:melora/provider/user_preferences/user_preferences_provider.dart';
+import 'package:melora/services/audio_player/audio_player.dart';
+import 'package:melora/services/logger/logger.dart';
+import 'package:melora/utils/platform.dart';
 
 class DiscordNotifier extends AsyncNotifier<void> {
   @override
@@ -73,7 +73,7 @@ class DiscordNotifier extends AsyncNotifier<void> {
     }
   }
 
-  Future<void> updatePresence(SpotubeTrackObject track) async {
+  Future<void> updatePresence(MeloraTrackObject track) async {
     if (!kIsDesktop) return;
     if (FlutterDiscordRPC.instance.isConnected == false) return;
     final artistNames = track.artists.asString();
@@ -86,14 +86,14 @@ class DiscordNotifier extends AsyncNotifier<void> {
         state: artistNames,
         assets: RPCAssets(
           largeImage:
-              track.album.images.firstOrNull?.url ?? "spotube-logo-foreground",
+              track.album.images.firstOrNull?.url ?? "melora-logo-foreground",
           largeText: track.album.name,
-          smallImage: "spotube-logo-foreground",
-          smallText: "Spotube",
+          smallImage: "melora-logo-foreground",
+          smallText: "Melora",
         ),
         buttons: [
           RPCButton(
-            label: "Listen on Spotube",
+            label: "Listen on Melora",
             url: track.externalUri,
           ),
         ],

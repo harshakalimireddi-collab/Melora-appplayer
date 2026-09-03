@@ -1,34 +1,34 @@
 part of 'metadata.dart';
 
 @freezed
-class SpotubeFullPlaylistObject with _$SpotubeFullPlaylistObject {
-  factory SpotubeFullPlaylistObject({
+class MeloraFullPlaylistObject with _$MeloraFullPlaylistObject {
+  factory MeloraFullPlaylistObject({
     required String id,
     required String name,
     required String description,
     required String externalUri,
-    required SpotubeUserObject owner,
-    @Default([]) List<SpotubeImageObject> images,
-    @Default([]) List<SpotubeUserObject> collaborators,
+    required MeloraUserObject owner,
+    @Default([]) List<MeloraImageObject> images,
+    @Default([]) List<MeloraUserObject> collaborators,
     @Default(false) bool collaborative,
     @Default(false) bool public,
-  }) = _SpotubeFullPlaylistObject;
+  }) = _MeloraFullPlaylistObject;
 
-  factory SpotubeFullPlaylistObject.fromJson(Map<String, dynamic> json) =>
-      _$SpotubeFullPlaylistObjectFromJson(json);
+  factory MeloraFullPlaylistObject.fromJson(Map<String, dynamic> json) =>
+      _$MeloraFullPlaylistObjectFromJson(json);
 }
 
 @freezed
-class SpotubeSimplePlaylistObject with _$SpotubeSimplePlaylistObject {
-  factory SpotubeSimplePlaylistObject({
+class MeloraSimplePlaylistObject with _$MeloraSimplePlaylistObject {
+  factory MeloraSimplePlaylistObject({
     required String id,
     required String name,
     required String description,
     required String externalUri,
-    required SpotubeUserObject owner,
-    @Default([]) List<SpotubeImageObject> images,
-  }) = _SpotubeSimplePlaylistObject;
+    required MeloraUserObject owner,
+    @Default([]) List<MeloraImageObject> images,
+  }) = _MeloraSimplePlaylistObject;
 
-  factory SpotubeSimplePlaylistObject.fromJson(Map<String, dynamic> json) =>
-      _$SpotubeSimplePlaylistObjectFromJson(json);
+  factory MeloraSimplePlaylistObject.fromJson(Map<String, dynamic> json) =>
+      _$MeloraSimplePlaylistObjectFromJson(json);
 }

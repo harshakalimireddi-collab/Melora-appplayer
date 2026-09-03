@@ -1,13 +1,13 @@
 import 'package:flutter/services.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:spotube/collections/assets.gen.dart';
-import 'package:spotube/collections/env.dart';
-import 'package:spotube/components/button/back_button.dart';
-import 'package:spotube/components/image/universal_image.dart';
-import 'package:spotube/components/links/hyper_link.dart';
-import 'package:spotube/components/titlebar/titlebar.dart';
-import 'package:spotube/extensions/context.dart';
-import 'package:spotube/hooks/controllers/use_package_info.dart';
+import 'package:melora/collections/assets.gen.dart';
+import 'package:melora/collections/env.dart';
+import 'package:melora/components/button/back_button.dart';
+import 'package:melora/components/image/universal_image.dart';
+import 'package:melora/components/links/hyper_link.dart';
+import 'package:melora/components/titlebar/titlebar.dart';
+import 'package:melora/extensions/context.dart';
+import 'package:melora/hooks/controllers/use_package_info.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,10 +18,10 @@ final _licenseProvider = FutureProvider<String>((ref) async {
 });
 
 @RoutePage()
-class AboutSpotubePage extends HookConsumerWidget {
+class AboutMeloraPage extends HookConsumerWidget {
   static const name = "about";
 
-  const AboutSpotubePage({super.key});
+  const AboutMeloraPage({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
@@ -37,7 +37,7 @@ class AboutSpotubePage extends HookConsumerWidget {
         headers: [
           TitleBar(
             leading: const [BackButton()],
-            title: Text(context.l10n.about_spotube),
+            title: const Text("About Melora"),
           )
         ],
         child: SingleChildScrollView(
@@ -45,14 +45,14 @@ class AboutSpotubePage extends HookConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
               children: [
-                Assets.branding.spotubeLogoPng.image(
+                Assets.branding.meloraLogoPng.image(
                   height: 200,
                   width: 200,
                 ),
                 Center(
                   child: Column(
                     children: [
-                      Text(context.l10n.spotube_description).semiBold().large(),
+                      const Text("Melora — An elegant, modern iOS music player experience").semiBold().large(),
                       const SizedBox(height: 20),
                       Table(
                         columnWidths: const {
@@ -64,12 +64,12 @@ class AboutSpotubePage extends HookConsumerWidget {
                         rows: [
                           TableRow(
                             cells: [
-                              TableCell(child: Text(context.l10n.founder)),
+                              const TableCell(child: Text("Creator")),
                               colon,
-                              TableCell(
+                              const TableCell(
                                 child: Hyperlink(
-                                  context.l10n.kingkor_roy_tirtho,
-                                  "https://github.com/KRTirtho",
+                                  "Harsha Vardhan",
+                                  "https://github.com/harshakalimireddi-collab",
                                 ),
                               )
                             ],
@@ -104,8 +104,8 @@ class AboutSpotubePage extends HookConsumerWidget {
                               colon,
                               TableCell(
                                 child: Hyperlink(
-                                  "spotube.krtirtho.dev",
-                                  "https://spotube.krtirtho.dev",
+                                  "Melora.krtirtho.dev",
+                                  "https://Melora.krtirtho.dev",
                                 ),
                               ),
                             ],
@@ -116,8 +116,8 @@ class AboutSpotubePage extends HookConsumerWidget {
                               colon,
                               const TableCell(
                                 child: Hyperlink(
-                                  "github.com/KRTirtho/spotube",
-                                  "https://github.com/KRTirtho/spotube",
+                                  "github.com/melora-app/melora",
+                                  "https://github.com/melora-app/melora",
                                 ),
                               ),
                             ],
@@ -129,7 +129,7 @@ class AboutSpotubePage extends HookConsumerWidget {
                               const TableCell(
                                 child: Hyperlink(
                                   "BSD-4-Clause",
-                                  "https://raw.githubusercontent.com/KRTirtho/spotube/master/LICENSE",
+                                  "https://raw.githubusercontent.com/melora-app/melora/master/LICENSE",
                                 ),
                               ),
                             ],

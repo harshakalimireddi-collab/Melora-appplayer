@@ -1,12 +1,12 @@
 <div align="center">
-  <img width="600" src="assets/branding/spotube_banner.png" alt="Spotube Logo">
+  <img width="600" src="assets/branding/melora_banner.png" alt="Melora Logo">
 
 A cross-platform extensible open-source music streaming platform.<br>
 Bring your own music metadata/playlist/audio-source with plugins created by community or by yourself. A small step towards the decentralized music streaming era!
 
 Btw it's not just another Electron app 😉
 
-<a href="https://spotube.krtirtho.dev"><img alt="Visit the website" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/documentation/website_vector.svg"></a>
+<a href="https://Melora.krtirtho.dev"><img alt="Visit the website" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/documentation/website_vector.svg"></a>
 <a href="https://discord.gg/uJ94vxB6vg"><img alt="Discord Server" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/social/discord-plural_vector.svg"></a>
 
 <a href="https://patreon.com/krtirtho"><img alt="Support me on Patron" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/donate/patreon-singular_vector.svg"></a>
@@ -14,13 +14,13 @@ Btw it's not just another Electron app 😉
 
 [![HackerNews](https://hackerbadge.vercel.app/api?id=39066136&type=dark)](https://news.ycombinator.com/item?id=39066136)
 
-<a href="https://opencollective.com/spotube"><img src="https://opencollective.com/spotube/donate/button.png?color=blue" alt="Donate to our Open Collective" height="45"></a>
+<a href="https://opencollective.com/melora"><img src="https://opencollective.com/melora/donate/button.png?color=blue" alt="Donate to our Open Collective" height="45"></a>
 
 ---
 
-![Spotube Desktop](assets/branding/spotube-screenshot.png)
+![Melora Desktop](assets/branding/melora-screenshot.png)
 
-![Spotube Mobile](assets/branding/mobile-screenshots/combined.jpg)
+![Melora Mobile](assets/branding/mobile-screenshots/combined.jpg)
 
 </div>
 
@@ -40,7 +40,7 @@ Btw it's not just another Electron app 😉
 ## 📜 ⬇️ Installation guide
 
 New versions usually release every 3-4 months.<br />
-This handy table lists all the methods you can use to install Spotube:
+This handy table lists all the methods you can use to install Melora:
 
 <table>
   <tr>
@@ -50,14 +50,14 @@ This handy table lists all the methods you can use to install Spotube:
   <tr>
     <td>Windows</td>
     <td>
-      <a href="https://github.com/KRTirtho/spotube/releases/latest/download/Spotube-windows-x86_64-setup.exe">
+      <a href="https://github.com/melora-app/melora/releases/latest/download/melora-windows-x86_64-setup.exe">
         <img width="220" alt="Windows Download" src="https://get.todoist.help/hc/article_attachments/4403191721234/WindowsButton.svg">
       </a>
   </tr>
   <tr>
     <td>MacOS</td>
     <td>
-      <a href="https://github.com/KRTirtho/spotube/releases/latest/download/Spotube-macos-universal.dmg">
+      <a href="https://github.com/melora-app/melora/releases/latest/download/melora-macos-universal.dmg">
         <img width="220" alt="MacOS Download" src="https://memory-map.com/wp-content/uploads/download-mac-OS-01.svg">
       </a>
     </td>
@@ -65,11 +65,11 @@ This handy table lists all the methods you can use to install Spotube:
   <tr>
     <td>Android</td>
     <td>
-      <a href="https://github.com/KRTirtho/spotube/releases/latest/download/Spotube-android-all-arch.apk">
+      <a href="https://github.com/melora-app/melora/releases/latest/download/melora-android-all-arch.apk">
         <img width="220" alt="APK download" src="https://user-images.githubusercontent.com/114044633/223920025-83687de0-e463-4c5d-8122-e06e4bb7d40c.png">
       </a>
       <br/>
-      <a href="https://f-droid.org/packages/oss.krtirtho.spotube">
+      <a href="https://f-droid.org/packages/com.melora.app">
         <img width="220" alt="Download from F-Droid" src="https://user-images.githubusercontent.com/61944859/174589876-bace24c0-b3fd-4c4a-bdb4-6fa82b5853ec.png">
       </a>
     </td>
@@ -78,7 +78,7 @@ This handy table lists all the methods you can use to install Spotube:
   <tr>
     <td>iOS</td>
     <td>
-      <a href="https://github.com/KRTirtho/spotube/releases/latest/download/Spotube-iOS.ipa">
+      <a href="https://github.com/melora-app/melora/releases/latest/download/melora-iOS.ipa">
         <img width="220" alt="Download iOS IPA" src="https://github.com/user-attachments/assets/3e50d93d-fb39-435c-be6b-337745f7c423">
       </a>
       <br/>
@@ -90,46 +90,46 @@ This handy table lists all the methods you can use to install Spotube:
   <tr>
     <td>Flatpak</td>
     <td>
-      <p><code>flatpak install com.github.KRTirtho.Spotube</code></p>
-      <a href="https://flathub.org/apps/details/com.github.KRTirtho.Spotube">
+      <p><code>flatpak install com.melora.app</code></p>
+      <a href="https://flathub.org/apps/details/com.melora.app">
         <img width="220" alt="Download on Flathub" src="https://flathub.org/assets/badges/flathub-badge-en.png">
       </a>
     </td>
   </tr>
   <tr>
     <td>AppImage</td>
-    <td>AppImage's lacking stability led to it's temporary removal. More information at https://github.com/KRTirtho/spotube/issues/1082</td>
+    <td>AppImage's lacking stability led to it's temporary removal. More information at https://github.com/melora-app/melora/issues/1082</td>
   </tr>
   <tr>
     <td>Debian/Ubuntu</td>
     <td>
-      <a href="https://github.com/KRTirtho/spotube/releases/latest/download/Spotube-linux-x86_64.deb">
+      <a href="https://github.com/melora-app/melora/releases/latest/download/melora-linux-x86_64.deb">
         <img width="220" alt="Debian/Ubuntu Download" src="https://user-images.githubusercontent.com/61944859/169097994-e92aff78-fd75-4c93-b6e4-f072a4b5a7ed.png">
       </a>
-      <p>Then run: <code>sudo apt install ./Spotube-linux-x86_64.deb</code></p>
+      <p>Then run: <code>sudo apt install ./melora-linux-x86_64.deb</code></p>
     </td>
   </tr>
   <tr>
     <td>Arch/Manjaro</td>
     <td>
-      <p>With pamac: <code>sudo pamac install spotube-bin</code></p>
-      <p>With yay: <code>yay -Sy spotube-bin</code></p>
+      <p>With pamac: <code>sudo pamac install Melora-bin</code></p>
+      <p>With yay: <code>yay -Sy Melora-bin</code></p>
     </td>
   </tr>
   <tr>
     <td>Fedora/OpenSuse</td>
     <td>
-      <a href="https://github.com/KRTirtho/spotube/releases/latest/download/Spotube-linux-x86_64.rpm">
+      <a href="https://github.com/melora-app/melora/releases/latest/download/melora-linux-x86_64.rpm">
         <img width="220" alt="Fedora/OpenSuse Download" src="https://user-images.githubusercontent.com/61944859/223638350-5926b9da-04d6-4edd-931d-ad533e4ff058.png">
       </a>
-      <p>For Fedora: <code>sudo dnf install ./Spotube-linux-x86_64.rpm</code></p>
-      <p>For OpenSuse: <code>sudo zypper in ./Spotube-linux-x86_64.rpm</code></p>
+      <p>For Fedora: <code>sudo dnf install ./melora-linux-x86_64.rpm</code></p>
+      <p>For OpenSuse: <code>sudo zypper in ./melora-linux-x86_64.rpm</code></p>
     </td>
   </tr>
   <tr>
     <td>Linux (tarball)</td>
     <td>
-      <a href="https://github.com/KRTirtho/spotube/releases/latest">
+      <a href="https://github.com/melora-app/melora/releases/latest">
         <img width="220" alt="Tarball Download" src="https://user-images.githubusercontent.com/61944859/169456985-e0ba1fd4-10e8-4cc0-ab94-337acc6e0295.png">
       </a>
     </td>
@@ -139,42 +139,42 @@ This handy table lists all the methods you can use to install Spotube:
     <td>
 <pre lang="bash">
 brew tap krtirtho/apps
-brew install --cask spotube
+brew install --cask Melora
 </pre>   
     </td>
   </tr>
   <tr>
     <td>Windows - <a href="https://chocolatey.org">Chocolatey</a></td>
     <td>
-      <p><code>choco install spotube</code></p>
+      <p><code>choco install Melora</code></p>
     </td>
   </tr>
   <tr>
     <td>Windows - <a href="https://scoop.sh">Scoop</a></td>
     <td>
       <p><code>scoop bucket add extras</code></p>
-      <p><code>scoop install spotube</code></p>
+      <p><code>scoop install Melora</code></p>
     </td>
   </tr>
   <tr>
     <td>Windows - <a href="https://github.com/microsoft/winget-cli">WinGet</a></td>
     <td>
-      <p><code>winget install --id KRTirtho.Spotube</code></p>
+      <p><code>winget install --id KRTirtho.melora</code></p>
     </td>
   </tr>
 </table>
 
 ### 🔄 Nightly Builds
 
-Grab the latest nightly builds of Spotube [from the GitHub Releases](https://github.com/KRTirtho/spotube/releases/tag/nightly).
+Grab the latest nightly builds of Melora [from the GitHub Releases](https://github.com/melora-app/melora/releases/tag/nightly).
 
 ## 🕳️ Building from source
 
-<a href="https://github.com/KRTirtho/spotube/actions"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/KRTirtho/spotube/spotube-release-binary.yml?+label=Build%20Status"></a>
+<a href="https://github.com/melora-app/melora/actions"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/melora-app/melora/melora-release-binary.yml?+label=Build%20Status"></a>
 
-You can compile Spotube's source code by [following these instructions](CONTRIBUTION.md#your-first-code-contribution).
+You can compile Melora's source code by [following these instructions](CONTRIBUTION.md#your-first-code-contribution).
 
-## 👥 The Spotube team
+## 👥 The Melora team
 
 - [Kingkor Roy Tirtho](https://github.com/KRTirtho) - The Founder, Maintainer and Lead Developer
 - [Owen Connor](https://github.com/owencz1998) - The Cool Discord Moderator
@@ -183,7 +183,7 @@ You can compile Spotube's source code by [following these instructions](CONTRIBU
 
 ## 💼 License
 
-Spotube is open source and licensed under the [BSD-4-Clause](/LICENSE) License.
+Melora is open source and licensed under the [BSD-4-Clause](/LICENSE) License.
 
 If you are curious, you can [read the reason of choosing this license](https://dev.to/krtirtho/choosing-open-source-license-wisely-1m3p).
 
@@ -325,10 +325,10 @@ If you are curious, you can [read the reason of choosing this license](https://d
 1. [flutter_new_pipe_extractor](https://github.com/KRTirtho/flutter_new_pipe_extractor) - NewPipeExtractor binding for Flutter (Android only)
 1. [hetu_std](https://github.com/hetu-community/hetu_std.git) - A sample command-line application.
 1. [hetu_otp_util](https://github.com/hetu-community/hetu_otp_util.git) - A sample command-line application.
-1. [hetu_spotube_plugin](https://github.com/KRTirtho/hetu_spotube_plugin) - A new Flutter package project.
+1. [hetu_melora_plugin](https://github.com/KRTirtho/hetu_melora_plugin) - A new Flutter package project.
 1. [media_kit](https://github.com/media-kit/media-kit) - A cross-platform video player & audio player for Flutter & Dart. Performant, stable, feature-proof & modular.
 1. [media_kit_libs_audio](https://github.com/media-kit/media-kit.git) - package:media_kit audio (only) playback native libraries for all platforms.
 
 </details>
 
-<div align="center"><h4>© Copyright Spotube 2025</h4></div>
+<div align="center"><h4>© Copyright Melora 2025</h4></div>
