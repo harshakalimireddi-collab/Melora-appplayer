@@ -53,12 +53,12 @@ class PreferencesTable extends Table {
   BoolColumn get normalizeAudio =>
       boolean().withDefault(const Constant(false))();
   BoolColumn get showSystemTrayIcon =>
-      boolean().withDefault(const Constant(false))();
+      boolean().withDefault(const Constant(true))();
   BoolColumn get systemTitleBar =>
       boolean().withDefault(const Constant(false))();
   BoolColumn get skipNonMusic => boolean().withDefault(const Constant(false))();
   TextColumn get closeBehavior => textEnum<CloseBehavior>()
-      .withDefault(Constant(CloseBehavior.close.name))();
+      .withDefault(Constant(CloseBehavior.minimizeToTray.name))();
   TextColumn get accentColorScheme => text()
       .withDefault(const Constant("Slate:0xff64748b"))
       .map(const MeloraColorConverter())();
