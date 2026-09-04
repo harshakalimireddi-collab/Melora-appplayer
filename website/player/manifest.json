@@ -1,28 +1,29 @@
 {
+  "id": "/Melora-appplayer/player/",
   "name": "Melora Web Player",
   "short_name": "Melora",
   "description": "Bit-perfect ad-free streaming music player",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/Melora-appplayer/player/",
+  "scope": "/Melora-appplayer/player/",
   "display": "standalone",
   "background_color": "#080512",
   "theme_color": "#080512",
   "orientation": "any",
   "icons": [
     {
-      "src": "apple-touch-icon.png",
+      "src": "/Melora-appplayer/player/apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "android-chrome-192x192.png",
+      "src": "/Melora-appplayer/player/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "android-chrome-512x512.png",
+      "src": "/Melora-appplayer/player/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
