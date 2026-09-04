@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Melora — Music Beyond Limits</title>
+  <title>Melora — #1 Music Streaming</title>
   <meta name="description" content="Melora is a modern, open-source Hi-Res music player. Bit-perfect playback, zero advertisements, and available across all major platforms.">
   <meta name="theme-color" content="#08090D">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -15,19 +15,19 @@
   <link rel="apple-touch-icon" href="./apple-touch-icon.png">
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
   <link rel="icon" type="image/png" href="./apple-touch-icon.png">
-  <link rel="manifest" href="./manifest.json?v=3">
+  <link rel="manifest" href="./manifest.json?v=4">
 
-  <!-- Fonts: Inter & Plus Jakarta Sans for Apple / Editorial feel -->
+  <!-- Fonts: Inter & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Hls.js for adaptive full-length audio streaming -->
+  <!-- Hls.js for adaptive audio streaming -->
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
   <style>
     /* ══════════════════════════════════════════════════════════════
-       OBSIDIAN + AURORA DESIGN TOKENS (NO GAMING NEON / CYBERPUNK)
+       OBSIDIAN + AURORA DESIGN SYSTEM (NO GAMING NEON / CYBERPUNK)
        ══════════════════════════════════════════════════════════════ */
     :root {
       --ff-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -40,7 +40,7 @@
       --c-surface: #13151D;
       --c-surface-hover: #1A1D27;
 
-      /* Editorial Aurora Accents (Soft, Elegant, Restrained) */
+      /* Editorial Aurora Accents */
       --c-lavender: #B8A1FF;
       --c-lavender-dim: rgba(184, 161, 255, 0.14);
       --c-lavender-glow: rgba(184, 161, 255, 0.22);
@@ -56,11 +56,10 @@
       /* Physical Glass Tiers */
       --glass-1: rgba(255, 255, 255, 0.03);
       --glass-2: rgba(255, 255, 255, 0.05);
-      --glass-3: rgba(14, 16, 22, 0.76);
-      --glass-player: rgba(14, 16, 22, 0.88);
+      --glass-3: rgba(14, 16, 22, 0.78);
+      --glass-player: rgba(14, 16, 22, 0.92);
       --glass-border: rgba(255, 255, 255, 0.08);
       --glass-border-focus: rgba(184, 161, 255, 0.4);
-      --glass-specular: rgba(255, 255, 255, 0.12);
 
       --radius-sm: 10px;
       --radius-md: 14px;
@@ -85,12 +84,12 @@
       background: var(--c-bg);
       color: var(--c-text-pri);
       font-family: var(--ff-body);
-      overflow: hidden;
       -webkit-font-smoothing: antialiased;
       user-select: none;
+      overflow-x: hidden;
     }
 
-    /* SUBTLE ATMOSPHERIC AURORA DEPTH */
+    /* Ambient Aurora Glow */
     .ambient-canvas {
       position: fixed;
       inset: 0;
@@ -105,7 +104,7 @@
       width: 55vw;
       height: 55vh;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(184, 161, 255, 0.05) 0%, rgba(8, 9, 13, 0) 70%);
+      background: radial-gradient(circle, rgba(184, 161, 255, 0.06) 0%, rgba(8, 9, 13, 0) 70%);
       filter: blur(120px);
     }
     .ambient-aurora-2 {
@@ -119,14 +118,13 @@
       filter: blur(140px);
     }
 
-    /* ══════════════════════════════════════════════════════════════
-       DESKTOP THREE-COLUMN MASTER ARCHITECTURE
-       ══════════════════════════════════════════════════════════════ */
+    /* Viewport Container */
     .app-viewport {
       position: relative;
       z-index: 1;
       width: 100%;
-      height: 100%;
+      height: 100vh;
+      height: 100dvh;
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -137,13 +135,13 @@
       display: grid;
       grid-template-columns: 260px 1fr 310px;
       gap: 16px;
-      padding: 16px 16px 104px 16px; /* Bottom space for floating visionOS player */
+      padding: 16px 16px 108px 16px;
       height: 100%;
       min-height: 0;
     }
 
     /* ══════════════════════════════════════════════════════════════
-       LEFT SIDEBAR: FLOATING TRANSLUCENT GLASS
+       LEFT SIDEBAR
        ══════════════════════════════════════════════════════════════ */
     .sidebar-left {
       background: var(--glass-3);
@@ -161,7 +159,6 @@
     .sidebar-left::-webkit-scrollbar { width: 4px; }
     .sidebar-left::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 99px; }
 
-    /* Brand Header with abstract "M" icon */
     .brand-group {
       display: flex;
       align-items: center;
@@ -197,7 +194,6 @@
       font-size: 0.72rem;
       color: var(--c-text-sec);
       font-weight: 500;
-      letter-spacing: 0.02em;
     }
 
     .nav-label {
@@ -208,7 +204,6 @@
       color: var(--c-text-mut);
       padding: 12px 10px 6px 10px;
     }
-
     .nav-list {
       display: flex;
       flex-direction: column;
@@ -225,7 +220,7 @@
       color: var(--c-text-sec);
       text-decoration: none;
       cursor: pointer;
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .nav-item svg {
       width: 18px;
@@ -257,7 +252,6 @@
       margin: 16px 8px;
     }
 
-    /* Playlist items with 12px rounded artwork */
     .playlist-item {
       display: flex;
       align-items: center;
@@ -267,9 +261,7 @@
       cursor: pointer;
       transition: all 0.2s ease;
     }
-    .playlist-item:hover {
-      background: var(--glass-1);
-    }
+    .playlist-item:hover { background: var(--glass-1); }
     .playlist-thumb {
       width: 34px;
       height: 34px;
@@ -297,7 +289,6 @@
       color: var(--c-text-mut);
     }
 
-    /* Atmospheric Sidebar Footer */
     .sidebar-quote-box {
       margin-top: auto;
       padding: 16px;
@@ -306,18 +297,6 @@
       border: 1px solid rgba(255, 255, 255, 0.06);
       position: relative;
       overflow: hidden;
-    }
-    .sidebar-quote-box::after {
-      content: '';
-      position: absolute;
-      top: -20px;
-      right: -20px;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: var(--c-lavender);
-      opacity: 0.15;
-      filter: blur(24px);
     }
     .sidebar-quote-text {
       font-family: var(--ff-display);
@@ -343,20 +322,21 @@
       gap: 28px;
       padding: 24px 28px 40px 28px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      -webkit-overflow-scrolling: touch;
     }
     .main-stream::-webkit-scrollbar { width: 6px; }
     .main-stream::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 99px; }
 
-    /* TOP BAR: SEARCH & USER AVATAR */
+    /* Top Bar */
     .top-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: 16px;
     }
     .search-pill-box {
       flex: 1;
-      max-width: 580px;
+      max-width: 600px;
       position: relative;
       display: flex;
       align-items: center;
@@ -372,7 +352,7 @@
     .search-input {
       width: 100%;
       height: 44px;
-      padding: 0 74px 0 44px;
+      padding: 0 44px 0 44px;
       border-radius: var(--radius-full);
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--glass-border);
@@ -383,7 +363,7 @@
       transition: all 0.25s ease;
     }
     .search-input:focus {
-      background: rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.08);
       border-color: var(--glass-border-focus);
       box-shadow: 0 0 20px rgba(184, 161, 255, 0.12);
     }
@@ -403,7 +383,7 @@
     .top-bar-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
     .btn-top-icon {
       width: 40px;
@@ -430,11 +410,9 @@
       border: 2px solid rgba(184, 161, 255, 0.4);
       background: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80') center/cover;
       cursor: pointer;
-      transition: transform 0.2s;
     }
-    .user-avatar-btn:hover { transform: scale(1.05); }
 
-    /* CINEMATIC EDITORIAL HERO SECTION */
+    /* Hero Section */
     .hero-card {
       position: relative;
       width: 100%;
@@ -451,7 +429,6 @@
       position: absolute;
       inset: 0;
       background: linear-gradient(180deg, rgba(8, 9, 13, 0.2) 0%, rgba(8, 9, 13, 0.88) 85%);
-      backdrop-filter: blur(1px);
     }
     .hero-content {
       position: relative;
@@ -472,7 +449,6 @@
     .hero-subtitle {
       font-size: 0.95rem;
       color: var(--c-text-sec);
-      font-weight: 400;
     }
     .hero-btn-row {
       display: flex;
@@ -515,29 +491,8 @@
       background: rgba(255, 255, 255, 0.14);
       transform: scale(1.02);
     }
-    .hero-carousel-pips {
-      position: absolute;
-      bottom: 24px;
-      right: 32px;
-      z-index: 2;
-      display: flex;
-      gap: 6px;
-    }
-    .pip {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .pip.active {
-      width: 22px;
-      border-radius: 99px;
-      background: var(--c-lavender);
-    }
 
-    /* PERSONALIZED GREETING */
+    /* Greeting */
     .greeting-block {
       display: flex;
       flex-direction: column;
@@ -555,7 +510,7 @@
       color: var(--c-text-sec);
     }
 
-    /* MOOD CARDS (HORIZONTAL ROW) */
+    /* Mood Section */
     .mood-cards-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -574,13 +529,6 @@
       position: relative;
       overflow: hidden;
     }
-    .mood-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(145deg, rgba(255,255,255,0.03), transparent);
-      pointer-events: none;
-    }
     .mood-card:hover {
       transform: translateY(-3px);
       background: rgba(255, 255, 255, 0.08);
@@ -591,9 +539,7 @@
       background: var(--c-lavender-dim);
       border-color: rgba(184, 161, 255, 0.4);
     }
-    .mood-icon {
-      font-size: 1.3rem;
-    }
+    .mood-icon { font-size: 1.3rem; }
     .mood-title {
       font-family: var(--ff-display);
       font-size: 0.98rem;
@@ -605,7 +551,7 @@
       color: var(--c-text-mut);
     }
 
-    /* SHELF SECTIONS (TRENDING, MADE FOR YOU, RECENTLY PLAYED) */
+    /* Shelves */
     .shelf-section {
       display: flex;
       flex-direction: column;
@@ -638,11 +584,10 @@
       color: var(--c-lavender);
       text-decoration: none;
       cursor: pointer;
-      transition: opacity 0.2s;
     }
-    .shelf-see-all:hover { opacity: 0.8; text-decoration: underline; }
+    .shelf-see-all:hover { text-decoration: underline; }
 
-    /* HORIZONTAL RECORD CARDS (5 ALBUM CARDS) */
+    /* Horizontal Record Cards Grid */
     .tracks-horizontal-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -680,9 +625,7 @@
       object-fit: cover;
       transition: transform 0.35s ease;
     }
-    .music-card:hover .card-artwork {
-      transform: scale(1.03);
-    }
+    .music-card:hover .card-artwork { transform: scale(1.03); }
     .card-play-hover {
       position: absolute;
       inset: 0;
@@ -703,15 +646,8 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
-      transform: scale(0.9);
-      transition: transform 0.2s;
     }
-    .music-card:hover .card-play-hover {
-      opacity: 1;
-    }
-    .music-card:hover .card-play-btn-circle {
-      transform: scale(1);
-    }
+    .music-card:hover .card-play-hover { opacity: 1; }
     .card-song-title {
       font-size: 0.88rem;
       font-weight: 600;
@@ -729,7 +665,7 @@
     }
 
     /* ══════════════════════════════════════════════════════════════
-       RIGHT SIDEBAR: CONTEXTUAL DISCOVERY & EDITORIAL
+       RIGHT SIDEBAR
        ══════════════════════════════════════════════════════════════ */
     .sidebar-right {
       background: var(--glass-3);
@@ -748,7 +684,6 @@
     .sidebar-right::-webkit-scrollbar { width: 4px; }
     .sidebar-right::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 99px; }
 
-    /* CARD 1: LIVE VIBES */
     .live-vibes-card {
       background: var(--glass-2);
       border: 1px solid var(--glass-border);
@@ -779,12 +714,6 @@
       border-radius: 50%;
       background: var(--c-mint);
       box-shadow: 0 0 10px var(--c-mint);
-      animation: pulseLive 2s infinite;
-    }
-    @keyframes pulseLive {
-      0% { transform: scale(0.95); opacity: 0.8; }
-      50% { transform: scale(1.3); opacity: 1; }
-      100% { transform: scale(0.95); opacity: 0.8; }
     }
     .live-count {
       font-size: 0.78rem;
@@ -812,8 +741,6 @@
       padding: 8px 14px;
       border-radius: var(--radius-full);
       cursor: pointer;
-      text-align: center;
-      transition: all 0.2s;
     }
     .btn-join-live:hover {
       background: var(--c-lavender-dim);
@@ -821,7 +748,6 @@
       color: var(--c-pearl);
     }
 
-    /* CARD 2: EDITORIAL BEETHOVEN QUOTE */
     .editorial-quote-card {
       background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(184, 161, 255, 0.05));
       border: 1px solid var(--glass-border);
@@ -830,7 +756,6 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      position: relative;
     }
     .quote-mark {
       font-family: Georgia, serif;
@@ -854,7 +779,6 @@
       letter-spacing: 0.08em;
     }
 
-    /* CARD 3: TRENDING ARTISTS */
     .trending-artists-card {
       display: flex;
       flex-direction: column;
@@ -869,9 +793,7 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .artist-row:hover {
-      background: var(--glass-1);
-    }
+    .artist-row:hover { background: var(--glass-1); }
     .artist-left {
       display: flex;
       align-items: center;
@@ -895,12 +817,7 @@
       font-weight: 600;
       color: var(--c-text-pri);
     }
-    .artist-arrow {
-      color: var(--c-text-mut);
-      font-size: 0.8rem;
-    }
 
-    /* CARD 4: MELORA HARDWARE AD CARD */
     .hardware-promo-card {
       background: linear-gradient(155deg, rgba(14, 16, 22, 0.9), rgba(184, 161, 255, 0.08));
       border: 1px solid var(--glass-border);
@@ -913,28 +830,12 @@
       text-align: center;
       align-items: center;
     }
-    .hardware-img-wrap {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(184, 161, 255, 0.15) 0%, transparent 70%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
     .hardware-title {
       font-family: var(--ff-display);
       font-size: 1.05rem;
       font-weight: 700;
       color: var(--c-pearl);
       line-height: 1.25;
-    }
-    .hardware-platforms-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--c-text-mut);
-      font-size: 0.78rem;
     }
     .btn-get-app {
       width: 100%;
@@ -947,12 +848,6 @@
       font-weight: 600;
       cursor: pointer;
       text-decoration: none;
-      transition: all 0.2s;
-    }
-    .btn-get-app:hover {
-      background: var(--c-lavender-dim);
-      border-color: rgba(184, 161, 255, 0.3);
-      color: var(--c-pearl);
     }
 
     /* ══════════════════════════════════════════════════════════════
@@ -975,10 +870,9 @@
       padding: 0 28px;
       z-index: 1000;
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(184, 161, 255, 0.06);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Left: Track Details */
+    /* Left Track Info */
     .player-left-col {
       display: flex;
       align-items: center;
@@ -1044,11 +938,9 @@
       color: var(--c-text-pri);
       background: var(--glass-1);
     }
-    .btn-player-action.liked {
-      color: #F43F5E;
-    }
+    .btn-player-action.liked { color: #F43F5E; }
 
-    /* Center: Transport Controls & Scrubber */
+    /* Center Transport */
     .player-center-col {
       display: flex;
       flex-direction: column;
@@ -1073,15 +965,9 @@
       padding: 6px;
       transition: all 0.2s;
     }
-    .btn-ctrl:hover {
-      color: var(--c-text-pri);
-      transform: scale(1.08);
-    }
-    .btn-ctrl.active {
-      color: var(--c-lavender);
-    }
+    .btn-ctrl:hover { color: var(--c-text-pri); transform: scale(1.08); }
+    .btn-ctrl.active { color: var(--c-lavender); }
 
-    /* VisionOS Soft Lavender Sphere Play/Pause button */
     .btn-play-sphere {
       width: 44px;
       height: 44px;
@@ -1094,17 +980,10 @@
       justify-content: center;
       cursor: pointer;
       box-shadow: 0 4px 18px var(--c-lavender-glow);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s;
     }
-    .btn-play-sphere:hover {
-      transform: scale(1.06);
-      box-shadow: 0 6px 24px rgba(184, 161, 255, 0.4);
-    }
-    .btn-play-sphere:active {
-      transform: scale(0.94);
-    }
+    .btn-play-sphere:active { transform: scale(0.94); }
 
-    /* Scrubber Progress Bar */
     .scrubber-row {
       width: 100%;
       display: flex;
@@ -1134,23 +1013,8 @@
       background: linear-gradient(90deg, var(--c-lavender), var(--c-mint));
       position: relative;
     }
-    .progress-bar-thumb {
-      position: absolute;
-      right: -5px;
-      top: 50%;
-      transform: translateY(-50%) scale(0);
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #FFFFFF;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-      transition: transform 0.15s ease;
-    }
-    .progress-bar-container:hover .progress-bar-thumb {
-      transform: translateY(-50%) scale(1);
-    }
 
-    /* Right: Sound Controller (Volume Slider, Queue, Settings) */
+    /* Right Sound Controller */
     .player-right-col {
       display: flex;
       align-items: center;
@@ -1173,9 +1037,7 @@
       align-items: center;
       justify-content: center;
       padding: 4px;
-      transition: color 0.2s;
     }
-    .btn-vol-icon:hover { color: var(--c-text-pri); }
     .vol-slider-wrap {
       flex: 1;
       height: 4px;
@@ -1191,31 +1053,35 @@
       background: var(--c-text-pri);
       position: relative;
     }
-    .vol-slider-thumb {
-      position: absolute;
-      right: -4px;
-      top: 50%;
-      transform: translateY(-50%) scale(0);
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #fff;
-      transition: transform 0.15s;
+
+    /* Mobile mini controls (ONLY shown on mobile inside the mini player!) */
+    .mobile-mini-controls {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      margin-left: auto;
     }
-    .vol-slider-wrap:hover .vol-slider-thumb {
-      transform: translateY(-50%) scale(1);
+    .btn-mob-mini-play {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--c-lavender);
+      color: #08090D;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
     }
 
-    /* ══════════════════════════════════════════════════════════════
-       FULL SCREEN EXPANDABLE SHEET MODAL
-       ══════════════════════════════════════════════════════════════ */
+    /* Full Screen Expandable Sheet */
     .sheet-modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(8, 9, 13, 0.85);
-      backdrop-filter: blur(40px);
-      -webkit-backdrop-filter: blur(40px);
-      z-index: 2000;
+      background: rgba(8, 9, 13, 0.92);
+      backdrop-filter: blur(50px);
+      -webkit-backdrop-filter: blur(50px);
+      z-index: 3000;
       display: flex;
       flex-direction: column;
       opacity: 0;
@@ -1261,10 +1127,9 @@
       font-size: 0.78rem;
       font-weight: 600;
       color: var(--c-text-sec);
-      padding: 4px 12px;
+      padding: 4px 14px;
       border-radius: var(--radius-full);
       cursor: pointer;
-      transition: all 0.2s;
     }
     .sheet-tab-btn.active {
       background: var(--c-lavender);
@@ -1277,7 +1142,6 @@
       border-radius: var(--radius-xl);
       overflow: hidden;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px var(--c-lavender-glow);
-      position: relative;
       background: #000;
     }
     .sheet-cover-art {
@@ -1300,25 +1164,22 @@
       color: var(--c-pearl);
     }
 
-    /* ══════════════════════════════════════════════════════════════
-       MOBILE RESPONSIVE SYSTEM & FLOATING BOTTOM NAV BAR
-       ══════════════════════════════════════════════════════════════ */
+    /* Mobile Bottom Navigation */
     .mobile-bottom-nav {
       display: none;
       position: fixed;
-      bottom: calc(10px + var(--safe-bottom));
-      left: 16px;
-      right: 16px;
-      height: 60px;
-      background: rgba(14, 16, 22, 0.92);
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: calc(58px + var(--safe-bottom));
+      padding-bottom: var(--safe-bottom);
+      background: rgba(14, 16, 22, 0.95);
       backdrop-filter: blur(40px);
       -webkit-backdrop-filter: blur(40px);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-full);
+      border-top: 1px solid var(--glass-border);
       z-index: 1200;
       align-items: center;
       justify-content: space-around;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
     }
     .mob-nav-btn {
       background: none;
@@ -1327,80 +1188,99 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       font-size: 0.68rem;
       font-weight: 600;
       cursor: pointer;
-      transition: color 0.2s;
+      flex: 1;
+      padding: 6px 0;
     }
-    .mob-nav-btn.active {
-      color: var(--c-lavender);
-    }
+    .mob-nav-btn.active { color: var(--c-lavender); }
     .mob-nav-btn svg { width: 20px; height: 20px; }
 
+    /* ══════════════════════════════════════════════════════════════
+       RESPONSIVE DESIGN FIXES FOR IPHONE & TABLET
+       ══════════════════════════════════════════════════════════════ */
     @media (max-width: 1200px) {
-      .app-columns {
-        grid-template-columns: 240px 1fr;
-      }
-      .sidebar-right {
-        display: none;
-      }
+      .app-columns { grid-template-columns: 240px 1fr; }
+      .sidebar-right { display: none; }
     }
 
     @media (max-width: 860px) {
       .app-columns {
         grid-template-columns: 1fr;
-        padding: 12px 12px 140px 12px;
+        padding: 10px 10px calc(140px + var(--safe-bottom)) 10px;
+        height: auto;
+        min-height: 100vh;
       }
-      .sidebar-left {
-        display: none;
+      .app-viewport {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
       }
-      .mobile-bottom-nav {
-        display: flex;
+      .main-stream {
+        overflow: visible;
+        height: auto;
+        padding: 16px 14px 20px 14px;
+        gap: 20px;
+      }
+      .sidebar-left { display: none; }
+      .mobile-bottom-nav { display: flex; }
+
+      /* Search header on mobile */
+      .search-shortcut-badge { display: none; }
+      .search-input { height: 40px; font-size: 0.84rem; padding-left: 38px; }
+      .search-pill-box svg { left: 12px; width: 15px; height: 15px; }
+
+      .hero-card {
+        padding: 20px 18px;
+        min-height: 200px;
+      }
+      .hero-title { font-size: 1.55rem; }
+
+      .mood-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
       }
       .tracks-horizontal-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
       }
-      .mood-cards-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-      }
+
+      /* Floating Mini Player on Mobile */
       .floating-player-bar {
-        bottom: calc(80px + var(--safe-bottom));
-        height: 64px;
-        padding: 0 16px;
+        bottom: calc(66px + var(--safe-bottom));
+        left: 10px;
+        right: 10px;
+        height: 62px;
+        padding: 0 14px;
+        border-radius: var(--radius-lg);
       }
-      .player-center-col, .player-right-col {
-        display: none;
-      }
+      .player-center-col, .player-right-col { display: none; }
       .player-left-col {
         width: 100%;
-        justify-content: space-between;
+        display: flex;
+        align-items: center;
       }
-      .hero-card {
-        padding: 24px 20px;
-        min-height: 220px;
-      }
+      .player-left-actions { display: none; }
+      .mobile-mini-controls { display: flex; }
     }
   </style>
 </head>
 <body>
 
-<!-- AMBIENT AURORA CANVAS -->
+<!-- AMBIENT CANVAS -->
 <div class="ambient-canvas">
   <div class="ambient-aurora-1"></div>
   <div class="ambient-aurora-2"></div>
 </div>
 
-<div class="app-viewport">
+<div class="app-viewport" id="appViewport">
   <div class="app-columns">
 
     <!-- ══════════════════════════════════════════════════════════
          LEFT FLOATING SIDEBAR
          ══════════════════════════════════════════════════════════ -->
     <aside class="sidebar-left">
-      <!-- Brand Logo -->
       <div class="brand-group" onclick="switchNavTab('home')">
         <div class="brand-logo-m">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1413,7 +1293,6 @@
         </div>
       </div>
 
-      <!-- Navigation -->
       <div class="nav-label">Menu</div>
       <div class="nav-list">
         <div class="nav-item active" data-tab="home" onclick="switchNavTab('home')">
@@ -1452,7 +1331,6 @@
 
       <div class="sidebar-divider"></div>
 
-      <!-- Library Shortcuts -->
       <div class="nav-label">Library</div>
       <div class="nav-list">
         <div class="nav-item" onclick="switchNavTab('favorites')">
@@ -1463,69 +1341,35 @@
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           <span>Recently Played</span>
         </div>
-        <div class="nav-item" onclick="switchNavTab('downloads')">
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span>Downloads</span>
-        </div>
       </div>
 
       <div class="sidebar-divider"></div>
 
-      <!-- YOUR PLAYLISTS -->
-      <div class="nav-label">Your Playlists</div>
-      <div class="nav-list" id="sidebarPlaylistsList">
-        <div class="playlist-item" onclick="selectPlaylistPreset('Chill Vibes')">
-          <img class="playlist-thumb" src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=100&q=80" alt="Chill Vibes">
+      <div class="nav-label">Curated Playlists</div>
+      <div class="nav-list">
+        <div class="playlist-item" onclick="loadGenrePlaylist('Today Hot Hits')">
+          <img class="playlist-thumb" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=100&q=80" alt="Hot Hits">
           <div class="playlist-info">
-            <span class="playlist-title">Chill Vibes</span>
-            <span class="playlist-sub">Atmospheric Beats</span>
+            <span class="playlist-title">Today's Top Hits</span>
+            <span class="playlist-sub">Global #1 Tracks</span>
           </div>
         </div>
-        <div class="playlist-item" onclick="selectPlaylistPreset('Late Night')">
+        <div class="playlist-item" onclick="loadGenrePlaylist('Viral Hits 2024')">
+          <img class="playlist-thumb" src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=100&q=80" alt="Viral">
+          <div class="playlist-info">
+            <span class="playlist-title">Viral Hits</span>
+            <span class="playlist-sub">Trending Worldwide</span>
+          </div>
+        </div>
+        <div class="playlist-item" onclick="loadGenrePlaylist('Late Night Chill')">
           <img class="playlist-thumb" src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=100&q=80" alt="Late Night">
           <div class="playlist-info">
             <span class="playlist-title">Late Night</span>
-            <span class="playlist-sub">Synth & Melodic</span>
-          </div>
-        </div>
-        <div class="playlist-item" onclick="selectPlaylistPreset('Coding')">
-          <img class="playlist-thumb" src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=100&q=80" alt="Coding">
-          <div class="playlist-info">
-            <span class="playlist-title">Coding</span>
-            <span class="playlist-sub">Deep Focus</span>
-          </div>
-        </div>
-        <div class="playlist-item" onclick="selectPlaylistPreset('Gym Mode')">
-          <img class="playlist-thumb" src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=100&q=80" alt="Gym Mode">
-          <div class="playlist-info">
-            <span class="playlist-title">Gym Mode</span>
-            <span class="playlist-sub">High Adrenaline</span>
-          </div>
-        </div>
-        <div class="playlist-item" onclick="selectPlaylistPreset('Focus')">
-          <img class="playlist-thumb" src="https://images.unsplash.com/photo-1507842229450-7990e34c4d57?auto=format&fit=crop&w=100&q=80" alt="Focus">
-          <div class="playlist-info">
-            <span class="playlist-title">Focus</span>
-            <span class="playlist-sub">Ambient Textures</span>
-          </div>
-        </div>
-        <div class="playlist-item" onclick="selectPlaylistPreset('Feel Good')">
-          <img class="playlist-thumb" src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=100&q=80" alt="Feel Good">
-          <div class="playlist-info">
-            <span class="playlist-title">Feel Good</span>
-            <span class="playlist-sub">Positive Wave</span>
-          </div>
-        </div>
-        <div class="playlist-item" onclick="selectPlaylistPreset('On Repeat')">
-          <img class="playlist-thumb" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=100&q=80" alt="On Repeat">
-          <div class="playlist-info">
-            <span class="playlist-title">On Repeat</span>
-            <span class="playlist-sub">Your Top Rotation</span>
+            <span class="playlist-sub">Atmospheric Melodies</span>
           </div>
         </div>
       </div>
 
-      <!-- Atmospheric Sidebar Quote Card -->
       <div class="sidebar-quote-box">
         <div class="sidebar-quote-text">
           “Good Music<br>Brightens<br>Everything.”
@@ -1542,16 +1386,16 @@
       <div class="top-bar">
         <div class="search-pill-box">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-          <input type="text" id="masterSearchInput" class="search-input" placeholder="Search songs, artists, playlists..." autocomplete="off">
+          <input type="text" id="masterSearchInput" class="search-input" placeholder="Search songs, artists, Spotify playlists..." autocomplete="off">
           <span class="search-shortcut-badge">Ctrl K</span>
         </div>
 
         <div class="top-bar-actions">
+          <button type="button" class="btn-top-icon" onclick="openSpotifyModal()" title="Paste Spotify Link">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.434-5.308-1.758-8.793-.963-.335.077-.67-.133-.746-.468-.077-.334.132-.67.467-.745 3.808-.87 7.076-.51 9.722 1.112.294.18.386.563.207.857zm1.224-2.72c-.226.367-.708.482-1.075.257-2.69-1.653-6.79-2.133-9.97-1.168-.413.125-.85-.107-.975-.52-.125-.414.107-.85.52-.976 3.632-1.102 8.147-.568 11.243 1.332.367.226.482.708.257 1.075zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.494.15-1.018-.129-1.168-.623-.15-.495.129-1.018.624-1.168 3.532-1.072 9.404-.866 13.115 1.338.445.264.59.838.327 1.282-.264.444-.838.59-1.28.332z"/></svg>
+          </button>
           <button type="button" class="btn-top-icon" onclick="openSettings()" title="Settings">
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-          </button>
-          <button type="button" class="btn-top-icon" title="Notifications">
-            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
           </button>
           <div class="user-avatar-btn" title="Harsha"></div>
         </div>
@@ -1564,17 +1408,12 @@
           <h1 class="hero-title">Music<br>Feels Better<br>Here.</h1>
           <p class="hero-subtitle">Stream. Discover. Belong.</p>
           <div class="hero-btn-row">
-            <button type="button" class="btn-hero-play" onclick="playHeroFeature()">
+            <button type="button" class="btn-hero-play" onclick="playFirstTrack()">
               <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               <span>Play Now</span>
             </button>
-            <button type="button" class="btn-hero-subtle" onclick="switchNavTab('playlists')">Explore</button>
+            <button type="button" class="btn-hero-subtle" onclick="scrollToTrending()">Explore</button>
           </div>
-        </div>
-        <div class="hero-carousel-pips">
-          <div class="pip active"></div>
-          <div class="pip"></div>
-          <div class="pip"></div>
         </div>
       </section>
 
@@ -1589,7 +1428,7 @@
         <div class="mood-card active" onclick="selectMoodFilter('top', this)">
           <span class="mood-icon">🔥</span>
           <div class="mood-title">Top Hits</div>
-          <div class="mood-desc">Global charts</div>
+          <div class="mood-desc">Global #1 Billboard</div>
         </div>
         <div class="mood-card" onclick="selectMoodFilter('lofi', this)">
           <span class="mood-icon">☕</span>
@@ -1599,7 +1438,7 @@
         <div class="mood-card" onclick="selectMoodFilter('synthwave', this)">
           <span class="mood-icon">⚡</span>
           <div class="mood-title">Synthwave</div>
-          <div class="mood-desc">Retro vibes</div>
+          <div class="mood-desc">Retro night drive</div>
         </div>
         <div class="mood-card" onclick="selectMoodFilter('rock', this)">
           <span class="mood-icon">🎸</span>
@@ -1608,7 +1447,7 @@
         </div>
       </div>
 
-      <!-- SEARCH RESULTS SHELF (DYNAMIC) -->
+      <!-- SEARCH RESULTS SHELF -->
       <section class="shelf-section" id="dynamicSearchShelf" style="display:none;">
         <div class="shelf-header">
           <div class="shelf-title-group">
@@ -1619,14 +1458,14 @@
         <div class="tracks-horizontal-grid" id="searchResultsGrid"></div>
       </section>
 
-      <!-- TRENDING NOW -->
-      <section class="shelf-section">
+      <!-- TRENDING NOW (#1 GLOBAL HITS) -->
+      <section class="shelf-section" id="trendingSection">
         <div class="shelf-header">
           <div class="shelf-title-group">
-            <h3 class="shelf-title">Trending Now</h3>
-            <span class="shelf-subtitle">Top streams across the globe</span>
+            <h3 class="shelf-title">Trending Now &bull; Global Top 50</h3>
+            <span class="shelf-subtitle">Live Number 1 Songs on Spotify &amp; Billboard</span>
           </div>
-          <a class="shelf-see-all" onclick="selectMoodFilter('top')">See All &rarr;</a>
+          <a class="shelf-see-all" onclick="refreshTopHits()">Refresh Live &rarr;</a>
         </div>
         <div class="tracks-horizontal-grid" id="trendingGrid"></div>
       </section>
@@ -1636,9 +1475,9 @@
         <div class="shelf-header">
           <div class="shelf-title-group">
             <h3 class="shelf-title">Made for You</h3>
-            <span class="shelf-subtitle">Playlists based on your taste</span>
+            <span class="shelf-subtitle">Playlists tailored to your vibe</span>
           </div>
-          <a class="shelf-see-all" onclick="switchNavTab('playlists')">See All &rarr;</a>
+          <a class="shelf-see-all" onclick="loadGenrePlaylist('Today Hot Hits')">See All &rarr;</a>
         </div>
         <div class="tracks-horizontal-grid" id="madeForYouGrid"></div>
       </section>
@@ -1648,19 +1487,18 @@
         <div class="shelf-header">
           <div class="shelf-title-group">
             <h3 class="shelf-title">Recently Played</h3>
-            <span class="shelf-subtitle">Pick up where you left off</span>
+            <span class="shelf-subtitle">Pick up right where you left off</span>
           </div>
-          <a class="shelf-see-all" onclick="switchNavTab('recent')">See All &rarr;</a>
+          <a class="shelf-see-all" onclick="switchNavTab('recent')">History &rarr;</a>
         </div>
         <div class="tracks-horizontal-grid" id="recentlyPlayedGrid"></div>
       </section>
     </main>
 
     <!-- ══════════════════════════════════════════════════════════
-         RIGHT SIDEBAR: CONTEXTUAL DISCOVERY & EDITORIAL
+         RIGHT SIDEBAR
          ══════════════════════════════════════════════════════════ -->
     <aside class="sidebar-right">
-      <!-- CARD 1: LIVE VIBES -->
       <div class="live-vibes-card">
         <div class="live-head-row">
           <div class="live-badge">
@@ -1674,13 +1512,11 @@
             <img class="live-stack-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80" alt="Listener">
             <img class="live-stack-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80" alt="Listener">
             <img class="live-stack-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&q=80" alt="Listener">
-            <img class="live-stack-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=80&q=80" alt="Listener">
           </div>
-          <button type="button" class="btn-join-live" onclick="joinLiveRoom()">Join &rarr;</button>
+          <button type="button" class="btn-join-live" onclick="playFirstTrack()">Join &rarr;</button>
         </div>
       </div>
 
-      <!-- CARD 2: BEETHOVEN EDITORIAL QUOTE -->
       <div class="editorial-quote-card">
         <div class="quote-mark">&ldquo;</div>
         <div class="quote-body">
@@ -1689,69 +1525,58 @@
         <div class="quote-author">&mdash; Beethoven</div>
       </div>
 
-      <!-- CARD 3: TRENDING ARTISTS -->
       <div class="trending-artists-card">
         <div class="shelf-header">
           <div class="shelf-title" style="font-size:1.05rem;">Trending Artists</div>
-          <a class="shelf-see-all" onclick="switchNavTab('artists')">See All &rarr;</a>
         </div>
         <div style="display:flex;flex-direction:column;gap:4px;">
-          <div class="artist-row" onclick="searchMusicAndPlay('Taylor Swift')">
+          <div class="artist-row" onclick="searchMusicAndPlay('Sabrina Carpenter')">
             <div class="artist-left">
               <span class="artist-rank">01</span>
-              <img class="artist-avatar" src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=100&q=80" alt="Taylor Swift">
-              <span class="artist-name">Taylor Swift</span>
-            </div>
-            <span class="artist-arrow">&rarr;</span>
-          </div>
-          <div class="artist-row" onclick="searchMusicAndPlay('The Weeknd')">
-            <div class="artist-left">
-              <span class="artist-rank">02</span>
-              <img class="artist-avatar" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=100&q=80" alt="The Weeknd">
-              <span class="artist-name">The Weeknd</span>
+              <img class="artist-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Sabrina Carpenter">
+              <span class="artist-name">Sabrina Carpenter</span>
             </div>
             <span class="artist-arrow">&rarr;</span>
           </div>
           <div class="artist-row" onclick="searchMusicAndPlay('Billie Eilish')">
             <div class="artist-left">
-              <span class="artist-rank">03</span>
+              <span class="artist-rank">02</span>
               <img class="artist-avatar" src="https://images.unsplash.com/photo-1520523839898-507125cd53c1?auto=format&fit=crop&w=100&q=80" alt="Billie Eilish">
               <span class="artist-name">Billie Eilish</span>
             </div>
             <span class="artist-arrow">&rarr;</span>
           </div>
-          <div class="artist-row" onclick="searchMusicAndPlay('Coldplay')">
+          <div class="artist-row" onclick="searchMusicAndPlay('Kendrick Lamar')">
             <div class="artist-left">
-              <span class="artist-rank">04</span>
-              <img class="artist-avatar" src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=100&q=80" alt="Coldplay">
-              <span class="artist-name">Coldplay</span>
+              <span class="artist-rank">03</span>
+              <img class="artist-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Kendrick Lamar">
+              <span class="artist-name">Kendrick Lamar</span>
             </div>
             <span class="artist-arrow">&rarr;</span>
           </div>
-          <div class="artist-row" onclick="searchMusicAndPlay('AP Dhillon')">
+          <div class="artist-row" onclick="searchMusicAndPlay('The Weeknd')">
+            <div class="artist-left">
+              <span class="artist-rank">04</span>
+              <img class="artist-avatar" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=100&q=80" alt="The Weeknd">
+              <span class="artist-name">The Weeknd</span>
+            </div>
+            <span class="artist-arrow">&rarr;</span>
+          </div>
+          <div class="artist-row" onclick="searchMusicAndPlay('Chappell Roan')">
             <div class="artist-left">
               <span class="artist-rank">05</span>
-              <img class="artist-avatar" src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=100&q=80" alt="AP Dhillon">
-              <span class="artist-name">AP Dhillon</span>
+              <img class="artist-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="Chappell Roan">
+              <span class="artist-name">Chappell Roan</span>
             </div>
             <span class="artist-arrow">&rarr;</span>
           </div>
         </div>
       </div>
 
-      <!-- CARD 4: MELORA HARDWARE PROMOTION -->
       <div class="hardware-promo-card">
-        <div class="hardware-img-wrap">
-          <svg width="46" height="46" fill="none" stroke="var(--c-lavender)" stroke-width="1.8" viewBox="0 0 24 24">
-            <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
-            <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
-          </svg>
-        </div>
-        <div class="hardware-title">Take<br>Melora<br>Everywhere</div>
-        <div class="hardware-platforms-row">
-          <span>Windows</span> &bull; <span>Apple</span> &bull; <span>Android</span>
-        </div>
-        <a href="../#downloads" target="_blank" class="btn-get-app">Get the App &rarr;</a>
+        <div class="hardware-title">Take Melora<br>Everywhere</div>
+        <div style="font-size:0.75rem;color:var(--c-text-mut);">iOS PWA &bull; Android &bull; Desktop</div>
+        <a href="../#downloads" target="_blank" class="btn-get-app">Get Native App &rarr;</a>
       </div>
     </aside>
 
@@ -1762,26 +1587,36 @@
      BOTTOM VISIONOS FLOATING LIQUID MUSIC PLAYER
      ══════════════════════════════════════════════════════════════ -->
 <div class="floating-player-bar" id="floatingPlayerBar">
-  <!-- Left: Currently Playing Info -->
+  <!-- Left Track Info -->
   <div class="player-left-col">
-    <div class="player-art-wrap" onclick="openFullSheet()">
-      <img id="playerArtImg" class="player-art-img" src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=150&q=80" alt="Track Artwork">
+    <div class="player-art-wrap" onclick="openFullSheet('art')">
+      <img id="playerArtImg" class="player-art-img" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=150&q=80" alt="Artwork">
     </div>
-    <div class="player-track-info" onclick="openFullSheet()">
-      <div class="player-track-title" id="playerTitle">The Night We Met</div>
-      <div class="player-track-artist" id="playerArtist">Lord Huron</div>
+    <div class="player-track-info" onclick="openFullSheet('art')">
+      <div class="player-track-title" id="playerTitle">Espresso</div>
+      <div class="player-track-artist" id="playerArtist">Sabrina Carpenter</div>
     </div>
     <div class="player-left-actions">
-      <button type="button" class="btn-player-action" id="playerLikeBtn" onclick="toggleLikeCurrent()" title="Save to Favorites">
+      <button type="button" class="btn-player-action" id="playerLikeBtn" onclick="toggleLikeCurrent()" title="Like">
         <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
       </button>
-      <button type="button" class="btn-player-action" onclick="openSettings()" title="More Options">
-        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.5"/><circle cx="6" cy="12" r="1.5"/><circle cx="18" cy="12" r="1.5"/></svg>
+    </div>
+
+    <!-- MOBILE MINI CONTROLS (PLAY & SKIP ON IPHONE) -->
+    <div class="mobile-mini-controls">
+      <button type="button" class="btn-player-action" onclick="toggleLikeCurrent()">
+        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      </button>
+      <button type="button" class="btn-mob-mini-play" id="mobMiniPlayBtn" onclick="togglePlayPause()" title="Play/Pause">
+        <svg id="mobMiniPlayIcon" width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+      </button>
+      <button type="button" class="btn-player-action" onclick="nextTrack()" title="Next">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2.5"/></svg>
       </button>
     </div>
   </div>
 
-  <!-- Center: Transport Controls & Working Live Scrubber -->
+  <!-- Center Transport Controls (Desktop) -->
   <div class="player-center-col">
     <div class="transport-controls">
       <button type="button" class="btn-ctrl" id="btnShuffle" onclick="toggleShuffle()" title="Shuffle">
@@ -1801,28 +1636,21 @@
       </button>
     </div>
 
-    <!-- Live Scrubber Bar with Click and Drag Seeking -->
+    <!-- Live Scrubber Bar -->
     <div class="scrubber-row">
-      <span class="time-tag" id="timeCurrent">1:24</span>
+      <span class="time-tag" id="timeCurrent">0:00</span>
       <div class="progress-bar-container" id="progressBar" onclick="seekProgress(event)">
-        <div class="progress-bar-fill" id="progressFill">
-          <div class="progress-bar-thumb"></div>
-        </div>
+        <div class="progress-bar-fill" id="progressFill"></div>
       </div>
-      <span class="time-tag" id="timeTotal">3:28</span>
+      <span class="time-tag" id="timeTotal">2:55</span>
     </div>
   </div>
 
-  <!-- Right: Working Sound Controller (Volume Slider) & Actions -->
+  <!-- Right Sound Controller (Desktop) -->
   <div class="player-right-col">
     <button type="button" class="btn-player-action" onclick="openFullSheet('lyrics')" title="Lyrics">
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     </button>
-    <button type="button" class="btn-player-action" onclick="switchNavTab('playlists')" title="Queue">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-    </button>
-
-    <!-- Interactive Working Volume Controller -->
     <div class="volume-group">
       <button type="button" class="btn-vol-icon" id="btnMuteToggle" onclick="toggleMute()" title="Mute/Unmute">
         <svg id="volIconSvg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
@@ -1832,16 +1660,14 @@
         </svg>
       </button>
       <div class="vol-slider-wrap" id="volSlider" onclick="seekVolume(event)">
-        <div class="vol-slider-fill" id="volFill">
-          <div class="vol-slider-thumb"></div>
-        </div>
+        <div class="vol-slider-fill" id="volFill"></div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════
-     EXPANDABLE VISIONOS FULL SHEET MODAL (MOBILE & EXPAND)
+     EXPANDABLE VISIONOS FULL SHEET MODAL
      ══════════════════════════════════════════════════════════════ -->
 <div class="sheet-modal-backdrop" id="sheetBackdrop" onclick="closeFullSheet(event)">
   <div class="sheet-modal-container" onclick="event.stopPropagation()">
@@ -1856,39 +1682,36 @@
       <div style="width:24px;"></div>
     </div>
 
-    <!-- Artwork Box -->
     <div class="sheet-visual-box" id="sheetArtBox">
-      <img id="sheetArtImg" class="sheet-cover-art" src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80" alt="Cover Art">
+      <img id="sheetArtImg" class="sheet-cover-art" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80" alt="Cover Art">
     </div>
 
-    <!-- Lyrics Box -->
     <div class="sheet-lyrics-viewer" id="sheetLyricsViewer">
-      <div id="sheetLyricsText" style="text-align:center;color:var(--c-text-sec);padding:40px 0;">Play a song to view lyrics</div>
+      <div id="sheetLyricsText" style="text-align:center;color:var(--c-text-sec);padding:30px 0;">Play a song to view live lyrics</div>
     </div>
 
-    <!-- Info Row -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">
       <div style="display:flex;flex-direction:column;min-width:0;">
-        <div style="font-family:var(--ff-display);font-size:1.4rem;font-weight:800;color:#fff;" id="sheetTitle">The Night We Met</div>
-        <div style="font-size:0.95rem;color:var(--c-text-sec);" id="sheetArtist">Lord Huron</div>
+        <div style="font-family:var(--ff-display);font-size:1.35rem;font-weight:800;color:#fff;" id="sheetTitle">Espresso</div>
+        <div style="font-size:0.95rem;color:var(--c-text-sec);" id="sheetArtist">Sabrina Carpenter</div>
       </div>
       <button type="button" class="btn-player-action" onclick="toggleLikeCurrent()" id="sheetLikeBtn">
         <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
       </button>
     </div>
 
-    <!-- Sheet Scrubber -->
+    <!-- Scrubber in Sheet -->
     <div style="display:flex;flex-direction:column;gap:8px;">
       <div class="progress-bar-container" style="height:6px;" onclick="seekProgress(event)">
         <div class="progress-bar-fill" id="sheetProgressFill"></div>
       </div>
       <div style="display:flex;justify-content:space-between;font-size:0.75rem;font-family:var(--ff-mono);color:var(--c-text-mut);">
-        <span id="sheetTimeCur">1:24</span>
-        <span id="sheetTimeDur">3:28</span>
+        <span id="sheetTimeCur">0:00</span>
+        <span id="sheetTimeDur">2:55</span>
       </div>
     </div>
 
-    <!-- Large Transport Controls -->
+    <!-- Large Transport Controls in Sheet -->
     <div style="display:flex;align-items:center;justify-content:space-around;padding:10px 0;">
       <button type="button" class="btn-ctrl" onclick="toggleShuffle()">
         <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
@@ -1897,7 +1720,7 @@
         <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2.5"/></svg>
       </button>
       <button type="button" class="btn-play-sphere" style="width:62px;height:62px;" onclick="togglePlayPause()">
-        <svg id="sheetPlayIcon" width="26" height="26" fill="currentColor" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        <svg id="sheetPlayIcon" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
       </button>
       <button type="button" class="btn-ctrl" onclick="nextTrack()">
         <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2.5"/></svg>
@@ -1931,168 +1754,112 @@
   </button>
 </nav>
 
-<!-- ══════════════════════════════════════════════════════════════
-     CORE HTML5 NATIVE AUDIO ELEMENT (WORKING SOUND CONTROLLER)
-     ══════════════════════════════════════════════════════════════ -->
+<!-- CORE AUDIO ELEMENT -->
 <audio id="coreAudio" preload="auto" playsinline></audio>
 
 <script>
 // ══════════════════════════════════════════════════════════════
-// DATA CATALOG: TRENDING, MADE FOR YOU, RECENTLY PLAYED
+// CURRENT #1 HOT BILLBOARD & SPOTIFY GLOBAL CATALOG
 // ══════════════════════════════════════════════════════════════
-const TRENDING_CATALOG = [
+const GLOBAL_HOT_HITS = [
   {
-    id: "trending-1",
-    title: "The Night We Met",
-    artist: "Lord Huron",
-    album: "Strange Trails",
-    art: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80",
-    duration: 208,
+    id: "hit-1",
+    title: "Espresso",
+    artist: "Sabrina Carpenter",
+    album: "Short n' Sweet",
+    art: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80",
+    duration: 175,
     streamUrl: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"
   },
   {
-    id: "trending-2",
-    title: "Starboy",
-    artist: "The Weeknd",
-    album: "Starboy",
-    art: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80",
-    duration: 230,
+    id: "hit-2",
+    title: "BIRDS OF A FEATHER",
+    artist: "Billie Eilish",
+    album: "HIT ME HARD AND SOFT",
+    art: "https://images.unsplash.com/photo-1520523839898-507125cd53c1?auto=format&fit=crop&w=600&q=80",
+    duration: 196,
     streamUrl: "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=electronic-future-beats-117997.mp3"
   },
   {
-    id: "trending-3",
-    title: "Heat Waves",
-    artist: "Glass Animals",
-    album: "Dreamland",
-    art: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80",
-    duration: 238,
-    streamUrl: "https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f77cb7.mp3?filename=summer-chill-chillstep-124430.mp3"
-  },
-  {
-    id: "trending-4",
-    title: "Die For You",
-    artist: "Joji",
-    album: "SMITHEREENS",
-    art: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80",
-    duration: 211,
+    id: "hit-3",
+    title: "Not Like Us",
+    artist: "Kendrick Lamar",
+    album: "Not Like Us",
+    art: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
+    duration: 274,
     streamUrl: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=the-beat-of-nature-122841.mp3"
   },
   {
-    id: "trending-5",
-    title: "Someone Like You",
-    artist: "Adele",
-    album: "21",
-    art: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80",
-    duration: 285,
+    id: "hit-4",
+    title: "Die With A Smile",
+    artist: "Lady Gaga & Bruno Mars",
+    album: "Die With A Smile",
+    art: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80",
+    duration: 251,
     streamUrl: "https://cdn.pixabay.com/download/audio/2021/08/04/audio_bb630cc098.mp3?filename=cinematic-piano-ambient-music-7782.mp3"
-  }
-];
-
-const MADE_FOR_YOU_CATALOG = [
+  },
   {
-    id: "mfy-1",
-    title: "Daily Mix",
-    artist: "Made for Harsha",
-    album: "Melora Personalized",
-    art: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80",
-    duration: 240,
+    id: "hit-5",
+    title: "Good Luck, Babe!",
+    artist: "Chappell Roan",
+    album: "Good Luck, Babe!",
+    art: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80",
+    duration: 218,
+    streamUrl: "https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f77cb7.mp3?filename=summer-chill-chillstep-124430.mp3"
+  },
+  {
+    id: "hit-6",
+    title: "A Bar Song (Tipsy)",
+    artist: "Shaboozey",
+    album: "Where I've Been, Isn't Where I'm Going",
+    art: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80",
+    duration: 171,
     streamUrl: "https://cdn.pixabay.com/download/audio/2022/03/10/audio_c230e17d73.mp3?filename=chill-abstract-intention-12099.mp3"
   },
   {
-    id: "mfy-2",
-    title: "Chill Mix",
-    artist: "Relax and unwind",
-    album: "Lo-Fi Collection",
-    art: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80",
-    duration: 195,
-    streamUrl: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"
-  },
-  {
-    id: "mfy-3",
-    title: "Focus Mix",
-    artist: "Deep work",
-    album: "Flow State",
-    art: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80",
-    duration: 225,
-    streamUrl: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=the-beat-of-nature-122841.mp3"
-  },
-  {
-    id: "mfy-4",
-    title: "Workout Mix",
-    artist: "Keep going",
-    album: "Energy Boost",
-    art: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80",
-    duration: 210,
-    streamUrl: "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=electronic-future-beats-117997.mp3"
-  },
-  {
-    id: "mfy-5",
-    title: "Feel Good",
-    artist: "Positive energy",
-    album: "Golden Hour",
-    art: "https://images.unsplash.com/photo-1507842229450-7990e34c4d57?auto=format&fit=crop&w=600&q=80",
-    duration: 205,
-    streamUrl: "https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f77cb7.mp3?filename=summer-chill-chillstep-124430.mp3"
-  }
-];
-
-const RECENTLY_PLAYED_CATALOG = [
-  {
-    id: "recent-1",
-    title: "Snooze",
-    artist: "SZA",
-    album: "SOS",
-    art: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80",
-    duration: 201,
-    streamUrl: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"
-  },
-  {
-    id: "recent-2",
-    title: "I Was Never There",
-    artist: "The Weeknd",
-    album: "My Dear Melancholy",
-    art: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80",
-    duration: 241,
-    streamUrl: "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=electronic-future-beats-117997.mp3"
-  },
-  {
-    id: "recent-3",
-    title: "505",
-    artist: "Arctic Monkeys",
-    album: "Favourite Worst Nightmare",
+    id: "hit-7",
+    title: "MILLION DOLLAR BABY",
+    artist: "Tommy Richman",
+    album: "MILLION DOLLAR BABY",
     art: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80",
-    duration: 253,
-    streamUrl: "https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f77cb7.mp3?filename=summer-chill-chillstep-124430.mp3"
+    duration: 155,
+    streamUrl: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"
   },
   {
-    id: "recent-4",
-    title: "Sweater Weather",
-    artist: "The Neighbourhood",
-    album: "I Love You",
-    art: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80",
-    duration: 240,
+    id: "hit-8",
+    title: "Taste",
+    artist: "Sabrina Carpenter",
+    album: "Short n' Sweet",
+    art: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80",
+    duration: 157,
+    streamUrl: "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=electronic-future-beats-117997.mp3"
+  },
+  {
+    id: "hit-9",
+    title: "Beautiful Things",
+    artist: "Benson Boone",
+    album: "Fireworks & Rollerblades",
+    art: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80",
+    duration: 180,
     streamUrl: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=the-beat-of-nature-122841.mp3"
   },
   {
-    id: "recent-5",
-    title: "Someone Like You",
-    artist: "Adele",
-    album: "21",
-    art: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80",
-    duration: 285,
-    streamUrl: "https://cdn.pixabay.com/download/audio/2021/08/04/audio_bb630cc098.mp3?filename=cinematic-piano-ambient-music-7782.mp3"
+    id: "hit-10",
+    title: "Too Sweet",
+    artist: "Hozier",
+    album: "Unheard",
+    art: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80",
+    duration: 251,
+    streamUrl: "https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f77cb7.mp3?filename=summer-chill-chillstep-124430.mp3"
   }
 ];
 
-// ══════════════════════════════════════════════════════════════
-// AUDIO ENGINE & STATE
-// ══════════════════════════════════════════════════════════════
-let currentQueue = [...TRENDING_CATALOG];
+let currentQueue = [...GLOBAL_HOT_HITS];
 let currentIndex = 0;
 let isPlaying = false;
 let isShuffle = false;
-let repeatMode = 0; // 0=off, 1=all, 2=one
-let currentVolume = parseFloat(localStorage.getItem('melora_vol') || '0.8');
+let repeatMode = 0;
+let currentVolume = parseFloat(localStorage.getItem('melora_vol') || '0.85');
 let isMuted = false;
 let previousVol = currentVolume;
 let hls = null;
@@ -2103,6 +1870,10 @@ audio.volume = currentVolume;
 // DOM Elements
 const masterPlayBtn = document.getElementById('masterPlayBtn');
 const playSphereIcon = document.getElementById('playSphereIcon');
+const mobMiniPlayBtn = document.getElementById('mobMiniPlayBtn');
+const mobMiniPlayIcon = document.getElementById('mobMiniPlayIcon');
+const sheetPlayIcon = document.getElementById('sheetPlayIcon');
+
 const playerArtImg = document.getElementById('playerArtImg');
 const playerTitle = document.getElementById('playerTitle');
 const playerArtist = document.getElementById('playerArtist');
@@ -2110,7 +1881,6 @@ const playerLikeBtn = document.getElementById('playerLikeBtn');
 
 const timeCurrent = document.getElementById('timeCurrent');
 const timeTotal = document.getElementById('timeTotal');
-const progressBar = document.getElementById('progressBar');
 const progressFill = document.getElementById('progressFill');
 
 const volSlider = document.getElementById('volSlider');
@@ -2124,7 +1894,6 @@ const sheetArtist = document.getElementById('sheetArtist');
 const sheetProgressFill = document.getElementById('sheetProgressFill');
 const sheetTimeCur = document.getElementById('sheetTimeCur');
 const sheetTimeDur = document.getElementById('sheetTimeDur');
-const sheetPlayIcon = document.getElementById('sheetPlayIcon');
 const sheetLikeBtn = document.getElementById('sheetLikeBtn');
 
 const btnShuffle = document.getElementById('btnShuffle');
@@ -2133,22 +1902,53 @@ const btnRepeat = document.getElementById('btnRepeat');
 let likedSongs = JSON.parse(localStorage.getItem('melora_liked_songs') || '[]');
 
 // ══════════════════════════════════════════════════════════════
-// DYNAMIC GREETING (ACCORDING TO TIME OF DAY)
+// DYNAMIC LIVE TOP CHART AUTO-FETCHER (APPLE / BILLBOARD / SPOTIFY)
 // ══════════════════════════════════════════════════════════════
-(function setDynamicGreeting() {
-  const h = new Date().getHours();
-  let greet = 'Good evening, Harsha';
-  if (h >= 5 && h < 12) greet = 'Good morning, Harsha';
-  else if (h >= 12 && h < 17) greet = 'Good afternoon, Harsha';
-  const el = document.getElementById('dynamicGreetingText');
-  if (el) el.textContent = greet;
-})();
+async function loadLiveTopCharts() {
+  try {
+    const res = await fetch('https://itunes.apple.com/us/rss/topsongs/limit=25/json');
+    if (res.ok) {
+      const data = await res.json();
+      const entries = data.feed?.entry || [];
+      if (entries.length > 0) {
+        const liveHits = entries.map((e, idx) => ({
+          id: 'live-' + idx,
+          title: e['im:name']?.label || 'Top Hit',
+          artist: e['im:artist']?.label || 'Top Artist',
+          album: e['im:collection']?.['im:name']?.label || 'Hot Chart',
+          art: (e['im:image'] && e['im:image'][2]?.label) ? e['im:image'][2].label.replace('170x170', '600x600') : GLOBAL_HOT_HITS[0].art,
+          duration: 180,
+          streamUrl: e['link'] && e['link'][1]?.attributes?.href ? e['link'][1].attributes.href : GLOBAL_HOT_HITS[idx % GLOBAL_HOT_HITS.length].streamUrl
+        }));
+
+        currentQueue = liveHits;
+        renderMusicCards('trendingGrid', liveHits.slice(0, 10));
+        renderMusicCards('madeForYouGrid', liveHits.slice(10, 15));
+        renderMusicCards('recentlyPlayedGrid', liveHits.slice(15, 20));
+        return;
+      }
+    }
+  } catch (err) {
+    console.log('Using preloaded billboard hot hits catalog:', err);
+  }
+
+  // Fallback to preloaded #1 Billboard hits
+  renderMusicCards('trendingGrid', GLOBAL_HOT_HITS.slice(0, 5));
+  renderMusicCards('madeForYouGrid', GLOBAL_HOT_HITS.slice(5, 10));
+  renderMusicCards('recentlyPlayedGrid', GLOBAL_HOT_HITS.slice(2, 7));
+}
+loadLiveTopCharts();
+
+function refreshTopHits() {
+  loadLiveTopCharts();
+}
 
 // ══════════════════════════════════════════════════════════════
-// SOUND CONTROLLER: VOLUME & MUTE LOGIC (ROCK SOLID)
+// SOUND CONTROLLER: VOLUME & MUTE
 // ══════════════════════════════════════════════════════════════
 function updateVolumeUI(val) {
-  volFill.style.width = (val * 100) + '%';
+  if (volFill) volFill.style.width = (val * 100) + '%';
+  if (!volIconSvg) return;
   if (val === 0 || isMuted) {
     volIconSvg.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2"/><line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2"/>';
   } else if (val < 0.5) {
@@ -2170,8 +1970,7 @@ function setAudioVolume(val) {
 function toggleMute() {
   if (isMuted || audio.volume === 0) {
     isMuted = false;
-    const restoreVal = previousVol > 0 ? previousVol : 0.7;
-    setAudioVolume(restoreVal);
+    setAudioVolume(previousVol > 0 ? previousVol : 0.85);
   } else {
     previousVol = currentVolume;
     isMuted = true;
@@ -2181,43 +1980,34 @@ function toggleMute() {
 }
 
 function seekVolume(e) {
+  if (!volSlider) return;
   const rect = volSlider.getBoundingClientRect();
   const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
   setAudioVolume(ratio);
 }
-
-// Interactive dragging for volume slider
-let isDraggingVol = false;
-volSlider.addEventListener('mousedown', () => { isDraggingVol = true; });
-window.addEventListener('mouseup', () => { isDraggingVol = false; });
-window.addEventListener('mousemove', (e) => {
-  if (!isDraggingVol) return;
-  seekVolume(e);
-});
-
 updateVolumeUI(currentVolume);
 
 // ══════════════════════════════════════════════════════════════
-// TRACK PROGRESS & SCRUBBER CONTROLLER
+// AUDIO SCRUBBER & LIVE PROGRESS
 // ══════════════════════════════════════════════════════════════
-function formatTime(seconds) {
-  if (isNaN(seconds) || seconds < 0) return '0:00';
-  const m = Math.floor(seconds / 60);
-  const s = Math.floor(seconds % 60);
+function formatTime(sec) {
+  if (isNaN(sec) || sec < 0) return '0:00';
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
   return `${m}:${s < 10 ? '0' : ''}${s}`;
 }
 
 audio.addEventListener('timeupdate', () => {
   const cur = audio.currentTime;
-  const dur = (audio.duration && !isNaN(audio.duration) && isFinite(audio.duration)) ? audio.duration : currentQueue[currentIndex]?.duration || 208;
-  timeCurrent.textContent = formatTime(cur);
-  timeTotal.textContent = formatTime(dur);
-  sheetTimeCur.textContent = formatTime(cur);
-  sheetTimeDur.textContent = formatTime(dur);
+  const dur = (audio.duration && !isNaN(audio.duration) && isFinite(audio.duration)) ? audio.duration : currentQueue[currentIndex]?.duration || 180;
+  if (timeCurrent) timeCurrent.textContent = formatTime(cur);
+  if (timeTotal) timeTotal.textContent = formatTime(dur);
+  if (sheetTimeCur) sheetTimeCur.textContent = formatTime(cur);
+  if (sheetTimeDur) sheetTimeDur.textContent = formatTime(dur);
 
   const pct = dur > 0 ? Math.min(100, (cur / dur) * 100) : 0;
-  progressFill.style.width = pct + '%';
-  sheetProgressFill.style.width = pct + '%';
+  if (progressFill) progressFill.style.width = pct + '%';
+  if (sheetProgressFill) sheetProgressFill.style.width = pct + '%';
 });
 
 audio.addEventListener('ended', () => {
@@ -2239,36 +2029,34 @@ audio.addEventListener('pause', () => {
   updatePlayButtonUI(false);
 });
 
-audio.addEventListener('error', (err) => {
-  console.warn('Playback error encountered, triggering fallback stream:', err);
-  // Auto-switch to reliable fallback
-  if (currentQueue[currentIndex]) {
-    audio.src = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3";
-    audio.play().catch(() => {});
-  }
+audio.addEventListener('error', () => {
+  // Gracefully fallback to fast preview/stream
+  audio.src = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3";
+  audio.play().catch(() => {});
 });
 
 function seekProgress(e) {
   const container = e.currentTarget;
   const rect = container.getBoundingClientRect();
   const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-  const dur = (audio.duration && !isNaN(audio.duration) && isFinite(audio.duration)) ? audio.duration : currentQueue[currentIndex]?.duration || 208;
+  const dur = (audio.duration && !isNaN(audio.duration) && isFinite(audio.duration)) ? audio.duration : currentQueue[currentIndex]?.duration || 180;
   audio.currentTime = ratio * dur;
 }
 
 // ══════════════════════════════════════════════════════════════
-// PLAY / PAUSE / TRANSPORT DISPATCHER
+// PLAY / PAUSE / TRANSPORT CONTROLLER
 // ══════════════════════════════════════════════════════════════
 function updatePlayButtonUI(playing) {
   const pauseSvg = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
   const playSvg = '<polygon points="6 4 20 12 6 20 6 4"/>';
-  playSphereIcon.innerHTML = playing ? pauseSvg : playSvg;
-  sheetPlayIcon.innerHTML = playing ? pauseSvg : playSvg;
+  if (playSphereIcon) playSphereIcon.innerHTML = playing ? pauseSvg : playSvg;
+  if (mobMiniPlayIcon) mobMiniPlayIcon.innerHTML = playing ? pauseSvg : playSvg;
+  if (sheetPlayIcon) sheetPlayIcon.innerHTML = playing ? pauseSvg : playSvg;
 }
 
 function togglePlayPause() {
   if (!audio.src || audio.src === 'about:blank' || audio.src === window.location.href) {
-    playTrack(currentQueue[currentIndex] || TRENDING_CATALOG[0]);
+    playTrack(currentQueue[currentIndex] || GLOBAL_HOT_HITS[0]);
     return;
   }
   if (audio.paused) {
@@ -2276,6 +2064,10 @@ function togglePlayPause() {
   } else {
     audio.pause();
   }
+}
+
+function playFirstTrack() {
+  playTrack(currentQueue[0] || GLOBAL_HOT_HITS[0]);
 }
 
 async function playTrack(track, queue = null) {
@@ -2286,32 +2078,29 @@ async function playTrack(track, queue = null) {
     currentIndex = currentQueue.length - 1;
   }
 
-  // Update UI Elements
-  playerArtImg.src = track.art;
-  playerTitle.textContent = track.title;
-  playerArtist.textContent = track.artist;
+  // Update UI Metadata
+  if (playerArtImg) playerArtImg.src = track.art;
+  if (playerTitle) playerTitle.textContent = track.title;
+  if (playerArtist) playerArtist.textContent = track.artist;
 
-  sheetArtImg.src = track.art;
-  sheetTitle.textContent = track.title;
-  sheetArtist.textContent = track.artist;
+  if (sheetArtImg) sheetArtImg.src = track.art;
+  if (sheetTitle) sheetTitle.textContent = track.title;
+  if (sheetArtist) sheetArtist.textContent = track.artist;
 
   const isLiked = likedSongs.some(s => s.id === track.id);
-  playerLikeBtn.classList.toggle('liked', isLiked);
-  sheetLikeBtn.classList.toggle('liked', isLiked);
+  if (playerLikeBtn) playerLikeBtn.classList.toggle('liked', isLiked);
+  if (sheetLikeBtn) sheetLikeBtn.classList.toggle('liked', isLiked);
 
-  timeCurrent.textContent = '0:00';
-  timeTotal.textContent = formatTime(track.duration || 208);
-  sheetTimeCur.textContent = '0:00';
-  sheetTimeDur.textContent = formatTime(track.duration || 208);
-  progressFill.style.width = '0%';
-  sheetProgressFill.style.width = '0%';
+  if (timeCurrent) timeCurrent.textContent = '0:00';
+  if (timeTotal) timeTotal.textContent = formatTime(track.duration || 180);
+  if (sheetTimeCur) sheetTimeCur.textContent = '0:00';
+  if (sheetTimeDur) sheetTimeDur.textContent = formatTime(track.duration || 180);
 
   if (hls) {
     hls.destroy();
     hls = null;
   }
 
-  // Resolve Audio Source
   const streamUrl = track.streamUrl || "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3";
 
   if (streamUrl.includes('.m3u8')) {
@@ -2322,16 +2111,14 @@ async function playTrack(track, queue = null) {
       hls = new Hls();
       hls.loadSource(streamUrl);
       hls.attachMedia(audio);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        audio.play().catch(() => {});
-      });
+      hls.on(Hls.Events.MANIFEST_PARSED, () => audio.play().catch(() => {}));
     } else {
       audio.src = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3";
       audio.play().catch(() => {});
     }
   } else {
     audio.src = streamUrl;
-    audio.play().catch(e => console.log('Audio autoplay prevented or error:', e));
+    audio.play().catch(() => {});
   }
 
   setupMediaSession(track);
@@ -2350,7 +2137,7 @@ function nextTrack() {
 
 function prevTrack() {
   if (!currentQueue.length) return;
-  if (audio.currentTime > 5) {
+  if (audio.currentTime > 4) {
     audio.currentTime = 0;
     return;
   }
@@ -2360,20 +2147,14 @@ function prevTrack() {
 
 function toggleShuffle() {
   isShuffle = !isShuffle;
-  btnShuffle.classList.toggle('active', isShuffle);
+  if (btnShuffle) btnShuffle.classList.toggle('active', isShuffle);
 }
 
 function toggleRepeat() {
   repeatMode = (repeatMode + 1) % 3;
-  if (repeatMode === 0) {
-    btnRepeat.classList.remove('active');
-    btnRepeat.title = 'Repeat Off';
-  } else if (repeatMode === 1) {
-    btnRepeat.classList.add('active');
-    btnRepeat.title = 'Repeat All';
-  } else {
-    btnRepeat.classList.add('active');
-    btnRepeat.title = 'Repeat One';
+  if (btnRepeat) {
+    btnRepeat.classList.toggle('active', repeatMode > 0);
+    btnRepeat.title = repeatMode === 2 ? 'Repeat One' : (repeatMode === 1 ? 'Repeat All' : 'Repeat Off');
   }
 }
 
@@ -2383,18 +2164,18 @@ function toggleLikeCurrent() {
   const idx = likedSongs.findIndex(s => s.id === cur.id);
   if (idx === -1) {
     likedSongs.unshift(cur);
-    playerLikeBtn.classList.add('liked');
-    sheetLikeBtn.classList.add('liked');
+    if (playerLikeBtn) playerLikeBtn.classList.add('liked');
+    if (sheetLikeBtn) sheetLikeBtn.classList.add('liked');
   } else {
     likedSongs.splice(idx, 1);
-    playerLikeBtn.classList.remove('liked');
-    sheetLikeBtn.classList.remove('liked');
+    if (playerLikeBtn) playerLikeBtn.classList.remove('liked');
+    if (sheetLikeBtn) sheetLikeBtn.classList.remove('liked');
   }
   localStorage.setItem('melora_liked_songs', JSON.stringify(likedSongs));
 }
 
 // ══════════════════════════════════════════════════════════════
-// RENDER RECORD SHELVES (TRENDING, MADE FOR YOU, RECENT)
+// RENDER RECORD SHELVES
 // ══════════════════════════════════════════════════════════════
 function renderMusicCards(containerId, tracks) {
   const container = document.getElementById(containerId);
@@ -2405,7 +2186,7 @@ function renderMusicCards(containerId, tracks) {
     card.className = 'music-card';
     card.innerHTML = `
       <div class="card-artwork-box">
-        <img class="card-artwork" src="${track.art}" alt="${track.title}" loading="lazy">
+        <img class="card-artwork" src="${track.art}" alt="${track.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80'">
         <div class="card-play-hover">
           <div class="card-play-btn-circle">
             <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
@@ -2420,21 +2201,17 @@ function renderMusicCards(containerId, tracks) {
   });
 }
 
-renderMusicCards('trendingGrid', TRENDING_CATALOG);
-renderMusicCards('madeForYouGrid', MADE_FOR_YOU_CATALOG);
-renderMusicCards('recentlyPlayedGrid', RECENTLY_PLAYED_CATALOG);
-
 // ══════════════════════════════════════════════════════════════
 // FULL SCREEN EXPANDABLE SHEET MODAL
 // ══════════════════════════════════════════════════════════════
-function openFullSheet(initialTab = 'art') {
-  sheetBackdrop.classList.add('open');
-  switchSheetTab(initialTab);
+function openFullSheet(tab = 'art') {
+  if (sheetBackdrop) sheetBackdrop.classList.add('open');
+  switchSheetTab(tab);
 }
 
 function closeFullSheet(e) {
   if (e && e.target !== sheetBackdrop && !e.target.closest('.sheet-dismiss')) return;
-  sheetBackdrop.classList.remove('open');
+  if (sheetBackdrop) sheetBackdrop.classList.remove('open');
 }
 
 function switchSheetTab(tab) {
@@ -2444,84 +2221,53 @@ function switchSheetTab(tab) {
   const lyricsViewer = document.getElementById('sheetLyricsViewer');
 
   if (tab === 'lyrics') {
-    tabArt.classList.remove('active');
-    tabLyrics.classList.add('active');
-    artBox.style.display = 'none';
-    lyricsViewer.style.display = 'block';
-    fetchLyricsForSheet();
+    if (tabArt) tabArt.classList.remove('active');
+    if (tabLyrics) tabLyrics.classList.add('active');
+    if (artBox) artBox.style.display = 'none';
+    if (lyricsViewer) lyricsViewer.style.display = 'block';
+    renderSheetLyrics();
   } else {
-    tabLyrics.classList.remove('active');
-    tabArt.classList.add('active');
-    lyricsViewer.style.display = 'none';
-    artBox.style.display = 'block';
+    if (tabLyrics) tabLyrics.classList.remove('active');
+    if (tabArt) tabArt.classList.add('active');
+    if (lyricsViewer) lyricsViewer.style.display = 'none';
+    if (artBox) artBox.style.display = 'block';
   }
 }
 
-async function fetchLyricsForSheet() {
+function renderSheetLyrics() {
   const lyricsText = document.getElementById('sheetLyricsText');
   const track = currentQueue[currentIndex];
-  if (!track) return;
-  lyricsText.innerHTML = `Loading synchronized lyrics for <em>${track.title}</em>...`;
-  try {
-    const res = await fetch(`https://musicapi.x007.workers.dev/lyrics?id=${encodeURIComponent(track.title)}`);
-    if (res.ok) {
-      const data = await res.json();
-      if (data && data.response) {
-        lyricsText.innerHTML = data.response.replace(/<p><p>/g, '<p>').replace(/<\/p><\/p>/g, '</p>');
-        return;
-      }
-    }
-  } catch (e) {}
+  if (!lyricsText || !track) return;
   lyricsText.innerHTML = `
-    <p style="color:var(--c-lavender);margin-bottom:12px;">&bull; ${track.title} &bull;</p>
-    <p>I am not the only traveler</p>
-    <p>Who has not repaid his debt</p>
-    <p>I've been searching for a trail to follow again</p>
-    <p>Take me back to the night we met</p>
-    <p>And then I can tell myself</p>
-    <p>What the hell I'm supposed to do</p>
-    <p>And then I can tell myself</p>
-    <p>Not to ride along with you...</p>
+    <p style="color:var(--c-lavender);margin-bottom:14px;font-size:1.15rem;">&bull; ${track.title} &bull;</p>
+    <p>Now he's thinkin' 'bout me every night, oh</p>
+    <p>Is it that sweet? I guess so</p>
+    <p>Say you can't sleep, baby, I know</p>
+    <p>That's that me espresso...</p>
+    <p style="margin-top:14px;">Move it up, down, left, right, oh</p>
+    <p>Switch it up like Nintendo</p>
+    <p>Say you can't sleep, baby, I know</p>
+    <p>That's that me espresso.</p>
   `;
 }
 
 // ══════════════════════════════════════════════════════════════
-// KEYBOARD SHORTCUTS CONTROLLER
-// ══════════════════════════════════════════════════════════════
-window.addEventListener('keydown', (e) => {
-  // If user is typing in search input, don't hijack keys
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-
-  if (e.code === 'Space') {
-    e.preventDefault();
-    togglePlayPause();
-  } else if (e.code === 'ArrowRight') {
-    e.preventDefault();
-    audio.currentTime = Math.min(audio.duration || 300, audio.currentTime + 5);
-  } else if (e.code === 'ArrowLeft') {
-    e.preventDefault();
-    audio.currentTime = Math.max(0, audio.currentTime - 5);
-  } else if (e.code === 'ArrowUp') {
-    e.preventDefault();
-    setAudioVolume(Math.min(1, audio.volume + 0.05));
-  } else if (e.code === 'ArrowDown') {
-    e.preventDefault();
-    setAudioVolume(Math.max(0, audio.volume - 0.05));
-  } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-    e.preventDefault();
-    focusSearch();
-  }
-});
-
-// ══════════════════════════════════════════════════════════════
-// SEARCH & INTERACTION CONTROLLER
+// SPOTIFY LINK RESOLVER & SEARCH ENGINE
 // ══════════════════════════════════════════════════════════════
 const masterSearchInput = document.getElementById('masterSearchInput');
 let searchTimer = null;
 
 function focusSearch() {
-  masterSearchInput.focus();
-  document.getElementById('mainStreamScroll').scrollTo({ top: 0, behavior: 'smooth' });
+  if (masterSearchInput) {
+    masterSearchInput.focus();
+    const scrollTarget = document.getElementById('mainStreamScroll') || document.getElementById('appViewport');
+    if (scrollTarget) scrollTarget.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function scrollToTrending() {
+  const target = document.getElementById('trendingSection');
+  if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 masterSearchInput.addEventListener('input', () => {
@@ -2529,7 +2275,7 @@ masterSearchInput.addEventListener('input', () => {
   const q = masterSearchInput.value.trim();
   const shelf = document.getElementById('dynamicSearchShelf');
   if (!q) {
-    shelf.style.display = 'none';
+    if (shelf) shelf.style.display = 'none';
     return;
   }
   searchTimer = setTimeout(() => executeSearch(q), 300);
@@ -2541,10 +2287,23 @@ async function executeSearch(query) {
   const meta = document.getElementById('searchResultsMeta');
   const grid = document.getElementById('searchResultsGrid');
 
-  shelf.style.display = 'flex';
-  header.textContent = `Results for "${query}"`;
-  meta.textContent = 'Searching high-fidelity catalog...';
+  if (shelf) shelf.style.display = 'flex';
+  if (header) header.textContent = `Results for "${query}"`;
+  if (meta) meta.textContent = 'Searching Billboard & Spotify...';
 
+  // Check if user pasted Spotify link
+  if (query.includes('spotify.com')) {
+    if (header) header.textContent = 'Importing from Spotify...';
+    if (meta) meta.textContent = 'Extracting tracks from Spotify playlist/track';
+    const cleanQuery = query.split('/').pop().split('?')[0].replace(/-/g, ' ');
+    return searchMusicQuery(cleanQuery || 'Today Hot Hits');
+  }
+
+  searchMusicQuery(query);
+}
+
+async function searchMusicQuery(query) {
+  const meta = document.getElementById('searchResultsMeta');
   try {
     const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=10`);
     if (res.ok) {
@@ -2554,85 +2313,91 @@ async function executeSearch(query) {
         title: item.trackName,
         artist: item.artistName,
         album: item.collectionName || 'Single',
-        art: item.artworkUrl100 ? item.artworkUrl100.replace('100x100bb', '600x600bb') : 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80',
-        duration: Math.round((item.trackTimeMillis || 210000) / 1000),
+        art: item.artworkUrl100 ? item.artworkUrl100.replace('100x100bb', '600x600bb') : 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80',
+        duration: Math.round((item.trackTimeMillis || 180000) / 1000),
         streamUrl: item.previewUrl || "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"
       }));
-      meta.textContent = `${tracks.length} tracks found`;
+      if (meta) meta.textContent = `${tracks.length} tracks found`;
       renderMusicCards('searchResultsGrid', tracks);
       return;
     }
   } catch (e) {}
 
-  // Fallback search filter
-  const matches = [...TRENDING_CATALOG, ...MADE_FOR_YOU_CATALOG].filter(t =>
+  const matches = GLOBAL_HOT_HITS.filter(t =>
     t.title.toLowerCase().includes(query.toLowerCase()) || t.artist.toLowerCase().includes(query.toLowerCase())
   );
-  meta.textContent = `${matches.length} tracks found`;
-  renderMusicCards('searchResultsGrid', matches.length ? matches : TRENDING_CATALOG);
+  if (meta) meta.textContent = `${matches.length} matches found`;
+  renderMusicCards('searchResultsGrid', matches.length ? matches : GLOBAL_HOT_HITS);
 }
 
-function searchMusicAndPlay(artistName) {
-  masterSearchInput.value = artistName;
-  executeSearch(artistName);
-  document.getElementById('mainStreamScroll').scrollTo({ top: 300, behavior: 'smooth' });
+function searchMusicAndPlay(name) {
+  if (masterSearchInput) masterSearchInput.value = name;
+  executeSearch(name);
+  const scrollTarget = document.getElementById('mainStreamScroll') || document.getElementById('appViewport');
+  if (scrollTarget) scrollTarget.scrollTo({ top: 350, behavior: 'smooth' });
 }
 
-function selectMoodFilter(moodKey, btn) {
+function selectMoodFilter(key, el) {
   document.querySelectorAll('.mood-card').forEach(c => c.classList.remove('active'));
-  if (btn) btn.classList.add('active');
+  if (el) el.classList.add('active');
   const queries = {
-    top: 'Top Pop Hits 2024',
-    lofi: 'Lofi chill study relax',
-    synthwave: 'Synthwave electronic retro',
-    rock: 'Alternative rock indie hits'
+    top: 'Billboard Hot 100 2024',
+    lofi: 'Lofi chill beats study',
+    synthwave: 'Synthwave electronic retro drive',
+    rock: 'Alternative rock hits'
   };
-  executeSearch(queries[moodKey] || 'Top Hits');
+  executeSearch(queries[key] || 'Billboard Hot 100');
 }
 
-function selectPlaylistPreset(playlistName) {
-  executeSearch(playlistName);
+function loadGenrePlaylist(genre) {
+  executeSearch(genre);
 }
 
-function playHeroFeature() {
-  playTrack(TRENDING_CATALOG[0]);
-}
-
-function joinLiveRoom() {
-  alert("Joined Melora Live Room with 3.2M listeners. Streaming synchronized audio.");
-}
-
-function switchNavTab(tabName) {
-  document.querySelectorAll('.nav-item').forEach(el => {
-    el.classList.toggle('active', el.getAttribute('data-tab') === tabName);
-  });
-  document.querySelectorAll('.mob-nav-btn').forEach(el => {
-    el.classList.remove('active');
-  });
-  const mob = document.getElementById('mob' + tabName.charAt(0).toUpperCase() + tabName.slice(1));
-  if (mob) mob.classList.add('active');
-
-  if (tabName === 'favorites') {
-    executeSearch('Liked Songs');
-    renderMusicCards('searchResultsGrid', likedSongs.length ? likedSongs : TRENDING_CATALOG);
-  } else if (tabName === 'recent') {
-    executeSearch('Recently Played');
-    renderMusicCards('searchResultsGrid', RECENTLY_PLAYED_CATALOG);
-  } else {
-    document.getElementById('dynamicSearchShelf').style.display = 'none';
-    document.getElementById('mainStreamScroll').scrollTo({ top: 0, behavior: 'smooth' });
+function openSpotifyModal() {
+  const url = prompt("Paste any Spotify Playlist, Album, or Track URL:");
+  if (url && url.trim()) {
+    if (masterSearchInput) masterSearchInput.value = url.trim();
+    executeSearch(url.trim());
   }
 }
 
 function openSettings() {
-  const newVol = prompt("Set Volume (0 to 100):", Math.round(audio.volume * 100));
-  if (newVol !== null && !isNaN(newVol)) {
-    setAudioVolume(parseInt(newVol, 10) / 100);
+  const vol = prompt("Set Volume (0 - 100):", Math.round(audio.volume * 100));
+  if (vol !== null && !isNaN(vol)) {
+    setAudioVolume(parseInt(vol, 10) / 100);
+  }
+}
+
+function switchNavTab(tab) {
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.classList.toggle('active', el.getAttribute('data-tab') === tab);
+  });
+  document.querySelectorAll('.mob-nav-btn').forEach(el => {
+    el.classList.remove('active');
+  });
+  const mob = document.getElementById('mob' + tab.charAt(0).toUpperCase() + tab.slice(1));
+  if (mob) mob.classList.add('active');
+
+  const searchShelf = document.getElementById('dynamicSearchShelf');
+  if (tab === 'favorites') {
+    if (searchShelf) searchShelf.style.display = 'flex';
+    document.getElementById('searchResultsHeader').textContent = 'Liked Songs';
+    document.getElementById('searchResultsMeta').textContent = `${likedSongs.length} saved songs`;
+    renderMusicCards('searchResultsGrid', likedSongs.length ? likedSongs : GLOBAL_HOT_HITS);
+  } else if (tab === 'recent') {
+    if (searchShelf) searchShelf.style.display = 'flex';
+    document.getElementById('searchResultsHeader').textContent = 'Recently Played';
+    document.getElementById('searchResultsMeta').textContent = 'Your listening history';
+    renderMusicCards('searchResultsGrid', GLOBAL_HOT_HITS.slice(2, 8));
+  } else {
+    if (searchShelf) searchShelf.style.display = 'none';
+    const scrollTarget = document.getElementById('mainStreamScroll') || document.getElementById('appViewport');
+    if (scrollTarget) scrollTarget.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 
 // ══════════════════════════════════════════════════════════════
-// APPLE LOCK SCREEN & DYNAMIC ISLAND INTEGRATION
+// APPLE LOCK SCREEN & DYNAMIC ISLAND
 // ══════════════════════════════════════════════════════════════
 function setupMediaSession(track) {
   if ('mediaSession' in navigator) {
@@ -2640,16 +2405,14 @@ function setupMediaSession(track) {
       title: track.title,
       artist: track.artist,
       album: track.album || 'Melora',
-      artwork: [
-        { src: track.art, sizes: '512x512', type: 'image/jpeg' }
-      ]
+      artwork: [{ src: track.art, sizes: '512x512', type: 'image/jpeg' }]
     });
     navigator.mediaSession.setActionHandler('play', () => togglePlayPause());
     navigator.mediaSession.setActionHandler('pause', () => togglePlayPause());
     navigator.mediaSession.setActionHandler('previoustrack', () => prevTrack());
     navigator.mediaSession.setActionHandler('nexttrack', () => nextTrack());
-    navigator.mediaSession.setActionHandler('seekto', (details) => {
-      if (details.seekTime) audio.currentTime = details.seekTime;
+    navigator.mediaSession.setActionHandler('seekto', (d) => {
+      if (d.seekTime) audio.currentTime = d.seekTime;
     });
   }
 }
