@@ -42,8 +42,8 @@ class YtDlpEngine implements YouTubeEngine {
 
   Video _parseInfo(Map<String, dynamic> info) {
     final publishDate = info["upload_date"] != null
-        ? DateTime.fromMillisecondsSinceEpoch(
-            int.parse(info["upload_date"]) * 1000,
+        ? DateTime.parse(
+            info["upload_date"],
           )
         : DateTime.now();
     return Video(

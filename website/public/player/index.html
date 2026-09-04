@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Melora â€” Web Player</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Melora — Web Player</title>
 <meta name="description" content="Stream free music with Melora Web Player. Beautiful, personal, and distraction-free audio player for iPhone, iPad, and desktop.">
-
-<!-- PWA & iOS Safari standalone tags -->
+<meta name="theme-color" content="#7c3aed">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Melora">
@@ -831,7 +830,7 @@ body {
 
 <script>
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// SPOTIFY CLIENT CREDENTIALS â€” auto-refreshing token manager
+// SPOTIFY CLIENT CREDENTIALS — auto-refreshing token manager
 // Uses the Client Credentials flow (no user login required). Only reads public
 // playlist metadata. Register a free app at developer.spotify.com to get these.
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -900,7 +899,7 @@ async function fetchSpotifyPlaylist(playlistId) {
 }
 
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// ITUNES SEARCH API â€” covers 100M+ songs, CORS-friendly, free, no auth
+// ITUNES SEARCH API — covers 100M+ songs, CORS-friendly, free, no auth
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function fetchMusic(query, limit = 50) {
   try {
@@ -1195,7 +1194,7 @@ function showLikedSongs() {
 function playHeroTrack() { if (currentQueue.length > 0) playTrack(currentQueue[0]); }
 
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// SMART SEARCH â€” detects Spotify playlist URLs, otherwise uses iTunes
+// SMART SEARCH — detects Spotify playlist URLs, otherwise uses iTunes
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let searchTimeout;
 const searchInput = document.getElementById('searchInput');
@@ -1247,7 +1246,7 @@ async function runSearch(q) {
     searchTitle.textContent = `ðŸŽµ ${playlist.name}`;
     searchCount.textContent = `Loading ${spotifyTracks.length} tracks...`;
 
-    // Resolve tracks progressively â€” show as they resolve
+    // Resolve tracks progressively — show as they resolve
     const resolved = [];
     const grid = document.getElementById('searchGrid');
     grid.innerHTML = '';
@@ -1304,7 +1303,7 @@ async function runSearch(q) {
 }
 
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// INITIAL CURATED SHELVES â€” load broad, rich genre catalogs
+// INITIAL CURATED SHELVES — load broad, rich genre catalogs
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function loadInitialShelves() {
   renderLoading('trendingGrid', 8);
@@ -1355,7 +1354,7 @@ function dismissSafariPrompt() {
 function showInstallModal() {
   alert(
     "To install Melora on iPhone / iPad:\n\n" +
-    "1. In Safari, tap the Share icon (â†‘) at the bottom.\n" +
+    "1. In Safari, tap the Share icon (→‘) at the bottom.\n" +
     "2. Scroll down and tap 'Add to Home Screen'.\n" +
     "3. Tap 'Add' in the top right.\n\n" +
     "Melora will appear as a full-screen native app on your home screen!"

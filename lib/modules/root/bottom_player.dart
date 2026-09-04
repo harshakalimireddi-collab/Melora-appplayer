@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:shadcn_flutter/shadcn_flutter_extension.dart';
+
 
 import 'package:melora/collections/assets.gen.dart';
 import 'package:melora/collections/routes.gr.dart';
@@ -49,12 +49,19 @@ class BottomPlayer extends HookConsumerWidget {
     }
 
     return Container(
-      height: 74,
-      decoration: const BoxDecoration(
+      height: 76,
+      decoration: BoxDecoration(
         color: MeloraColors.surface0,
         border: Border(
           top: BorderSide(color: MeloraColors.separator, width: 0.5),
         ),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x18000000),
+            blurRadius: 18,
+            offset: Offset(0, 4),
+          ),
+        ],
       ),
       child: Row(
         children: [

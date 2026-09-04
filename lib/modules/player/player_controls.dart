@@ -7,7 +7,6 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 
 import 'package:melora/collections/melora_icons.dart';
 import 'package:melora/collections/intents.dart';
-import 'package:melora/extensions/constrains.dart';
 import 'package:melora/extensions/context.dart';
 import 'package:melora/extensions/duration.dart';
 import 'package:melora/modules/player/use_progress.dart';
@@ -48,8 +47,6 @@ class PlayerControls extends HookConsumerWidget {
 
     final playing =
         useStream(audioPlayer.playingStream).data ?? audioPlayer.isPlaying;
-    final theme = Theme.of(context);
-
     final buttonSize =
         kIsMobile ? const ButtonSize(1.4) : const ButtonSize(1.1);
     final playButtonSize =

@@ -363,6 +363,8 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
         .asMediaList()
         .unique((a, b) => a.uri == b.uri);
 
+    if (medias.isEmpty) return;
+
     // Giving the initial track a boost so MediaKit won't skip
     // because of timeout
     final intendedActiveTrack = medias.elementAt(initialIndex);
@@ -373,8 +375,6 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
         ).future,
       );
     }
-
-    if (medias.isEmpty) return;
 
     state = state.copyWith(
       // These are filtered tracks as well

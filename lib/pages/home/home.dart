@@ -12,9 +12,7 @@ import 'package:melora/modules/home/sections/new_releases.dart';
 import 'package:melora/modules/home/sections/recent.dart';
 import 'package:melora/components/titlebar/titlebar.dart';
 import 'package:melora/extensions/constrains.dart';
-import 'package:melora/extensions/context.dart';
 import 'package:melora/provider/user_preferences/user_preferences_provider.dart';
-import 'package:melora/utils/platform.dart';
 import 'package:melora/theme/melora_theme.dart';
 
 @RoutePage()

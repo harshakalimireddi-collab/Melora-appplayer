@@ -1,14 +1,9 @@
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:melora/collections/melora_icons.dart';
-import 'package:melora/collections/routes.gr.dart';
 import 'package:melora/components/image/universal_image.dart';
 import 'package:melora/extensions/constrains.dart';
-import 'package:melora/extensions/context.dart';
 import 'package:melora/models/metadata/metadata.dart';
-import 'package:melora/provider/audio_player/audio_player.dart';
 import 'package:melora/provider/metadata_plugin/browse/sections.dart';
 import 'package:melora/theme/melora_theme.dart';
 
@@ -50,8 +45,8 @@ class HomeFeaturedSection extends HookConsumerWidget {
       artist = featuredItem.owner.name.isNotEmpty
           ? featuredItem.owner.name
           : "Curated Playlist";
-      if (featuredItem.description?.isNotEmpty == true) {
-        description = featuredItem.description!;
+      if (featuredItem.description.isNotEmpty) {
+        description = featuredItem.description;
       }
       imageUrl = featuredItem.images.asUrlString(
         placeholder: ImagePlaceholder.collection,
@@ -184,7 +179,7 @@ class HomeFeaturedSection extends HookConsumerWidget {
       children: [
         // Badge
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3.5),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
             color: MeloraColors.accentGlow,
             borderRadius: MeloraRadius.xsBr,
@@ -201,55 +196,55 @@ class HomeFeaturedSection extends HookConsumerWidget {
                 size: 11,
                 color: MeloraColors.accentSoft,
               ),
-              const SizedBox(width: 5),
+              const SizedBox(width: 6),
               const Text(
                 "FEATURED SPOTLIGHT",
                 style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w700,
-                  letterSpacing: 1.0,
+                  letterSpacing: 1.1,
                   color: MeloraColors.accentSoft,
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 12),
         Text(
           title,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(
-            fontSize: 24,
+            fontSize: 26,
             fontWeight: FontWeight.w700,
-            letterSpacing: -0.4,
+            letterSpacing: -0.5,
             color: MeloraColors.textPrimary,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 5),
         Text(
           artist,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(
-            fontSize: 14,
+            fontSize: 15,
             fontWeight: FontWeight.w500,
             color: MeloraColors.accentSoft,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 9),
         Text(
           description,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(
-            fontSize: 12.5,
+            fontSize: 13,
             fontWeight: FontWeight.w400,
             color: MeloraColors.textSecondary,
-            height: 1.4,
+            height: 1.45,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 18),
         // Actions
         Row(
           children: [
@@ -259,7 +254,7 @@ class HomeFeaturedSection extends HookConsumerWidget {
               },
               child: Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 22, vertical: 11),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     colors: [
@@ -271,7 +266,7 @@ class HomeFeaturedSection extends HookConsumerWidget {
                   boxShadow: const [
                     BoxShadow(
                       color: Color(0x407C5CFC),
-                      blurRadius: 14,
+                      blurRadius: 16,
                       offset: Offset(0, 4),
                     ),
                   ],
@@ -299,8 +294,8 @@ class HomeFeaturedSection extends HookConsumerWidget {
             ),
             const SizedBox(width: 10),
             Container(
-              width: 38,
-              height: 38,
+              width: 40,
+              height: 40,
               decoration: BoxDecoration(
                 color: MeloraColors.glass06,
                 borderRadius: MeloraRadius.mdBr,
@@ -311,14 +306,14 @@ class HomeFeaturedSection extends HookConsumerWidget {
               ),
               child: const Icon(
                 MeloraIcons.heart,
-                size: 16,
+                size: 17,
                 color: MeloraColors.textSecondary,
               ),
             ),
             const SizedBox(width: 8),
             Container(
-              width: 38,
-              height: 38,
+              width: 40,
+              height: 40,
               decoration: BoxDecoration(
                 color: MeloraColors.glass06,
                 borderRadius: MeloraRadius.mdBr,
@@ -329,7 +324,7 @@ class HomeFeaturedSection extends HookConsumerWidget {
               ),
               child: const Icon(
                 MeloraIcons.moreHorizontal,
-                size: 16,
+                size: 17,
                 color: MeloraColors.textSecondary,
               ),
             ),

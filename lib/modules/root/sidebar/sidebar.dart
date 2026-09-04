@@ -9,7 +9,6 @@ import 'package:melora/collections/melora_icons.dart';
 import 'package:melora/models/database/database.dart';
 import 'package:melora/extensions/constrains.dart';
 import 'package:melora/extensions/context.dart';
-import 'package:melora/modules/root/sidebar/sidebar_footer.dart';
 import 'package:melora/provider/user_preferences/user_preferences_provider.dart';
 import 'package:melora/theme/melora_theme.dart';
 
@@ -217,6 +216,12 @@ class _MeloraSidebarPanel extends HookConsumerWidget {
             decoration: BoxDecoration(
               color: isActive ? MeloraColors.accentGlow : Colors.transparent,
               borderRadius: MeloraRadius.smBr,
+              border: isActive
+                  ? Border.all(
+                      color: MeloraColors.accentGlowStrong,
+                      width: 0.5,
+                    )
+                  : null,
             ),
             child: Icon(
               tile.icon,

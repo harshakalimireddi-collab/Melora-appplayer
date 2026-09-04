@@ -23,10 +23,8 @@ final serverProvider = FutureProvider(
     // When connect port is -1, we need to generate a random port
     // but we shouldn't reset it if it's already been set (caused by a state change)
     if (connectPort == -1) {
-      if (MeloraMedia.serverPort == 0) {
-        final port = Random().nextInt(17500) + 5000;
-        MeloraMedia.serverPort = port;
-      }
+      final port = Random().nextInt(17500) + 5000;
+      MeloraMedia.serverPort = port;
     } else {
       MeloraMedia.serverPort = connectPort;
     }

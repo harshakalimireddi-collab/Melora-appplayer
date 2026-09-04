@@ -1,6 +1,6 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shadcn_flutter/shadcn_flutter.dart' hide Consumer;
+import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shadcn_flutter/shadcn_flutter_extension.dart';
 
 import 'package:melora/components/titlebar/titlebar.dart';
@@ -14,7 +14,6 @@ import 'package:melora/pages/lyrics/synced_lyrics.dart';
 import 'package:melora/provider/audio_player/audio_player.dart';
 import 'package:melora/provider/lyrics/synced.dart';
 import 'package:melora/theme/melora_theme.dart';
-import 'package:melora/utils/platform.dart';
 import 'package:auto_route/auto_route.dart';
 
 @RoutePage()

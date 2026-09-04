@@ -18,13 +18,13 @@ abstract class PrimitiveUtils {
   static const uuid = Uuid();
 
   static String toReadableNumber(double num) {
-    if (num > 999 && num < 99999) {
+    if (num >= 1000 && num < 100000) {
       return "${(num / 1000).toStringAsFixed(0)}K";
-    } else if (num > 99999 && num < 999999) {
+    } else if (num >= 100000 && num < 1000000) {
       return "${(num / 1000).toStringAsFixed(0)}K";
-    } else if (num > 999999 && num < 999999999) {
+    } else if (num >= 1000000 && num < 1000000000) {
       return "${(num / 1000000).toStringAsFixed(0)}M";
-    } else if (num > 999999999) {
+    } else if (num >= 1000000000) {
       return "${(num / 1000000000).toStringAsFixed(0)}B";
     } else {
       return num.toStringAsFixed(0);
@@ -36,15 +36,14 @@ abstract class PrimitiveUtils {
     Duration timeout = const Duration(milliseconds: 2500),
     int retryCount = 4,
   }) async {
-    return Future.any(
-      List.generate(retryCount, (i) {
-        if (i == 0) return inner();
-        return Future.delayed(
-          Duration(milliseconds: timeout.inMilliseconds * i),
-          inner,
-        );
-      }),
-    );
+    for (int i = 0; i < retryCount; i++) {
+      try {
+        return await inner().timeout(timeout);
+      } catch (e) {
+        if (i == retryCount - 1) rethrow;
+      }
+    }
+    throw StateError('raceMultiple: no retries remaining');
   }
 
   static String toSafeFileName(String str) {

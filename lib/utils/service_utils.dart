@@ -110,7 +110,7 @@ abstract class ServiceUtils {
     bool authHeader = false,
   }) async {
     if (apiKey == "" || apiKey == null) {
-      apiKey = PrimitiveUtils.getRandomElement(/* lyricsSecrets */ []);
+      return null;
     }
     const searchUrl = 'https://api.genius.com/search?q=';
     String song =
@@ -178,8 +178,8 @@ abstract class ServiceUtils {
         if (criteria) points++;
       }
       return {"result": result, "points": points};
-    }).sorted(
-      (a, b) => ((a["points"] as int).compareTo(a["points"] as int)),
+    }    ).sorted(
+      (a, b) => ((a["points"] as int).compareTo(b["points"] as int)),
     );
     final worthyOne = ratedLyrics.first["result"];
 

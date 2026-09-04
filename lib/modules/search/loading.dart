@@ -2,7 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:melora/collections/melora_icons.dart';
 import 'package:melora/extensions/constrains.dart';
-import 'package:melora/extensions/context.dart';
+
 import 'package:melora/pages/search/search.dart';
 import 'package:melora/theme/melora_theme.dart';
 
