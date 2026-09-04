@@ -23,6 +23,7 @@ class DownloadItem extends HookConsumerWidget {
 
     return ButtonTile(
       style: ButtonVariance.ghost,
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
       leading: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5),
         child: ClipRRect(

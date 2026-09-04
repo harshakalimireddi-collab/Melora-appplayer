@@ -101,7 +101,15 @@ class PlaybuttonTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title),
+          Text(
+            title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              color: MeloraColors.textPrimary,
+            ),
+          ),
           if (cleanDescription.isNotEmpty)
             Text(
               description!,
