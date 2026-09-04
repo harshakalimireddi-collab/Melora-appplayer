@@ -271,15 +271,33 @@
     .main-stream::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 99px; }
 
     /* Top Bar */
-    .top-bar {
+    .top-sticky-header {
+      position: sticky;
+      top: -24px;
+      margin: -24px -28px 12px -28px;
+      padding: 18px 28px 14px 28px;
+      background: rgba(8, 9, 13, 0.94);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .top-header-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      padding-bottom: 8px;
+      width: 100%;
+    }
+    .top-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
     }
     .mobile-greeting-row { display: none; }
     .desktop-only { display: flex; }
@@ -977,14 +995,26 @@
         -webkit-backdrop-filter: none !important;
       }
 
-      .top-bar {
-        display: flex !important;
-        flex-direction: column !important;
+      .top-sticky-header {
+        position: sticky !important;
+        top: 0 !important;
+        margin: calc(-1 * (max(14px, var(--safe-top)) + 4px)) -14px 10px -14px !important;
+        padding: calc(max(14px, var(--safe-top)) + 6px) 14px 12px 14px !important;
+        background: rgba(8, 9, 13, 0.96) !important;
+        backdrop-filter: blur(30px) !important;
+        -webkit-backdrop-filter: blur(30px) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        z-index: 100 !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
         gap: 10px !important;
-        width: 100% !important;
-        position: relative !important;
-        padding-bottom: 0 !important;
       }
+      .top-header-row {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 10px !important;
+      }
+      .mobile-only { display: flex !important; }
       .search-shortcut-badge { display: none !important; }
       .search-pill-box {
         width: 100% !important;

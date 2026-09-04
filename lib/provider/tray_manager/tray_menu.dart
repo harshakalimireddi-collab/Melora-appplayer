@@ -1,3 +1,4 @@
+import 'package:melora/hooks/configurators/use_close_behavior.dart';
 import 'dart:io';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -100,7 +101,7 @@ final trayMenuProvider = Provider((ref) {
       MenuItem(
         label: "Quit",
         onClick: (menuItem) {
-          exit(0);
+          smoothlyTerminateApp();
         },
       ),
     ],

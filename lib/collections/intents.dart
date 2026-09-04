@@ -1,3 +1,4 @@
+import 'package:melora/hooks/configurators/use_close_behavior.dart';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -131,7 +132,7 @@ class CloseAppAction extends Action<CloseAppIntent> {
   @override
   invoke(intent) {
     if (kIsDesktop) {
-      exit(0);
+      smoothlyTerminateApp();
     } else {
       SystemNavigator.pop();
     }
