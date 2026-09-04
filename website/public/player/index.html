@@ -11,8 +11,9 @@
   <meta name="apple-mobile-web-app-title" content="Melora">
 
   <!-- Relative PWA Icons & Manifest -->
-  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
-  <link rel="icon" type="image/png" href="../images/melora-logo.png">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="./apple-touch-icon.png">
   <link rel="manifest" href="./manifest.json">
 
   <!-- Fonts -->
@@ -1020,7 +1021,39 @@
       .main-view { padding: 16px 16px calc(140px + var(--safe-bottom)); gap: 20px; }
       .track-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
     }
+
+    .sheet-lyrics-box {
+      width: 100%;
+      aspect-ratio: 1;
+      max-height: 38vh;
+      margin: 10px auto;
+      border-radius: var(--radius-lg);
+      overflow-y: auto;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 40px var(--c-accent-glow);
+      position: relative;
+      background: rgba(14, 9, 29, 0.85);
+      border: 1px solid var(--glass-bd);
+      padding: 24px;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+    .sheet-lyrics-box p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 600;
+      margin: 0;
+    }
+    .sheet-mode-btns {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
   </style>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
 
@@ -1224,16 +1257,26 @@
       <button type="button" class="sheet-dismiss-btn" onclick="closeSheetModal()" aria-label="Close">
         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
-      <button type="button" class="sheet-mode-toggle" id="viewModeToggle" onclick="toggleViewMode()">
-        🎬 Watch Video
-      </button>
+      <div class="sheet-mode-btns">
+        <button type="button" class="sheet-mode-toggle" id="viewModeToggle" onclick="toggleViewMode()">
+          🎬 Watch Video
+        </button>
+        <button type="button" class="sheet-mode-toggle" id="lyricsToggle" onclick="toggleLyricsMode()">
+          📜 Lyrics
+        </button>
+      </div>
       <div style="width:24px;"></div>
     </div>
 
     <!-- MEDIA BOX (ALBUM ART / VIDEO PLAYER) -->
-    <div class="sheet-media-box">
+    <div class="sheet-media-box" id="sheetMediaBox">
       <img src="../images/melora-logo.png" alt="Artwork" class="sheet-art" id="sheetArt">
       <iframe id="sheetVideoFrame" class="sheet-video-frame" allow="autoplay; encrypted-media; picture-in-picture" title="Melora Full Song Player"></iframe>
+    </div>
+
+    <!-- LYRICS BOX (FETCHED VIA WORKER API) -->
+    <div class="sheet-lyrics-box" id="sheetLyricsBox">
+      <div id="sheetLyricsContent" style="color:var(--c-txt-dim);font-size:0.95rem;text-align:center;padding:24px 0;">Play a song to view lyrics</div>
     </div>
 
     <!-- TRACK METADATA & HEART -->
@@ -1296,15 +1339,38 @@
 <!-- SETTINGS MODAL FOR API KEY & ENGINE -->
 <div class="modal-backdrop" id="settingsModal" onclick="closeSettingsModal(event)">
   <div class="modal-box" onclick="event.stopPropagation()">
-    <div class="modal-title">Playback &amp; API Settings</div>
+    <div class="modal-title">Playback &amp; Streaming Engine</div>
     <div class="modal-desc">
-      Melora streams <strong>Full-Length Songs</strong> natively via the high-definition audio engine. If you have a YouTube Data API v3 key, you can enter it below for instant matching.
+      Melora streams <strong>Full-Length Songs</strong> natively with no 30-second cap. Choose your audio backend or configure Worker API endpoints.
     </div>
+
+    <div>
+      <label style="font-size:0.75rem;font-weight:700;color:var(--c-accent-lt);display:block;margin-bottom:6px;">PRIMARY MUSIC ENGINE</label>
+      <select id="engineSelect" class="modal-input" style="background:#130d28;color:#fff;cursor:pointer;">
+        <option value="auto">Auto-Select (Smart Worker + Audius + Fallbacks)</option>
+        <option value="gaama">Worker: Gaama (Full HLS .m3u8 Stream)</option>
+        <option value="seevn">Worker: Seevn (Direct 320kbps MP3)</option>
+        <option value="hunjama">Worker: Hunjama (Direct MP3)</option>
+        <option value="mtmusic">Worker: Mtmusic (Direct Audio)</option>
+        <option value="wunk">Worker: Wunk (Direct Audio)</option>
+        <option value="audius">Audius (Open High-Res MP3 Stream)</option>
+        <option value="youtube">YouTube Audio Engine</option>
+      </select>
+    </div>
+
+    <div>
+      <label style="font-size:0.75rem;font-weight:700;color:var(--c-accent-lt);display:block;margin-bottom:6px;">MUSIC WORKER API BASE URL</label>
+      <input type="text" id="workerApiInput" class="modal-input" placeholder="https://musicapi.x007.workers.dev">
+      <div style="font-size:0.7rem;color:var(--c-txt-muted);margin-top:4px;">Endpoint provides full-length HLS/MP3 streams and live lyrics.</div>
+    </div>
+
     <div>
       <label style="font-size:0.75rem;font-weight:700;color:var(--c-accent-lt);display:block;margin-bottom:6px;">YOUTUBE DATA API V3 KEY (OPTIONAL)</label>
       <input type="text" id="ytApiKeyInput" class="modal-input" placeholder="AIzaSy... (leave blank for automatic engine)">
     </div>
+
     <div class="modal-btn-row">
+      <button type="button" class="modal-btn cancel" onclick="resetSettings()">Reset</button>
       <button type="button" class="modal-btn cancel" onclick="closeSettingsModal()">Cancel</button>
       <button type="button" class="modal-btn save" onclick="saveSettings()">Save Preferences</button>
     </div>
@@ -1398,32 +1464,6 @@ async function fetchSpotifyPlaylist(playlistId) {
 }
 
 // ══════════════════════════════════════════════════════════════
-// MUSIC SEARCH ENGINE
-// ══════════════════════════════════════════════════════════════
-async function searchMusic(query, limit = 50) {
-  try {
-    const res = await fetch(
-      `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=${limit}`
-    );
-    if (!res.ok) return [];
-    const data = await res.json();
-    return (data.results || [])
-      .map(item => ({
-        id: item.trackId,
-        title: item.trackName,
-        artist: item.artistName,
-        album: item.collectionName || 'Single',
-        art: item.artworkUrl100 ? item.artworkUrl100.replace('100x100bb', '600x600bb') : '../images/melora-logo.png',
-        streamUrl: item.previewUrl || '',
-        duration: Math.round((item.trackTimeMillis || 210000) / 1000)
-      }));
-  } catch (e) {
-    console.error('Fetch music error:', e);
-    return [];
-  }
-}
-
-// ══════════════════════════════════════════════════════════════
 // STATE & STORAGE
 // ══════════════════════════════════════════════════════════════
 let currentQueue = [];
@@ -1432,11 +1472,16 @@ let isPlaying = false;
 let isShuffle = false;
 let repeatMode = 0; // 0 = off, 1 = all, 2 = one
 let isVideoView = false;
+let isLyricsView = false;
+let isUsingHtmlAudio = true;
 let currentDuration = 210;
 let currentElapsed = 0;
 let playbackTimer = null;
+let currentWorkerSongId = null;
 
 let likedSongs = JSON.parse(localStorage.getItem('melora_liked_songs') || '[]');
+let workerApiBase = localStorage.getItem('melora_worker_api') || 'https://musicapi.x007.workers.dev';
+let selectedEngine = localStorage.getItem('melora_engine') || 'auto';
 let customYtApiKey = localStorage.getItem('melora_yt_api_key') || '';
 
 const audio = document.getElementById('coreAudio');
@@ -1452,7 +1497,10 @@ const miniProgressFill = document.getElementById('miniProgressFill');
 
 const sheetModal = document.getElementById('sheetModal');
 const sheetBackdrop = document.getElementById('sheetBackdrop');
+const sheetMediaBox = document.getElementById('sheetMediaBox');
 const sheetArt = document.getElementById('sheetArt');
+const sheetLyricsBox = document.getElementById('sheetLyricsBox');
+const sheetLyricsContent = document.getElementById('sheetLyricsContent');
 const sheetTitle = document.getElementById('sheetTitle');
 const sheetArtist = document.getElementById('sheetArtist');
 const sheetLikeBtn = document.getElementById('sheetLikeBtn');
@@ -1464,6 +1512,56 @@ const sheetScrubBar = document.getElementById('sheetScrubBar');
 const btnShuffle = document.getElementById('btnShuffle');
 const btnRepeat = document.getElementById('btnRepeat');
 const viewModeToggle = document.getElementById('viewModeToggle');
+const lyricsToggle = document.getElementById('lyricsToggle');
+
+let hls = null;
+
+// ══════════════════════════════════════════════════════════════
+// HTML5 NATIVE AUDIO EVENT HOOKS
+// ══════════════════════════════════════════════════════════════
+audio.addEventListener('timeupdate', () => {
+  if (!isUsingHtmlAudio) return;
+  if (audio.duration && !isNaN(audio.duration) && isFinite(audio.duration)) {
+    currentDuration = Math.round(audio.duration);
+    sheetDurTime.textContent = formatTime(currentDuration);
+  }
+  currentElapsed = Math.round(audio.currentTime);
+  const pct = currentDuration > 0 ? Math.min(100, (currentElapsed / currentDuration) * 100) : 0;
+  sheetScrubFill.style.width = pct + '%';
+  miniProgressFill.style.width = pct + '%';
+  sheetCurTime.textContent = formatTime(currentElapsed);
+});
+
+audio.addEventListener('play', () => {
+  if (isUsingHtmlAudio) {
+    isPlaying = true;
+    updatePlayUI(true);
+  }
+});
+
+audio.addEventListener('pause', () => {
+  if (isUsingHtmlAudio) {
+    isPlaying = false;
+    updatePlayUI(false);
+  }
+});
+
+audio.addEventListener('ended', () => {
+  if (!isUsingHtmlAudio) return;
+  if (repeatMode === 2) {
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+  } else {
+    nextTrack();
+  }
+});
+
+audio.addEventListener('error', (e) => {
+  console.warn('HTML5 Audio encountered an error, falling back to YouTube engine:', e);
+  if (isUsingHtmlAudio && currentQueue[currentIndex]) {
+    fallbackToYouTube(currentQueue[currentIndex]);
+  }
+});
 
 function updateLikedBadges() {
   const count = likedSongs.length;
@@ -1480,53 +1578,126 @@ function updateLikedBadges() {
 updateLikedBadges();
 
 // ══════════════════════════════════════════════════════════════
-// RENDER TRACKS
+// MUSIC SEARCH ENGINE
 // ══════════════════════════════════════════════════════════════
-function renderTracks(containerId, tracks) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  container.innerHTML = '';
-  if (!tracks.length) {
-    container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--c-txt-muted);font-size:0.9rem;">No tracks found</div>`;
-    return;
+async function searchMusic(query, limit = 50) {
+  if (selectedEngine !== 'auto' && selectedEngine !== 'audius' && selectedEngine !== 'youtube') {
+    try {
+      const wRes = await fetch(`${workerApiBase}/search?q=${encodeURIComponent(query)}&searchEngine=${selectedEngine}`);
+      if (wRes.ok) {
+        const wData = await wRes.json();
+        if (wData && wData.response && Array.isArray(wData.response) && wData.response.length > 0) {
+          return wData.response.map(item => ({
+            id: item.id,
+            workerId: item.id,
+            title: item.title,
+            artist: item.artist || 'Melora Stream',
+            album: item.album || 'Single',
+            art: item.img || '../images/melora-logo.png',
+            duration: 210,
+            engine: selectedEngine
+          }));
+        }
+      }
+    } catch (err) {
+      console.warn('Worker search error, using iTunes catalog:', err);
+    }
   }
-  tracks.forEach(track => {
-    const card = document.createElement('div');
-    card.className = 'track-card' + (currentIndex !== -1 && currentQueue[currentIndex]?.id === track.id ? ' is-active-playing' : '');
-    card.setAttribute('data-id', track.id);
-    card.innerHTML = `
-      <div class="card-art-box">
-        <img class="card-art" src="${track.art}" alt="${track.title}" loading="lazy" onerror="this.src='../images/melora-logo.png'">
-        <button type="button" class="card-play-btn" aria-label="Play">
-          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
-        </button>
-      </div>
-      <div class="card-title" title="${track.title}">${track.title}</div>
-      <div class="card-artist" title="${track.artist}">${track.artist}</div>
-    `;
-    card.addEventListener('click', () => playTrack(track, tracks));
-    container.appendChild(card);
-  });
+
+  try {
+    const res = await fetch(
+      `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=${limit}`
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    return (data.results || []).map(item => ({
+      id: item.trackId,
+      title: item.trackName,
+      artist: item.artistName,
+      album: item.collectionName || 'Single',
+      art: item.artworkUrl100 ? item.artworkUrl100.replace('100x100bb', '600x600bb') : '../images/melora-logo.png',
+      streamUrl: item.previewUrl || '',
+      duration: Math.round((item.trackTimeMillis || 210000) / 1000)
+    }));
+  } catch (e) {
+    console.error('Fetch music error:', e);
+    return [];
+  }
 }
 
-function renderSkeletons(containerId, count = 8) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  container.innerHTML = '';
-  for (let i = 0; i < count; i++) {
-    const el = document.createElement('div');
-    el.className = 'skeleton-card';
-    el.innerHTML = `
-      <div class="skeleton-box"></div>
-      <div class="skeleton-line" style="width:85%;"></div>
-      <div class="skeleton-line" style="width:55%;"></div>
-    `;
-    container.appendChild(el);
+// ══════════════════════════════════════════════════════════════
+// FULL-LENGTH AUDIO ENGINE RESOLVER
+// Resolves: Worker API (gaama/seevn/hunjama) -> Audius -> YouTube
+// ══════════════════════════════════════════════════════════════
+async function resolveAudioStream(track) {
+  const queryStr = `${track.title} ${track.artist}`;
+
+  if (selectedEngine !== 'youtube' && selectedEngine !== 'audius') {
+    const enginesToTry = selectedEngine === 'auto'
+      ? ['gaama', 'seevn', 'hunjama']
+      : [selectedEngine];
+
+    for (const eng of enginesToTry) {
+      try {
+        const searchUrl = `${workerApiBase}/search?q=${encodeURIComponent(queryStr)}&searchEngine=${eng}`;
+        const sRes = await fetch(searchUrl);
+        if (sRes.ok) {
+          const sData = await sRes.json();
+          const first = sData?.response?.[0];
+          if (first && first.id) {
+            const fetchUrl = `${workerApiBase}/fetch?id=${encodeURIComponent(first.id)}`;
+            const fRes = await fetch(fetchUrl);
+            if (fRes.ok) {
+              const fData = await fRes.json();
+              const streamLink = fData?.response;
+              if (streamLink && typeof streamLink === 'string' && streamLink.startsWith('http')) {
+                return {
+                  type: streamLink.includes('.m3u8') ? 'hls' : 'direct',
+                  url: streamLink,
+                  workerId: first.id,
+                  engine: eng,
+                  lyricsEngine: eng === 'gaama' ? first.id : null
+                };
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.warn(`Engine ${eng} resolution failed:`, err);
+      }
+    }
   }
+
+  if (selectedEngine === 'auto' || selectedEngine === 'audius') {
+    try {
+      const audiusRes = await fetch(`https://discoveryprovider.audius.co/v1/tracks/search?query=${encodeURIComponent(queryStr)}&app_name=MeloraPlayer`);
+      if (audiusRes.ok) {
+        const audiusData = await audiusRes.json();
+        const first = audiusData?.data?.[0];
+        if (first && first.id) {
+          return {
+            type: 'direct',
+            url: `https://discoveryprovider.audius.co/v1/tracks/${first.id}/stream?app_name=MeloraPlayer`,
+            engine: 'audius',
+            workerId: null
+          };
+        }
+      }
+    } catch (err) {
+      console.warn('Audius stream check failed:', err);
+    }
+  }
+
+  return {
+    type: 'youtube',
+    query: `${queryStr} audio`,
+    engine: 'youtube',
+    workerId: null
+  };
 }
 
 // ══════════════════════════════════════════════════════════════
-// FULL-LENGTH AUDIO ENGINE & PLAYBACK
+// PLAYBACK ENGINE DISPATCHER
 // ══════════════════════════════════════════════════════════════
 async function playTrack(track, queue = null) {
   if (queue) currentQueue = [...queue];
@@ -1536,12 +1707,10 @@ async function playTrack(track, queue = null) {
     currentIndex = currentQueue.length - 1;
   }
 
-  // Update Mini Player
   miniArt.src = track.art;
   miniTitle.textContent = track.title;
   miniArtist.textContent = track.artist;
 
-  // Update Sheet
   sheetArt.src = track.art;
   sheetBackdrop.style.backgroundImage = `url(${track.art})`;
   sheetTitle.textContent = track.title;
@@ -1563,8 +1732,71 @@ async function playTrack(track, queue = null) {
   miniProgressFill.style.width = '0%';
 
   clearInterval(playbackTimer);
+  audio.pause();
+  audio.removeAttribute('src');
+  audio.load();
 
-  // Check if user has a custom YouTube API key
+  if (hls) {
+    hls.destroy();
+    hls = null;
+  }
+
+  sheetLyricsContent.innerHTML = '<div style="text-align:center;padding:24px;color:var(--c-txt-muted);">Loading lyrics...</div>';
+
+  const resolved = await resolveAudioStream(track);
+  currentWorkerSongId = resolved.workerId;
+
+  if (resolved.lyricsEngine) {
+    fetchAndRenderLyrics(resolved.lyricsEngine);
+  } else {
+    sheetLyricsContent.innerHTML = '<div style="text-align:center;padding:24px;color:var(--c-txt-muted);">No synchronized lyrics found for this track.</div>';
+  }
+
+  if (resolved.type === 'hls' || resolved.type === 'direct') {
+    isUsingHtmlAudio = true;
+    ytFrame.src = 'about:blank';
+    sheetVideoFrame.style.display = 'none';
+    if (!isLyricsView) sheetArt.style.display = 'block';
+
+    if (resolved.type === 'hls') {
+      if (audio.canPlayType('application/vnd.apple.mpegurl')) {
+        audio.src = resolved.url;
+        audio.play().catch(e => console.log('Native HLS play error:', e));
+      } else if (window.Hls && Hls.isSupported()) {
+        hls = new Hls();
+        hls.loadSource(resolved.url);
+        hls.attachMedia(audio);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          audio.play().catch(e => console.log('HLS play error:', e));
+        });
+        hls.on(Hls.Events.ERROR, (event, data) => {
+          if (data.fatal) {
+            console.warn('HLS Fatal error, falling back to YouTube:', data);
+            fallbackToYouTube(track);
+          }
+        });
+      } else {
+        fallbackToYouTube(track);
+        return;
+      }
+    } else {
+      audio.src = resolved.url;
+      audio.play().catch(e => console.log('Direct audio play error:', e));
+    }
+  } else {
+    fallbackToYouTube(track);
+  }
+
+  isPlaying = true;
+  updatePlayUI(true);
+  setupMediaSession(track);
+  document.title = `${track.title} — ${track.artist} · Melora`;
+}
+
+async function fallbackToYouTube(track) {
+  isUsingHtmlAudio = false;
+  audio.pause();
+
   const queryStr = `${track.title} ${track.artist} audio`;
   let videoId = null;
 
@@ -1576,7 +1808,7 @@ async function playTrack(track, queue = null) {
         videoId = apiData.items?.[0]?.id?.videoId || null;
       }
     } catch (e) {
-      console.warn('Custom YT API error, using default engine:', e);
+      console.warn('Custom YT API error:', e);
     }
   }
 
@@ -1587,13 +1819,8 @@ async function playTrack(track, queue = null) {
   ytFrame.src = streamSrc;
   sheetVideoFrame.src = streamSrc;
 
-  isPlaying = true;
-  updatePlayUI(true);
-  setupMediaSession(track);
-
-  // Live Timer Scrubber
   playbackTimer = setInterval(() => {
-    if (!isPlaying) return;
+    if (!isPlaying || isUsingHtmlAudio) return;
     currentElapsed++;
     const pct = Math.min(100, (currentElapsed / currentDuration) * 100);
     sheetScrubFill.style.width = pct + '%';
@@ -1605,23 +1832,95 @@ async function playTrack(track, queue = null) {
       nextTrack();
     }
   }, 1000);
-
-  document.title = `${track.title} — ${track.artist} · Melora`;
 }
 
+// ══════════════════════════════════════════════════════════════
+// LYRICS FETCHER
+// ══════════════════════════════════════════════════════════════
+async function fetchAndRenderLyrics(workerSongId) {
+  if (!workerSongId) return;
+  try {
+    const res = await fetch(`${workerApiBase}/lyrics?id=${encodeURIComponent(workerSongId)}`);
+    if (!res.ok) throw new Error('Lyrics failed');
+    const data = await res.json();
+    if (data && data.response) {
+      let raw = data.response;
+      raw = raw.replace(/<p><p>/g, '<p>').replace(/<\/p><\/p>/g, '</p>');
+      sheetLyricsContent.innerHTML = raw;
+    } else {
+      sheetLyricsContent.innerHTML = '<div style="text-align:center;padding:24px;color:var(--c-txt-muted);">No lyrics available for this track.</div>';
+    }
+  } catch (err) {
+    sheetLyricsContent.innerHTML = '<div style="text-align:center;padding:24px;color:var(--c-txt-muted);">Could not load lyrics.</div>';
+  }
+}
+
+function toggleLyricsMode() {
+  isLyricsView = !isLyricsView;
+  if (isLyricsView) {
+    isVideoView = false;
+    sheetArt.style.display = 'none';
+    sheetVideoFrame.style.display = 'none';
+    sheetMediaBox.style.display = 'none';
+    sheetLyricsBox.style.display = 'flex';
+    lyricsToggle.classList.add('active');
+    lyricsToggle.textContent = '🎵 Cover Art';
+  } else {
+    sheetLyricsBox.style.display = 'none';
+    sheetMediaBox.style.display = 'block';
+    sheetArt.style.display = 'block';
+    lyricsToggle.classList.remove('active');
+    lyricsToggle.textContent = '📜 Lyrics';
+  }
+}
+
+function toggleViewMode() {
+  isVideoView = !isVideoView;
+  isLyricsView = false;
+  sheetLyricsBox.style.display = 'none';
+  sheetMediaBox.style.display = 'block';
+  lyricsToggle.classList.remove('active');
+  lyricsToggle.textContent = '📜 Lyrics';
+
+  if (isVideoView) {
+    sheetArt.style.display = 'none';
+    sheetVideoFrame.style.display = 'block';
+    viewModeToggle.textContent = '🎵 Cover Art';
+  } else {
+    sheetArt.style.display = 'block';
+    sheetVideoFrame.style.display = 'none';
+    viewModeToggle.textContent = '🎬 Watch Video';
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// PLAY / PAUSE / SEEK / CONTROLS
+// ══════════════════════════════════════════════════════════════
 function togglePlay() {
   if (currentIndex === -1) {
     if (currentQueue.length > 0) playTrack(currentQueue[0]);
     return;
   }
-  if (isPlaying) {
-    isPlaying = false;
-    sendYtCommand('pauseVideo');
-    updatePlayUI(false);
+  if (isUsingHtmlAudio) {
+    if (audio.paused) {
+      audio.play().catch(() => {});
+      isPlaying = true;
+      updatePlayUI(true);
+    } else {
+      audio.pause();
+      isPlaying = false;
+      updatePlayUI(false);
+    }
   } else {
-    isPlaying = true;
-    sendYtCommand('playVideo');
-    updatePlayUI(true);
+    if (isPlaying) {
+      isPlaying = false;
+      sendYtCommand('pauseVideo');
+      updatePlayUI(false);
+    } else {
+      isPlaying = true;
+      sendYtCommand('playVideo');
+      updatePlayUI(true);
+    }
   }
 }
 
@@ -1636,8 +1935,8 @@ function sendYtCommand(func, args = []) {
   }
 }
 
-// Listen to YouTube postMessage events for auto-duration & end tracking
 window.addEventListener('message', (event) => {
+  if (isUsingHtmlAudio) return;
   try {
     const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
     if (!data) return;
@@ -1654,7 +1953,6 @@ window.addEventListener('message', (event) => {
         sheetCurTime.textContent = formatTime(currentElapsed);
       }
       if (data.info.playerState === 0) {
-        // Song ended -> advance queue
         nextTrack();
       } else if (data.info.playerState === 1) {
         isPlaying = true;
@@ -1722,7 +2020,11 @@ function seekAudio(e) {
 
 function seekToSeconds(sec) {
   currentElapsed = sec;
-  sendYtCommand('seekTo', [sec, true]);
+  if (isUsingHtmlAudio) {
+    audio.currentTime = sec;
+  } else {
+    sendYtCommand('seekTo', [sec, true]);
+  }
   const pct = Math.min(100, (currentElapsed / currentDuration) * 100);
   sheetScrubFill.style.width = pct + '%';
   miniProgressFill.style.width = pct + '%';
@@ -1730,20 +2032,9 @@ function seekToSeconds(sec) {
 }
 
 function setAudioVolume(val) {
-  sendYtCommand('setVolume', [Math.round(val * 100)]);
-}
-
-function toggleViewMode() {
-  isVideoView = !isVideoView;
-  if (isVideoView) {
-    sheetArt.style.display = 'none';
-    sheetVideoFrame.style.display = 'block';
-    viewModeToggle.textContent = '🎵 Album Art';
-  } else {
-    sheetArt.style.display = 'block';
-    sheetVideoFrame.style.display = 'none';
-    viewModeToggle.textContent = '🎬 Watch Video';
-  }
+  const num = parseFloat(val);
+  audio.volume = Math.max(0, Math.min(1, num));
+  sendYtCommand('setVolume', [Math.round(num * 100)]);
 }
 
 function formatTime(sec) {
@@ -1754,7 +2045,7 @@ function formatTime(sec) {
 }
 
 // ══════════════════════════════════════════════════════════════
-// LOCK SCREEN & iOS DYNAMIC ISLAND (MediaSession API)
+// LOCK SCREEN & iOS MEDIA SESSION
 // ══════════════════════════════════════════════════════════════
 function setupMediaSession(track) {
   if ('mediaSession' in navigator) {
@@ -1806,6 +2097,52 @@ function renderFavoritesView() {
 }
 
 // ══════════════════════════════════════════════════════════════
+// RENDER TRACKS
+// ══════════════════════════════════════════════════════════════
+function renderTracks(containerId, tracks) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  if (!tracks.length) {
+    container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--c-txt-muted);font-size:0.9rem;">No tracks found</div>`;
+    return;
+  }
+  tracks.forEach(track => {
+    const card = document.createElement('div');
+    card.className = 'track-card' + (currentIndex !== -1 && currentQueue[currentIndex]?.id === track.id ? ' is-active-playing' : '');
+    card.setAttribute('data-id', track.id);
+    card.innerHTML = `
+      <div class="card-art-box">
+        <img class="card-art" src="${track.art}" alt="${track.title}" loading="lazy" onerror="this.src='../images/melora-logo.png'">
+        <button type="button" class="card-play-btn" aria-label="Play">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        </button>
+      </div>
+      <div class="card-title" title="${track.title}">${track.title}</div>
+      <div class="card-artist" title="${track.artist}">${track.artist}</div>
+    `;
+    card.addEventListener('click', () => playTrack(track, tracks));
+    container.appendChild(card);
+  });
+}
+
+function renderSkeletons(containerId, count = 8) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'skeleton-card';
+    el.innerHTML = `
+      <div class="skeleton-box"></div>
+      <div class="skeleton-line" style="width:85%;"></div>
+      <div class="skeleton-line" style="width:55%;"></div>
+    `;
+    container.appendChild(el);
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
 // FULL SCREEN SHEET INTERACTION
 // ══════════════════════════════════════════════════════════════
 function openSheetModal(e) {
@@ -1816,12 +2153,18 @@ function closeSheetModal() {
 }
 
 // ══════════════════════════════════════════════════════════════
-// SETTINGS MODAL
+// SETTINGS MODAL & ENGINES
 // ══════════════════════════════════════════════════════════════
 function openSettingsModal() {
   const modal = document.getElementById('settingsModal');
-  const input = document.getElementById('ytApiKeyInput');
-  input.value = customYtApiKey;
+  const engineSel = document.getElementById('engineSelect');
+  const workerInput = document.getElementById('workerApiInput');
+  const ytInput = document.getElementById('ytApiKeyInput');
+
+  if (engineSel) engineSel.value = selectedEngine;
+  if (workerInput) workerInput.value = workerApiBase;
+  if (ytInput) ytInput.value = customYtApiKey;
+
   modal.style.display = 'flex';
 }
 
@@ -1830,9 +2173,49 @@ function closeSettingsModal(e) {
 }
 
 function saveSettings() {
-  const input = document.getElementById('ytApiKeyInput');
-  customYtApiKey = input.value.trim();
-  localStorage.setItem('melora_yt_api_key', customYtApiKey);
+  const engineSel = document.getElementById('engineSelect');
+  const workerInput = document.getElementById('workerApiInput');
+  const ytInput = document.getElementById('ytApiKeyInput');
+
+  if (engineSel) {
+    selectedEngine = engineSel.value;
+    localStorage.setItem('melora_engine', selectedEngine);
+  }
+  if (workerInput) {
+    workerApiBase = workerInput.value.trim() || 'https://musicapi.x007.workers.dev';
+    localStorage.setItem('melora_worker_api', workerApiBase);
+  }
+  if (ytInput) {
+    customYtApiKey = ytInput.value.trim();
+    localStorage.setItem('melora_yt_api_key', customYtApiKey);
+  }
+
+  const badge = document.getElementById('engineBadge');
+  if (badge) {
+    badge.textContent = selectedEngine === 'auto' ? 'FULL SONGS' : selectedEngine.toUpperCase();
+  }
+
+  closeSettingsModal();
+}
+
+function resetSettings() {
+  selectedEngine = 'auto';
+  workerApiBase = 'https://musicapi.x007.workers.dev';
+  customYtApiKey = '';
+  localStorage.removeItem('melora_engine');
+  localStorage.removeItem('melora_worker_api');
+  localStorage.removeItem('melora_yt_api_key');
+
+  const engineSel = document.getElementById('engineSelect');
+  const workerInput = document.getElementById('workerApiInput');
+  const ytInput = document.getElementById('ytApiKeyInput');
+  if (engineSel) engineSel.value = 'auto';
+  if (workerInput) workerInput.value = 'https://musicapi.x007.workers.dev';
+  if (ytInput) ytInput.value = '';
+
+  const badge = document.getElementById('engineBadge');
+  if (badge) badge.textContent = 'FULL SONGS';
+
   closeSettingsModal();
 }
 
@@ -1983,7 +2366,6 @@ function switchNav(tabName) {
     synthwaveShelf.style.display = 'flex';
     document.getElementById('mainView').scrollTo({ top: 0, behavior: 'smooth' });
   } else {
-    // discover
     trendingShelf.style.display = 'flex';
     lofiShelf.style.display = 'flex';
     synthwaveShelf.style.display = 'flex';

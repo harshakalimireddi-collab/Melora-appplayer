@@ -994,7 +994,39 @@
       .main-view { padding: 16px 16px calc(140px + var(--safe-bottom)); gap: 20px; }
       .track-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
     }
+
+    .sheet-lyrics-box {
+      width: 100%;
+      aspect-ratio: 1;
+      max-height: 38vh;
+      margin: 10px auto;
+      border-radius: var(--radius-lg);
+      overflow-y: auto;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 40px var(--c-accent-glow);
+      position: relative;
+      background: rgba(14, 9, 29, 0.85);
+      border: 1px solid var(--glass-bd);
+      padding: 24px;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+    .sheet-lyrics-box p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 600;
+      margin: 0;
+    }
+    .sheet-mode-btns {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
   </style>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
 
@@ -1355,33 +1387,6 @@ async function fetchSpotifyPlaylist(playlistId) {
 }
 
 // ══════════════════════════════════════════════════════════════
-// MUSIC SEARCH ENGINE (iTunes 256kbps audio, CORS clean, fast)
-// ══════════════════════════════════════════════════════════════
-async function searchMusic(query, limit = 50) {
-  try {
-    const res = await fetch(
-      `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=${limit}`
-    );
-    if (!res.ok) return [];
-    const data = await res.json();
-    return (data.results || [])
-      .filter(item => item.previewUrl)
-      .map(item => ({
-        id: item.trackId,
-        title: item.trackName,
-        artist: item.artistName,
-        album: item.collectionName || 'Single',
-        art: item.artworkUrl100 ? item.artworkUrl100.replace('100x100bb', '600x600bb') : '../../images/melora-logo.png',
-        streamUrl: item.previewUrl,
-        duration: 30
-      }));
-  } catch (e) {
-    console.error('Fetch music error:', e);
-    return [];
-  }
-}
-
-// ══════════════════════════════════════════════════════════════
 // STATE & STORAGE
 // ══════════════════════════════════════════════════════════════
 let currentQueue = [];
@@ -1389,11 +1394,23 @@ let currentIndex = -1;
 let isPlaying = false;
 let isShuffle = false;
 let repeatMode = 0; // 0 = off, 1 = all, 2 = one
+let isVideoView = false;
+let isLyricsView = false;
+let isUsingHtmlAudio = true;
+let currentDuration = 210;
+let currentElapsed = 0;
+let playbackTimer = null;
+let currentWorkerSongId = null;
 
 let likedSongs = JSON.parse(localStorage.getItem('melora_liked_songs') || '[]');
+let workerApiBase = localStorage.getItem('melora_worker_api') || 'https://musicapi.x007.workers.dev';
+let selectedEngine = localStorage.getItem('melora_engine') || 'auto';
+let customYtApiKey = localStorage.getItem('melora_yt_api_key') || '';
 
 const audio = document.getElementById('coreAudio');
-const miniPlayer = document.getElementById('miniPlayer');
+const ytFrame = document.getElementById('ytEngineFrame');
+const sheetVideoFrame = document.getElementById('sheetVideoFrame');
+
 const miniArt = document.getElementById('miniArt');
 const miniTitle = document.getElementById('miniTitle');
 const miniArtist = document.getElementById('miniArtist');
@@ -1403,7 +1420,10 @@ const miniProgressFill = document.getElementById('miniProgressFill');
 
 const sheetModal = document.getElementById('sheetModal');
 const sheetBackdrop = document.getElementById('sheetBackdrop');
+const sheetMediaBox = document.getElementById('sheetMediaBox');
 const sheetArt = document.getElementById('sheetArt');
+const sheetLyricsBox = document.getElementById('sheetLyricsBox');
+const sheetLyricsContent = document.getElementById('sheetLyricsContent');
 const sheetTitle = document.getElementById('sheetTitle');
 const sheetArtist = document.getElementById('sheetArtist');
 const sheetLikeBtn = document.getElementById('sheetLikeBtn');
@@ -1414,6 +1434,57 @@ const sheetDurTime = document.getElementById('sheetDurTime');
 const sheetScrubBar = document.getElementById('sheetScrubBar');
 const btnShuffle = document.getElementById('btnShuffle');
 const btnRepeat = document.getElementById('btnRepeat');
+const viewModeToggle = document.getElementById('viewModeToggle');
+const lyricsToggle = document.getElementById('lyricsToggle');
+
+let hls = null;
+
+// ══════════════════════════════════════════════════════════════
+// HTML5 NATIVE AUDIO EVENT HOOKS
+// ══════════════════════════════════════════════════════════════
+audio.addEventListener('timeupdate', () => {
+  if (!isUsingHtmlAudio) return;
+  if (audio.duration && !isNaN(audio.duration) && isFinite(audio.duration)) {
+    currentDuration = Math.round(audio.duration);
+    sheetDurTime.textContent = formatTime(currentDuration);
+  }
+  currentElapsed = Math.round(audio.currentTime);
+  const pct = currentDuration > 0 ? Math.min(100, (currentElapsed / currentDuration) * 100) : 0;
+  sheetScrubFill.style.width = pct + '%';
+  miniProgressFill.style.width = pct + '%';
+  sheetCurTime.textContent = formatTime(currentElapsed);
+});
+
+audio.addEventListener('play', () => {
+  if (isUsingHtmlAudio) {
+    isPlaying = true;
+    updatePlayUI(true);
+  }
+});
+
+audio.addEventListener('pause', () => {
+  if (isUsingHtmlAudio) {
+    isPlaying = false;
+    updatePlayUI(false);
+  }
+});
+
+audio.addEventListener('ended', () => {
+  if (!isUsingHtmlAudio) return;
+  if (repeatMode === 2) {
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+  } else {
+    nextTrack();
+  }
+});
+
+audio.addEventListener('error', (e) => {
+  console.warn('HTML5 Audio encountered an error, falling back to YouTube engine:', e);
+  if (isUsingHtmlAudio && currentQueue[currentIndex]) {
+    fallbackToYouTube(currentQueue[currentIndex]);
+  }
+});
 
 function updateLikedBadges() {
   const count = likedSongs.length;
@@ -1430,55 +1501,128 @@ function updateLikedBadges() {
 updateLikedBadges();
 
 // ══════════════════════════════════════════════════════════════
-// RENDER TRACKS
+// MUSIC SEARCH ENGINE
 // ══════════════════════════════════════════════════════════════
-function renderTracks(containerId, tracks) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  container.innerHTML = '';
-  if (!tracks.length) {
-    container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--c-txt-muted);font-size:0.9rem;">No tracks found</div>`;
-    return;
+async function searchMusic(query, limit = 50) {
+  if (selectedEngine !== 'auto' && selectedEngine !== 'audius' && selectedEngine !== 'youtube') {
+    try {
+      const wRes = await fetch(`${workerApiBase}/search?q=${encodeURIComponent(query)}&searchEngine=${selectedEngine}`);
+      if (wRes.ok) {
+        const wData = await wRes.json();
+        if (wData && wData.response && Array.isArray(wData.response) && wData.response.length > 0) {
+          return wData.response.map(item => ({
+            id: item.id,
+            workerId: item.id,
+            title: item.title,
+            artist: item.artist || 'Melora Stream',
+            album: item.album || 'Single',
+            art: item.img || '../images/melora-logo.png',
+            duration: 210,
+            engine: selectedEngine
+          }));
+        }
+      }
+    } catch (err) {
+      console.warn('Worker search error, using iTunes catalog:', err);
+    }
   }
-  tracks.forEach(track => {
-    const card = document.createElement('div');
-    card.className = 'track-card' + (currentIndex !== -1 && currentQueue[currentIndex]?.id === track.id ? ' is-active-playing' : '');
-    card.setAttribute('data-id', track.id);
-    card.innerHTML = `
-      <div class="card-art-box">
-        <img class="card-art" src="${track.art}" alt="${track.title}" loading="lazy" onerror="this.src='../../images/melora-logo.png'">
-        <button type="button" class="card-play-btn" aria-label="Play">
-          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
-        </button>
-      </div>
-      <div class="card-title" title="${track.title}">${track.title}</div>
-      <div class="card-artist" title="${track.artist}">${track.artist}</div>
-    `;
-    card.addEventListener('click', () => playTrack(track, tracks));
-    container.appendChild(card);
-  });
+
+  try {
+    const res = await fetch(
+      `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=${limit}`
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    return (data.results || []).map(item => ({
+      id: item.trackId,
+      title: item.trackName,
+      artist: item.artistName,
+      album: item.collectionName || 'Single',
+      art: item.artworkUrl100 ? item.artworkUrl100.replace('100x100bb', '600x600bb') : '../images/melora-logo.png',
+      streamUrl: item.previewUrl || '',
+      duration: Math.round((item.trackTimeMillis || 210000) / 1000)
+    }));
+  } catch (e) {
+    console.error('Fetch music error:', e);
+    return [];
+  }
 }
 
-function renderSkeletons(containerId, count = 8) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  container.innerHTML = '';
-  for (let i = 0; i < count; i++) {
-    const el = document.createElement('div');
-    el.className = 'skeleton-card';
-    el.innerHTML = `
-      <div class="skeleton-box"></div>
-      <div class="skeleton-line" style="width:85%;"></div>
-      <div class="skeleton-line" style="width:55%;"></div>
-    `;
-    container.appendChild(el);
+// ══════════════════════════════════════════════════════════════
+// FULL-LENGTH AUDIO ENGINE RESOLVER
+// Resolves: Worker API (gaama/seevn/hunjama) -> Audius -> YouTube
+// ══════════════════════════════════════════════════════════════
+async function resolveAudioStream(track) {
+  const queryStr = `${track.title} ${track.artist}`;
+
+  if (selectedEngine !== 'youtube' && selectedEngine !== 'audius') {
+    const enginesToTry = selectedEngine === 'auto'
+      ? ['gaama', 'seevn', 'hunjama']
+      : [selectedEngine];
+
+    for (const eng of enginesToTry) {
+      try {
+        const searchUrl = `${workerApiBase}/search?q=${encodeURIComponent(queryStr)}&searchEngine=${eng}`;
+        const sRes = await fetch(searchUrl);
+        if (sRes.ok) {
+          const sData = await sRes.json();
+          const first = sData?.response?.[0];
+          if (first && first.id) {
+            const fetchUrl = `${workerApiBase}/fetch?id=${encodeURIComponent(first.id)}`;
+            const fRes = await fetch(fetchUrl);
+            if (fRes.ok) {
+              const fData = await fRes.json();
+              const streamLink = fData?.response;
+              if (streamLink && typeof streamLink === 'string' && streamLink.startsWith('http')) {
+                return {
+                  type: streamLink.includes('.m3u8') ? 'hls' : 'direct',
+                  url: streamLink,
+                  workerId: first.id,
+                  engine: eng,
+                  lyricsEngine: eng === 'gaama' ? first.id : null
+                };
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.warn(`Engine ${eng} resolution failed:`, err);
+      }
+    }
   }
+
+  if (selectedEngine === 'auto' || selectedEngine === 'audius') {
+    try {
+      const audiusRes = await fetch(`https://discoveryprovider.audius.co/v1/tracks/search?query=${encodeURIComponent(queryStr)}&app_name=MeloraPlayer`);
+      if (audiusRes.ok) {
+        const audiusData = await audiusRes.json();
+        const first = audiusData?.data?.[0];
+        if (first && first.id) {
+          return {
+            type: 'direct',
+            url: `https://discoveryprovider.audius.co/v1/tracks/${first.id}/stream?app_name=MeloraPlayer`,
+            engine: 'audius',
+            workerId: null
+          };
+        }
+      }
+    } catch (err) {
+      console.warn('Audius stream check failed:', err);
+    }
+  }
+
+  return {
+    type: 'youtube',
+    query: `${queryStr} audio`,
+    engine: 'youtube',
+    workerId: null
+  };
 }
 
 // ══════════════════════════════════════════════════════════════
-// PLAYBACK CONTROLLER & MEDIA SESSION
+// PLAYBACK ENGINE DISPATCHER
 // ══════════════════════════════════════════════════════════════
-function playTrack(track, queue = null) {
+async function playTrack(track, queue = null) {
   if (queue) currentQueue = [...queue];
   currentIndex = currentQueue.findIndex(t => t.id === track.id);
   if (currentIndex === -1) {
@@ -1486,18 +1630,15 @@ function playTrack(track, queue = null) {
     currentIndex = currentQueue.length - 1;
   }
 
-  // Update Mini Player
   miniArt.src = track.art;
   miniTitle.textContent = track.title;
   miniArtist.textContent = track.artist;
 
-  // Update Sheet
   sheetArt.src = track.art;
   sheetBackdrop.style.backgroundImage = `url(${track.art})`;
   sheetTitle.textContent = track.title;
   sheetArtist.textContent = track.artist;
 
-  // Active Card Highlighting
   document.querySelectorAll('.track-card').forEach(el => {
     el.classList.toggle('is-active-playing', el.getAttribute('data-id') == track.id);
   });
@@ -1506,36 +1647,246 @@ function playTrack(track, queue = null) {
   miniLikeBtn.classList.toggle('liked', liked);
   sheetLikeBtn.classList.toggle('liked', liked);
 
-  audio.src = track.streamUrl;
-  audio.play().then(() => {
-    isPlaying = true;
-    updatePlayUI(true);
-    setupMediaSession(track);
-  }).catch(err => {
-    console.warn('Audio play request interrupted:', err);
-    isPlaying = false;
-    updatePlayUI(false);
-  });
+  currentDuration = track.duration || 210;
+  sheetDurTime.textContent = formatTime(currentDuration);
+  currentElapsed = 0;
+  sheetCurTime.textContent = '0:00';
+  sheetScrubFill.style.width = '0%';
+  miniProgressFill.style.width = '0%';
 
+  clearInterval(playbackTimer);
+  audio.pause();
+  audio.removeAttribute('src');
+  audio.load();
+
+  if (hls) {
+    hls.destroy();
+    hls = null;
+  }
+
+  sheetLyricsContent.innerHTML = '<div style="text-align:center;padding:24px;color:var(--c-txt-muted);">Loading lyrics...</div>';
+
+  const resolved = await resolveAudioStream(track);
+  currentWorkerSongId = resolved.workerId;
+
+  if (resolved.lyricsEngine) {
+    fetchAndRenderLyrics(resolved.lyricsEngine);
+  } else {
+    sheetLyricsContent.innerHTML = '<div style="text-align:center;padding:24px;color:var(--c-txt-muted);">No synchronized lyrics found for this track.</div>';
+  }
+
+  if (resolved.type === 'hls' || resolved.type === 'direct') {
+    isUsingHtmlAudio = true;
+    ytFrame.src = 'about:blank';
+    sheetVideoFrame.style.display = 'none';
+    if (!isLyricsView) sheetArt.style.display = 'block';
+
+    if (resolved.type === 'hls') {
+      if (audio.canPlayType('application/vnd.apple.mpegurl')) {
+        audio.src = resolved.url;
+        audio.play().catch(e => console.log('Native HLS play error:', e));
+      } else if (window.Hls && Hls.isSupported()) {
+        hls = new Hls();
+        hls.loadSource(resolved.url);
+        hls.attachMedia(audio);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          audio.play().catch(e => console.log('HLS play error:', e));
+        });
+        hls.on(Hls.Events.ERROR, (event, data) => {
+          if (data.fatal) {
+            console.warn('HLS Fatal error, falling back to YouTube:', data);
+            fallbackToYouTube(track);
+          }
+        });
+      } else {
+        fallbackToYouTube(track);
+        return;
+      }
+    } else {
+      audio.src = resolved.url;
+      audio.play().catch(e => console.log('Direct audio play error:', e));
+    }
+  } else {
+    fallbackToYouTube(track);
+  }
+
+  isPlaying = true;
+  updatePlayUI(true);
+  setupMediaSession(track);
   document.title = `${track.title} — ${track.artist} · Melora`;
 }
 
+async function fallbackToYouTube(track) {
+  isUsingHtmlAudio = false;
+  audio.pause();
+
+  const queryStr = `${track.title} ${track.artist} audio`;
+  let videoId = null;
+
+  if (customYtApiKey) {
+    try {
+      const apiRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(queryStr)}&type=video&videoCategoryId=10&maxResults=1&key=${customYtApiKey}`);
+      if (apiRes.ok) {
+        const apiData = await apiRes.json();
+        videoId = apiData.items?.[0]?.id?.videoId || null;
+      }
+    } catch (e) {
+      console.warn('Custom YT API error:', e);
+    }
+  }
+
+  const streamSrc = videoId
+    ? `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&controls=1&modestbranding=1&rel=0`
+    : `https://www.youtube-nocookie.com/embed?listType=search&list=${encodeURIComponent(queryStr)}&autoplay=1&enablejsapi=1&controls=1&modestbranding=1&rel=0`;
+
+  ytFrame.src = streamSrc;
+  sheetVideoFrame.src = streamSrc;
+
+  playbackTimer = setInterval(() => {
+    if (!isPlaying || isUsingHtmlAudio) return;
+    currentElapsed++;
+    const pct = Math.min(100, (currentElapsed / currentDuration) * 100);
+    sheetScrubFill.style.width = pct + '%';
+    miniProgressFill.style.width = pct + '%';
+    sheetCurTime.textContent = formatTime(currentElapsed);
+
+    if (currentElapsed >= currentDuration) {
+      clearInterval(playbackTimer);
+      nextTrack();
+    }
+  }, 1000);
+}
+
+// ══════════════════════════════════════════════════════════════
+// LYRICS FETCHER
+// ══════════════════════════════════════════════════════════════
+async function fetchAndRenderLyrics(workerSongId) {
+  if (!workerSongId) return;
+  try {
+    const res = await fetch(`${workerApiBase}/lyrics?id=${encodeURIComponent(workerSongId)}`);
+    if (!res.ok) throw new Error('Lyrics failed');
+    const data = await res.json();
+    if (data && data.response) {
+      let raw = data.response;
+      raw = raw.replace(/<p><p>/g, '<p>').replace(/<\/p><\/p>/g, '</p>');
+      sheetLyricsContent.innerHTML = raw;
+    } else {
+      sheetLyricsContent.innerHTML = '<div style="text-align:center;padding:24px;color:var(--c-txt-muted);">No lyrics available for this track.</div>';
+    }
+  } catch (err) {
+    sheetLyricsContent.innerHTML = '<div style="text-align:center;padding:24px;color:var(--c-txt-muted);">Could not load lyrics.</div>';
+  }
+}
+
+function toggleLyricsMode() {
+  isLyricsView = !isLyricsView;
+  if (isLyricsView) {
+    isVideoView = false;
+    sheetArt.style.display = 'none';
+    sheetVideoFrame.style.display = 'none';
+    sheetMediaBox.style.display = 'none';
+    sheetLyricsBox.style.display = 'flex';
+    lyricsToggle.classList.add('active');
+    lyricsToggle.textContent = '🎵 Cover Art';
+  } else {
+    sheetLyricsBox.style.display = 'none';
+    sheetMediaBox.style.display = 'block';
+    sheetArt.style.display = 'block';
+    lyricsToggle.classList.remove('active');
+    lyricsToggle.textContent = '📜 Lyrics';
+  }
+}
+
+function toggleViewMode() {
+  isVideoView = !isVideoView;
+  isLyricsView = false;
+  sheetLyricsBox.style.display = 'none';
+  sheetMediaBox.style.display = 'block';
+  lyricsToggle.classList.remove('active');
+  lyricsToggle.textContent = '📜 Lyrics';
+
+  if (isVideoView) {
+    sheetArt.style.display = 'none';
+    sheetVideoFrame.style.display = 'block';
+    viewModeToggle.textContent = '🎵 Cover Art';
+  } else {
+    sheetArt.style.display = 'block';
+    sheetVideoFrame.style.display = 'none';
+    viewModeToggle.textContent = '🎬 Watch Video';
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// PLAY / PAUSE / SEEK / CONTROLS
+// ══════════════════════════════════════════════════════════════
 function togglePlay() {
   if (currentIndex === -1) {
     if (currentQueue.length > 0) playTrack(currentQueue[0]);
     return;
   }
-  if (audio.paused) {
-    audio.play().then(() => {
+  if (isUsingHtmlAudio) {
+    if (audio.paused) {
+      audio.play().catch(() => {});
       isPlaying = true;
       updatePlayUI(true);
-    });
+    } else {
+      audio.pause();
+      isPlaying = false;
+      updatePlayUI(false);
+    }
   } else {
-    audio.pause();
-    isPlaying = false;
-    updatePlayUI(false);
+    if (isPlaying) {
+      isPlaying = false;
+      sendYtCommand('pauseVideo');
+      updatePlayUI(false);
+    } else {
+      isPlaying = true;
+      sendYtCommand('playVideo');
+      updatePlayUI(true);
+    }
   }
 }
+
+function sendYtCommand(func, args = []) {
+  const activeFrame = isVideoView ? sheetVideoFrame : ytFrame;
+  if (activeFrame && activeFrame.contentWindow) {
+    activeFrame.contentWindow.postMessage(JSON.stringify({
+      event: 'command',
+      func: func,
+      args: args
+    }), '*');
+  }
+}
+
+window.addEventListener('message', (event) => {
+  if (isUsingHtmlAudio) return;
+  try {
+    const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+    if (!data) return;
+    if (data.event === 'infoDelivery' && data.info) {
+      if (typeof data.info.duration === 'number' && data.info.duration > 0) {
+        currentDuration = Math.round(data.info.duration);
+        sheetDurTime.textContent = formatTime(currentDuration);
+      }
+      if (typeof data.info.currentTime === 'number') {
+        currentElapsed = Math.round(data.info.currentTime);
+        const pct = Math.min(100, (currentElapsed / currentDuration) * 100);
+        sheetScrubFill.style.width = pct + '%';
+        miniProgressFill.style.width = pct + '%';
+        sheetCurTime.textContent = formatTime(currentElapsed);
+      }
+      if (data.info.playerState === 0) {
+        nextTrack();
+      } else if (data.info.playerState === 1) {
+        isPlaying = true;
+        updatePlayUI(true);
+      } else if (data.info.playerState === 2) {
+        isPlaying = false;
+        updatePlayUI(false);
+      }
+    }
+  } catch (err) {}
+});
 
 function updatePlayUI(playing) {
   const pauseSvg = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
@@ -1556,8 +1907,8 @@ function nextTrack() {
 
 function prevTrack() {
   if (!currentQueue.length) return;
-  if (audio.currentTime > 3) {
-    audio.currentTime = 0;
+  if (currentElapsed > 5) {
+    seekToSeconds(0);
     return;
   }
   currentIndex = (currentIndex - 1 + currentQueue.length) % currentQueue.length;
@@ -1583,46 +1934,41 @@ function toggleRepeat() {
   }
 }
 
-// Audio Time Update
-audio.addEventListener('timeupdate', () => {
-  if (!audio.duration) return;
-  const pct = (audio.currentTime / audio.duration) * 100;
-  miniProgressFill.style.width = pct + '%';
-  sheetScrubFill.style.width = pct + '%';
-  sheetCurTime.textContent = formatTime(audio.currentTime);
-  sheetDurTime.textContent = formatTime(audio.duration);
-});
-
-audio.addEventListener('ended', () => {
-  if (repeatMode === 2) {
-    audio.currentTime = 0;
-    audio.play();
-  } else {
-    nextTrack();
-  }
-});
-
 function seekAudio(e) {
   const rect = sheetScrubBar.getBoundingClientRect();
   const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-  if (audio.duration) {
-    audio.currentTime = ratio * audio.duration;
+  const targetSec = Math.round(ratio * currentDuration);
+  seekToSeconds(targetSec);
+}
+
+function seekToSeconds(sec) {
+  currentElapsed = sec;
+  if (isUsingHtmlAudio) {
+    audio.currentTime = sec;
+  } else {
+    sendYtCommand('seekTo', [sec, true]);
   }
+  const pct = Math.min(100, (currentElapsed / currentDuration) * 100);
+  sheetScrubFill.style.width = pct + '%';
+  miniProgressFill.style.width = pct + '%';
+  sheetCurTime.textContent = formatTime(currentElapsed);
 }
 
 function setAudioVolume(val) {
-  audio.volume = val;
+  const num = parseFloat(val);
+  audio.volume = Math.max(0, Math.min(1, num));
+  sendYtCommand('setVolume', [Math.round(num * 100)]);
 }
 
 function formatTime(sec) {
-  if (isNaN(sec)) return '0:00';
+  if (isNaN(sec) || sec < 0) return '0:00';
   const m = Math.floor(sec / 60);
   const s = Math.floor(sec % 60);
   return `${m}:${s < 10 ? '0' : ''}${s}`;
 }
 
 // ══════════════════════════════════════════════════════════════
-// LOCK SCREEN & iOS DYNAMIC ISLAND (MediaSession API)
+// LOCK SCREEN & iOS MEDIA SESSION
 // ══════════════════════════════════════════════════════════════
 function setupMediaSession(track) {
   if ('mediaSession' in navigator) {
@@ -1639,9 +1985,7 @@ function setupMediaSession(track) {
     navigator.mediaSession.setActionHandler('previoustrack', () => prevTrack());
     navigator.mediaSession.setActionHandler('nexttrack', () => nextTrack());
     navigator.mediaSession.setActionHandler('seekto', (details) => {
-      if (details.seekTime && audio.duration) {
-        audio.currentTime = details.seekTime;
-      }
+      if (details.seekTime) seekToSeconds(details.seekTime);
     });
   }
 }
@@ -1676,6 +2020,52 @@ function renderFavoritesView() {
 }
 
 // ══════════════════════════════════════════════════════════════
+// RENDER TRACKS
+// ══════════════════════════════════════════════════════════════
+function renderTracks(containerId, tracks) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  if (!tracks.length) {
+    container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--c-txt-muted);font-size:0.9rem;">No tracks found</div>`;
+    return;
+  }
+  tracks.forEach(track => {
+    const card = document.createElement('div');
+    card.className = 'track-card' + (currentIndex !== -1 && currentQueue[currentIndex]?.id === track.id ? ' is-active-playing' : '');
+    card.setAttribute('data-id', track.id);
+    card.innerHTML = `
+      <div class="card-art-box">
+        <img class="card-art" src="${track.art}" alt="${track.title}" loading="lazy" onerror="this.src='../images/melora-logo.png'">
+        <button type="button" class="card-play-btn" aria-label="Play">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        </button>
+      </div>
+      <div class="card-title" title="${track.title}">${track.title}</div>
+      <div class="card-artist" title="${track.artist}">${track.artist}</div>
+    `;
+    card.addEventListener('click', () => playTrack(track, tracks));
+    container.appendChild(card);
+  });
+}
+
+function renderSkeletons(containerId, count = 8) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'skeleton-card';
+    el.innerHTML = `
+      <div class="skeleton-box"></div>
+      <div class="skeleton-line" style="width:85%;"></div>
+      <div class="skeleton-line" style="width:55%;"></div>
+    `;
+    container.appendChild(el);
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
 // FULL SCREEN SHEET INTERACTION
 // ══════════════════════════════════════════════════════════════
 function openSheetModal(e) {
@@ -1683,6 +2073,73 @@ function openSheetModal(e) {
 }
 function closeSheetModal() {
   sheetModal.classList.remove('open');
+}
+
+// ══════════════════════════════════════════════════════════════
+// SETTINGS MODAL & ENGINES
+// ══════════════════════════════════════════════════════════════
+function openSettingsModal() {
+  const modal = document.getElementById('settingsModal');
+  const engineSel = document.getElementById('engineSelect');
+  const workerInput = document.getElementById('workerApiInput');
+  const ytInput = document.getElementById('ytApiKeyInput');
+
+  if (engineSel) engineSel.value = selectedEngine;
+  if (workerInput) workerInput.value = workerApiBase;
+  if (ytInput) ytInput.value = customYtApiKey;
+
+  modal.style.display = 'flex';
+}
+
+function closeSettingsModal(e) {
+  document.getElementById('settingsModal').style.display = 'none';
+}
+
+function saveSettings() {
+  const engineSel = document.getElementById('engineSelect');
+  const workerInput = document.getElementById('workerApiInput');
+  const ytInput = document.getElementById('ytApiKeyInput');
+
+  if (engineSel) {
+    selectedEngine = engineSel.value;
+    localStorage.setItem('melora_engine', selectedEngine);
+  }
+  if (workerInput) {
+    workerApiBase = workerInput.value.trim() || 'https://musicapi.x007.workers.dev';
+    localStorage.setItem('melora_worker_api', workerApiBase);
+  }
+  if (ytInput) {
+    customYtApiKey = ytInput.value.trim();
+    localStorage.setItem('melora_yt_api_key', customYtApiKey);
+  }
+
+  const badge = document.getElementById('engineBadge');
+  if (badge) {
+    badge.textContent = selectedEngine === 'auto' ? 'FULL SONGS' : selectedEngine.toUpperCase();
+  }
+
+  closeSettingsModal();
+}
+
+function resetSettings() {
+  selectedEngine = 'auto';
+  workerApiBase = 'https://musicapi.x007.workers.dev';
+  customYtApiKey = '';
+  localStorage.removeItem('melora_engine');
+  localStorage.removeItem('melora_worker_api');
+  localStorage.removeItem('melora_yt_api_key');
+
+  const engineSel = document.getElementById('engineSelect');
+  const workerInput = document.getElementById('workerApiInput');
+  const ytInput = document.getElementById('ytApiKeyInput');
+  if (engineSel) engineSel.value = 'auto';
+  if (workerInput) workerInput.value = 'https://musicapi.x007.workers.dev';
+  if (ytInput) ytInput.value = '';
+
+  const badge = document.getElementById('engineBadge');
+  if (badge) badge.textContent = 'FULL SONGS';
+
+  closeSettingsModal();
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1707,11 +2164,6 @@ function clearSearch() {
   searchInput.value = '';
   searchClearBtn.style.display = 'none';
   document.getElementById('searchShelf').style.display = 'none';
-}
-
-function focusSearchForSpotify() {
-  searchInput.focus();
-  searchInput.placeholder = 'Paste Spotify playlist link here...';
 }
 
 async function executeSearch(query) {
@@ -1748,7 +2200,7 @@ async function executeSearch(query) {
       if (res.length > 0) resolved.push(res[0]);
     }
 
-    meta.textContent = `${resolved.length} tracks available`;
+    meta.textContent = `${resolved.length} tracks ready (Full length)`;
     renderTracks('searchGrid', resolved);
     if (resolved.length) currentQueue = resolved;
 
@@ -1813,14 +2265,12 @@ function switchNav(tabName) {
   const synthwaveShelf = document.getElementById('synthwaveShelf');
   const favoritesShelf = document.getElementById('favoritesShelf');
   const searchShelf = document.getElementById('searchShelf');
-  const spotifyBanner = document.getElementById('spotifyBanner');
 
   if (tabName === 'favorites') {
     trendingShelf.style.display = 'none';
     lofiShelf.style.display = 'none';
     synthwaveShelf.style.display = 'none';
     searchShelf.style.display = 'none';
-    spotifyBanner.style.display = 'none';
     favoritesShelf.style.display = 'flex';
     renderFavoritesView();
     document.getElementById('mainView').scrollTo({ top: 0, behavior: 'smooth' });
@@ -1829,24 +2279,20 @@ function switchNav(tabName) {
     lofiShelf.style.display = 'flex';
     synthwaveShelf.style.display = 'flex';
     favoritesShelf.style.display = 'none';
-    spotifyBanner.style.display = 'flex';
     searchInput.focus();
     document.getElementById('mainView').scrollTo({ top: 0, behavior: 'smooth' });
   } else if (tabName === 'vibes') {
     trendingShelf.style.display = 'none';
     favoritesShelf.style.display = 'none';
-    spotifyBanner.style.display = 'none';
     searchShelf.style.display = 'none';
     lofiShelf.style.display = 'flex';
     synthwaveShelf.style.display = 'flex';
     document.getElementById('mainView').scrollTo({ top: 0, behavior: 'smooth' });
   } else {
-    // discover
     trendingShelf.style.display = 'flex';
     lofiShelf.style.display = 'flex';
     synthwaveShelf.style.display = 'flex';
     favoritesShelf.style.display = 'none';
-    spotifyBanner.style.display = 'flex';
     document.getElementById('mainView').scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
