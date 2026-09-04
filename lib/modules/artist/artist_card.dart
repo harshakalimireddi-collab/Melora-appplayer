@@ -8,8 +8,8 @@ import 'package:melora/collections/routes.gr.dart';
 import 'package:melora/components/image/universal_image.dart';
 import 'package:melora/extensions/context.dart';
 import 'package:melora/models/metadata/metadata.dart';
-
 import 'package:melora/provider/blacklist_provider.dart';
+import 'package:melora/theme/melora_theme.dart';
 
 class ArtistCard extends HookConsumerWidget {
   final MeloraFullArtistObject artist;
@@ -37,12 +37,26 @@ class ArtistCard extends HookConsumerWidget {
         onPressed: () {
           context.navigateTo(ArtistRoute(artistId: artist.id));
         },
+        style: ButtonVariance.ghost.copyWith(
+          decoration: (context, states, value) {
+            final base = ButtonVariance.ghost.decoration(context, states) as BoxDecoration;
+            return base.copyWith(
+              color: MeloraColors.glass06,
+              border: Border.all(
+                color: MeloraColors.glassStroke,
+                width: 0.5,
+              ),
+            );
+          },
+        ),
         child: Column(
           children: [
-            Avatar(
-              initials: artist.name.trim()[0].toUpperCase(),
-              provider: backgroundImage,
-              size: 130,
+            Expanded(
+              child: Avatar(
+                initials: artist.name.trim()[0].toUpperCase(),
+                provider: backgroundImage,
+                size: 130,
+              ),
             ),
             const Gap(10),
             AutoSizeText(
@@ -50,19 +64,27 @@ class ArtistCard extends HookConsumerWidget {
               maxLines: 2,
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
-              style: theme.typography.bold,
+              style: theme.typography.bold.copyWith(
+                color: MeloraColors.textPrimary,
+              ),
             ),
-            const Spacer(),
+            const Gap(6),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 if (isBlackListed == true) ...[
                   DestructiveBadge(
+                    style: ButtonStyle.secondaryIcon(
+                      size: ButtonSize.small,
+                    ),
                     child: Text(context.l10n.blacklisted.toUpperCase()),
                   ),
                   const Gap(5),
                 ],
                 SecondaryBadge(
+                  style: ButtonStyle.secondaryIcon(
+                    size: ButtonSize.small,
+                  ),
                   child: Text(context.l10n.artist.toUpperCase()),
                 )
               ],

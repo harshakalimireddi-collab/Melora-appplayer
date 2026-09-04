@@ -29,7 +29,6 @@ import 'package:melora/provider/server/active_track_sources.dart';
 import 'package:melora/provider/volume_provider.dart';
 
 const _white70 = Color(0xB3FFFFFF);
-const _white65 = Color(0xA6FFFFFF);
 const _white35 = Color(0x59FFFFFF);
 const _scrimTop = Color(0x80000000);
 const _scrimMid = Color(0xB8000000);
@@ -246,33 +245,33 @@ class PlayerView extends HookConsumerWidget {
                                   AutoSizeText(
                                     currentActiveTrack?.name ?? context.l10n.not_playing,
                                     style: const TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w700,
-                                      letterSpacing: -0.4,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w800,
+                                      letterSpacing: -0.6,
                                       color: Colors.white,
                                     ),
-                                    maxFontSize: 24,
-                                    minFontSize: 18,
+                                    maxFontSize: 26,
+                                    minFontSize: 20,
                                     maxLines: 1,
                                     textAlign: TextAlign.start,
                                   ),
-                                  const SizedBox(height: 4),
+                                  const SizedBox(height: 6),
                                   if (isLocalTrack)
                                     Text(
                                       currentActiveTrack.artists.asString(),
                                       style: const TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 17,
                                         fontWeight: FontWeight.w500,
-                                        color: _white65,
+                                        color: _white70,
                                       ),
                                     )
                                   else
                                     ArtistLink(
                                       artists: currentActiveTrack?.artists ?? [],
                                       textStyle: const TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 17,
                                         fontWeight: FontWeight.w500,
-                                        color: _white65,
+                                        color: _white70,
                                       ),
                                       onRouteChange: (route) {
                                         panelController.close();
