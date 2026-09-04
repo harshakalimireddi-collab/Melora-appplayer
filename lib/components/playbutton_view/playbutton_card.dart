@@ -3,6 +3,7 @@ import 'package:shadcn_flutter/shadcn_flutter_extension.dart';
 import 'package:melora/collections/melora_icons.dart';
 import 'package:melora/components/image/universal_image.dart';
 import 'package:melora/extensions/string.dart';
+import 'package:melora/theme/melora_theme.dart';
 import 'package:melora/utils/platform.dart';
 
 class PlaybuttonCard extends StatelessWidget {
@@ -163,9 +164,13 @@ class PlaybuttonCard extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          unescapeHtml.isEmpty ? "\n" : unescapeHtml,
+          unescapeHtml.isEmpty ? "" : unescapeHtml,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            color: MeloraColors.textSecondary,
+            fontSize: 12,
+          ),
         ),
         onPressed: onTap,
       ),

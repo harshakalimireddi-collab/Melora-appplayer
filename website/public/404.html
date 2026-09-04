@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Melora — Redirecting</title>
+  <script>
+    // GitHub Pages 404 intelligent subpath router
+    (function() {
+      var path = window.location.pathname;
+      // If user landed on root domain instead of repo path:
+      if (!path.includes('/Melora-appplayer/')) {
+        var newPath = '/Melora-appplayer' + (path.endsWith('/') ? path : path + '/');
+        window.location.replace(window.location.origin + newPath + window.location.search + window.location.hash);
+      } else {
+        // Fallback to web player if broken route within repo
+        window.location.replace('/Melora-appplayer/player/');
+      }
+    })();
+  </script>
+  <style>
+    body {
+      margin: 0;
+      background: #080512;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    a { color: #a78bfa; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div>
+    <h2>Redirecting to Melora...</h2>
+    <p><a href="./player/">Click here if you are not redirected automatically</a></p>
+  </div>
+</body>
+</html>
