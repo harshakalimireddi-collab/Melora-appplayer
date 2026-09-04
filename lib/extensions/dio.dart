@@ -133,7 +133,7 @@ extension ChunkDownloaderDioExtension on Dio {
         await for (final chunk in resp.data!.stream) {
           sink.add(chunk);
           downloaded += chunk.length;
-          onReceiveProgress?.call(downloaded, totalLength ?? -1);
+          onReceiveProgress?.call(downloaded, totalLength);
         }
 
         await sink.close();

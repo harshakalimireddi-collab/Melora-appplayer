@@ -13,8 +13,6 @@ import 'package:melora/provider/metadata_plugin/metadata_plugin_provider.dart';
 import 'package:melora/services/dio/dio.dart';
 import 'package:melora/services/logger/logger.dart';
 import 'package:melora/services/metadata/errors/exceptions.dart';
-import 'package:melora/services/music_api/music_api.dart';
-import 'package:melora/services/music_api/music_api_sourced_track.dart';
 
 import 'package:melora/services/sourced_track/exceptions.dart';
 import 'package:melora/utils/service_utils.dart';
@@ -40,13 +38,12 @@ class SourcedTrack extends BasicSourcedTrack {
     required MeloraFullTrackObject query,
     required Ref ref,
   }) async {
-    try {
-      final audioSource = await ref.read(audioSourcePluginProvider.future);
-      final audioSourceConfig = await ref.read(metadataPluginsProvider
-          .selectAsync((data) => data.defaultAudioSourcePluginConfig));
-      if (audioSource == null || audioSourceConfig == null) {
-        throw MetadataPluginException.noDefaultAudioSourcePlugin();
-      }
+    final audioSource = await ref.read(audioSourcePluginProvider.future);
+    final audioSourceConfig = await ref.read(metadataPluginsProvider
+        .selectAsync((data) => data.defaultAudioSourcePluginConfig));
+    if (audioSource == null || audioSourceConfig == null) {
+      throw MetadataPluginException.noDefaultAudioSourcePlugin();
+    }
 
     final database = ref.read(databaseProvider);
     final cachedSource = await (database.select(database.sourceMatchTable)
@@ -103,12 +100,6 @@ class SourcedTrack extends BasicSourcedTrack {
     AppLogger.log.i("${query.name}: ${sourcedTrack.url}");
 
     return sourcedTrack;
-    } catch (e, stack) {
-      AppLogger.log.w(
-        "Plugin audio source failed for ${query.name}, falling back to Music API: $e",
-      );
-      return MusicApiSourcedTrack.fetchFromTrack(query: query, ref: ref);
-    }
   }
 
   static List<MeloraAudioSourceMatchObject> rankResults(
