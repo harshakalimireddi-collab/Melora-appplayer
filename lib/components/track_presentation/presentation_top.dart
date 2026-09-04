@@ -193,7 +193,9 @@ class TrackPresentationTopSection extends HookConsumerWidget {
                                   options.title,
                                   maxLines: 2,
                                   minFontSize: 16,
-                                  style: context.theme.typography.h3,
+                                  style: context.theme.typography.h3.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
                                 if (options.description != null)
                                   AutoSizeText(
