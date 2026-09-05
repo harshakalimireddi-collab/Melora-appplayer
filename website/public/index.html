@@ -989,84 +989,103 @@
     }
 
     /* ═══════════════════════════════════════════════════
-       DOWNLOADS — THE SHOWSTOPPER (IMAGE 1 DESIGN)
+       DOWNLOADS — ULTRA-PROFESSIONAL LUXURY SUITE
        ═══════════════════════════════════════════════════ */
     #downloads {
-      padding: 120px 0;
+      padding: 110px 0 130px;
+      position: relative;
     }
 
     .platform-tabs {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      margin-bottom: 48px;
+      gap: 10px;
+      margin-bottom: 44px;
       flex-wrap: wrap;
     }
 
     .tab-btn {
-      padding: 12px 24px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 10px 20px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       color: var(--c-txt-dim);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       font-family: var(--ff-body);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .tab-btn:hover {
-      background: rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.08);
       color: #fff;
+      border-color: rgba(255, 255, 255, 0.16);
     }
 
     .tab-btn.active {
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(6, 182, 212, 0.18));
-      border-color: rgba(139, 92, 246, 0.45);
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.32), rgba(6, 182, 212, 0.24));
+      border-color: rgba(167, 139, 250, 0.45);
       color: #fff;
-      box-shadow: 0 0 24px rgba(139, 92, 246, 0.18);
+      box-shadow: 0 4px 20px rgba(124, 58, 237, 0.25);
     }
 
     .dl-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 24px;
+      align-items: stretch;
     }
 
-    /* ── Individual Download Card ── */
+    @media (max-width: 1080px) {
+      .dl-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 680px) {
+      .dl-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── Luxury Download Card ── */
     .dl-card {
       position: relative;
-      background: rgba(15, 10, 40, 0.55);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 24px;
-      padding: 36px 32px;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      background: rgba(13, 10, 25, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 30px 28px 24px;
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
+      min-height: 380px;
     }
 
     .dl-card::before {
       content: '';
       position: absolute;
-      inset: 0;
-      border-radius: 24px;
-      background: linear-gradient(135deg, transparent 40%, rgba(139, 92, 246, 0.06) 100%);
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.12), transparent 70%);
       opacity: 0;
       transition: opacity 0.4s ease;
       pointer-events: none;
     }
 
     .dl-card:hover {
-      border-color: rgba(255, 255, 255, 0.14);
-      transform: translateY(-8px);
-      box-shadow:
-        0 32px 64px rgba(0, 0, 0, 0.45),
-        0 0 0 1px rgba(139, 92, 246, 0.18),
-        0 0 60px rgba(139, 92, 246, 0.08);
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.6), 0 0 32px rgba(124, 58, 237, 0.12);
     }
 
     .dl-card:hover::before {
@@ -1076,188 +1095,288 @@
     .dl-card-accent {
       position: absolute;
       top: 0;
-      left: 32px;
-      right: 32px;
+      left: 24px;
+      right: 24px;
       height: 2px;
-      border-radius: 0 0 4px 4px;
+      border-radius: 0 0 6px 6px;
       opacity: 0;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.35s ease;
     }
 
     .dl-card:hover .dl-card-accent {
       opacity: 1;
     }
 
-    .dl-card[data-os="windows"] .dl-card-accent {
-      background: linear-gradient(90deg, var(--cyan-400), var(--violet-400));
-    }
+    .dl-card[data-os="windows"] .dl-card-accent { background: linear-gradient(90deg, #38bdf8, #818cf8); }
+    .dl-card[data-os="android"] .dl-card-accent { background: linear-gradient(90deg, #34d399, #22d3ee); }
+    .dl-card[data-os="ios"] .dl-card-accent { background: linear-gradient(90deg, #f472b6, #c084fc); }
+    .dl-card[data-os="linux"] .dl-card-accent { background: linear-gradient(90deg, #fbbf24, #34d399); }
+    .dl-card[data-os="macos"] .dl-card-accent { background: linear-gradient(90deg, #a78bfa, #f472b6); }
 
-    .dl-card[data-os="android"] .dl-card-accent {
-      background: linear-gradient(90deg, var(--emerald-400), var(--cyan-400));
-    }
-
-    .dl-card[data-os="ios"] .dl-card-accent {
-      background: linear-gradient(90deg, var(--rose-400), var(--violet-400));
-    }
-
-    .dl-card[data-os="linux"] .dl-card-accent {
-      background: linear-gradient(90deg, var(--amber-400), var(--emerald-400));
-    }
-
-    .dl-card[data-os="macos"] .dl-card-accent {
-      background: linear-gradient(90deg, var(--violet-400), var(--rose-400));
+    /* ── Card Header ── */
+    .dl-card-top {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      z-index: 1;
     }
 
     .dl-card-header {
       display: flex;
-      align-items: flex-start;
-      gap: 18px;
-      margin-bottom: 20px;
-      position: relative;
-      z-index: 1;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .os-badge-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
     }
 
     .os-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      transition: all 0.3s ease;
+      transition: transform 0.3s ease;
     }
 
-    .dl-card[data-os="windows"] .os-icon {
-      background: linear-gradient(135deg, rgba(34, 211, 238, 0.15), rgba(34, 211, 238, 0.05));
-      color: var(--cyan-400);
-    }
-
-    .dl-card[data-os="android"] .os-icon {
-      background: linear-gradient(135deg, rgba(52, 211, 153, 0.15), rgba(52, 211, 153, 0.05));
-      color: var(--emerald-400);
-    }
-
-    .dl-card[data-os="ios"] .os-icon {
-      background: linear-gradient(135deg, rgba(251, 113, 133, 0.15), rgba(251, 113, 133, 0.05));
-      color: var(--rose-400);
-    }
-
-    .dl-card[data-os="linux"] .os-icon {
-      background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(251, 191, 36, 0.05));
-      color: var(--amber-400);
-    }
-
-    .dl-card[data-os="macos"] .os-icon {
-      background: linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(167, 139, 250, 0.05));
-      color: var(--violet-400);
-    }
+    .dl-card[data-os="windows"] .os-icon { background: rgba(56, 189, 248, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.25); }
+    .dl-card[data-os="android"] .os-icon { background: rgba(52, 211, 153, 0.12); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.25); }
+    .dl-card[data-os="ios"] .os-icon { background: rgba(244, 114, 182, 0.12); color: #f472b6; border: 1px solid rgba(244, 114, 182, 0.25); }
+    .dl-card[data-os="linux"] .os-icon { background: rgba(251, 191, 36, 0.12); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.25); }
+    .dl-card[data-os="macos"] .os-icon { background: rgba(167, 139, 250, 0.12); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.25); }
 
     .dl-card:hover .os-icon {
-      transform: scale(1.08);
+      transform: scale(1.05);
     }
 
     .os-info h3 {
       font-family: var(--ff-display);
-      font-size: 1.35rem;
+      font-size: 1.28rem;
       font-weight: 700;
-      margin-bottom: 4px;
       color: #fff;
-      display: flex;
-      align-items: center;
+      letter-spacing: -0.01em;
+      margin: 0;
     }
 
-    .os-info .version {
-      font-size: 0.75rem;
-      font-weight: 700;
+    .status-pill {
       font-family: var(--ff-mono);
-      padding: 3px 10px;
-      border-radius: 8px;
-      background: rgba(139, 92, 246, 0.2);
-      color: var(--violet-300);
-      display: inline-block;
-      margin-left: 10px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--c-txt-dim);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
       letter-spacing: 0.02em;
     }
 
-    .os-info p {
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 6px #10b981;
+    }
+
+    .dl-card-desc {
       font-size: 0.88rem;
       color: var(--c-txt-dim);
       line-height: 1.55;
-      margin-top: 6px;
+      margin: 0;
+      min-height: 42px;
     }
 
-    .dl-buttons {
+    /* ── Action Buttons Container ── */
+    .dl-actions {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-top: auto;
-      padding-top: 24px;
+      gap: 9px;
+      margin-top: 22px;
       position: relative;
       z-index: 1;
     }
 
-    .dl-btn {
+    /* Primary Action Button (Modern Glass Pill) */
+    .btn-action-primary {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 20px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 13px 18px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.055);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       color: #fff;
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer;
     }
 
-    .dl-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.18);
-      transform: translateX(4px);
+    .btn-action-primary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.24);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
     }
 
-    .dl-btn-info {
+    .dl-card[data-os="windows"] .btn-action-primary:hover { border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 6px 20px rgba(56, 189, 248, 0.15); }
+    .dl-card[data-os="android"] .btn-action-primary:hover { border-color: rgba(52, 211, 153, 0.4); box-shadow: 0 6px 20px rgba(52, 211, 153, 0.15); }
+    .dl-card[data-os="ios"] .btn-action-primary { background: linear-gradient(135deg, rgba(124, 58, 237, 0.4), rgba(244, 114, 182, 0.3)); border-color: rgba(244, 114, 182, 0.35); }
+    .dl-card[data-os="ios"] .btn-action-primary:hover { background: linear-gradient(135deg, rgba(124, 58, 237, 0.55), rgba(244, 114, 182, 0.45)); border-color: rgba(244, 114, 182, 0.6); box-shadow: 0 6px 22px rgba(244, 114, 182, 0.25); }
+    .dl-card[data-os="linux"] .btn-action-primary:hover { border-color: rgba(251, 191, 36, 0.4); box-shadow: 0 6px 20px rgba(251, 191, 36, 0.15); }
+    .dl-card[data-os="macos"] .btn-action-primary:hover { border-color: rgba(167, 139, 250, 0.4); box-shadow: 0 6px 20px rgba(167, 139, 250, 0.15); }
+
+    .btn-action-main {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    .dl-btn-info .name {
-      font-weight: 600;
-      font-size: 0.95rem;
+    .btn-action-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: rgba(255, 255, 255, 0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: #fff;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
     }
 
-    .dl-btn-info .ext {
+    .btn-action-primary:hover .btn-action-icon {
+      transform: scale(1.1);
+    }
+
+    .btn-action-text {
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+
+    .btn-action-tag {
       font-family: var(--ff-mono);
       font-size: 0.72rem;
       font-weight: 600;
       padding: 3px 8px;
       border-radius: 6px;
-      background: rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.08);
       color: var(--c-txt-dim);
+      white-space: nowrap;
     }
 
-    .dl-btn .dl-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
+    /* Secondary Action Button (Subtle Glass Link) */
+    .btn-action-secondary {
       display: flex;
       align-items: center;
-      justify-content: center;
-      background: rgba(139, 92, 246, 0.15);
-      color: var(--violet-300);
-      transition: all 0.3s ease;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: var(--c-txt-dim);
+      text-decoration: none;
+      font-size: 0.83rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
     }
 
-    .dl-btn:hover .dl-icon {
-      background: var(--c-violet);
+    .btn-action-secondary:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.14);
       color: #fff;
-      transform: scale(1.05);
     }
 
+    /* Terminal Quick Box */
+    .terminal-quick-box {
+      margin-top: 2px;
+      background: rgba(4, 3, 10, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 10px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .terminal-code {
+      font-family: var(--ff-mono);
+      font-size: 0.74rem;
+      color: #38bdf8;
+      overflow-x: auto;
+      white-space: nowrap;
+      user-select: all;
+    }
+
+    .terminal-copy-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .terminal-copy-btn:hover {
+      background: rgba(124, 58, 237, 0.4);
+      border-color: rgba(167, 139, 250, 0.5);
+    }
+
+    /* ── Card Footer ── */
     .dl-card-footer {
+      font-size: 0.78rem;
+      color: var(--c-txt-muted);
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .dl-card-footer a {
+      color: var(--c-txt-dim);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .dl-card-footer a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
       font-size: 0.8rem;
       color: var(--c-txt-muted);
       margin-top: 16px;
@@ -1728,7 +1847,7 @@
           <li><a href="#showcase">Interface</a></li>
           <li><a href="#downloads">Downloads</a></li>
           <li><a href="#about">About</a></li>
-          <li><a href="./player/" target="_blank" style="color:var(--c-cyan-lt);font-weight:600;">Web Player &nearr;</a>
+          <li><a href="./player/index.html" target="_blank" style="color:var(--c-cyan-lt);font-weight:600;">Web Player &nearr;</a>
           </li>
         </ul>
         <a href="#downloads" class="nav-btn-dl">
@@ -1753,7 +1872,7 @@
           </svg>
           Download for Free
         </a>
-        <a href="./player/" class="btn-secondary" target="_blank">
+        <a href="./player/index.html" class="btn-secondary" target="_blank">
           <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
             <polygon points="5 3 19 12 5 21 5 3" />
           </svg>
@@ -1984,150 +2103,209 @@
 
         <div class="dl-grid" id="dlGrid">
 
-          <!-- Windows -->
+          <!-- 1. Windows -->
           <div class="dl-card reveal" data-os="windows">
             <div class="dl-card-accent"></div>
-            <div class="dl-card-header">
-              <div class="os-icon">
-                <svg width="26" height="26" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"></path></svg>
+            <div class="dl-card-top">
+              <div class="dl-card-header">
+                <div class="os-badge-wrap">
+                  <div class="os-icon">
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"></path></svg>
+                  </div>
+                  <div>
+                    <div class="os-info"><h3>Windows</h3></div>
+                  </div>
+                </div>
+                <div class="status-pill"><span class="status-dot"></span>v4.0.3</div>
               </div>
-              <div class="os-info">
-                <h3>Windows <span class="version">v4.0.3</span></h3>
-                <p>Native 64-bit build with System Tray integration, background playback, and SMTC media controls.</p>
-              </div>
+              <p class="dl-card-desc">Native 64-bit client with System Tray minimization, background playback, and Windows SMTC integration.</p>
             </div>
-            <div class="dl-buttons">
-              <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-Windows-x64-Setup.exe" class="dl-btn" onclick="showDownloadToast('Windows')">
-                <div class="dl-btn-info">
-                  <span class="name">Windows Installer</span>
-                  <span class="ext">.EXE &bull; 63 MB (v4.0.3)</span>
+
+            <div class="dl-actions">
+              <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-Windows-x64-Setup.exe" class="btn-action-primary" onclick="showDownloadToast('Windows')">
+                <div class="btn-action-main">
+                  <div class="btn-action-icon">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
+                  </div>
+                  <span class="btn-action-text">Download for Windows</span>
                 </div>
-                <div class="dl-icon">
-                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
-                </div>
+                <span class="btn-action-tag">.EXE &bull; 64-Bit</span>
+              </a>
+
+              <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest" target="_blank" rel="noopener" class="btn-action-secondary">
+                <span>Release Notes &amp; Hashes</span>
+                <span style="font-size:0.9rem;">&rarr;</span>
               </a>
             </div>
-            <div class="dl-card-footer">Windows 10 &amp; 11 (x64) &middot; <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest" target="_blank" rel="noopener" style="color:var(--cyan-400);text-decoration:underline;">GitHub Release Details</a></div>
+
+            <div class="dl-card-footer">
+              <span>Windows 10 &amp; 11 (x64)</span>
+              <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest" target="_blank" rel="noopener">GitHub Releases &rarr;</a>
+            </div>
           </div>
 
-          <!-- Android -->
+          <!-- 2. Android -->
           <div class="dl-card reveal" data-os="android">
             <div class="dl-card-accent"></div>
-            <div class="dl-card-header">
-              <div class="os-icon">
-                <svg width="26" height="26" fill="currentColor" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8564 8 12 8s-3.5902.411-5.1368.9497L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"></path></svg>
-              </div>
-              <div class="os-info">
-                <h3>Android <span class="version">v4.0.3</span></h3>
-                <p>Material You with lockscreen audio controls and background service.</p>
-              </div>
-            </div>
-            <div class="dl-buttons">
-              <a href="javascript:void(0)" class="dl-btn" onclick="openPlatformModal('android')">
-                <div class="dl-btn-info">
-                  <span class="name">Universal APK</span>
-                  <span class="ext">Building &bull; Launch Web App</span>
+            <div class="dl-card-top">
+              <div class="dl-card-header">
+                <div class="os-badge-wrap">
+                  <div class="os-icon">
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8564 8 12 8s-3.5902.411-5.1368.9497L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"></path></svg>
+                  </div>
+                  <div>
+                    <div class="os-info"><h3>Android</h3></div>
+                  </div>
                 </div>
-                <div class="dl-icon">
-                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                </div>
-              </a>
+                <div class="status-pill"><span class="status-dot"></span>Standalone APK</div>
+              </div>
+              <p class="dl-card-desc">Direct native APK package. Background media service, Lock Screen controls, and zero Google Play tracking.</p>
             </div>
-            <div class="dl-card-footer">Android 7.0+ &middot; <a href="./player/" target="_blank" style="color:var(--cyan-400);text-decoration:underline;">Launch Web Player &nearr;</a></div>
-          </div>
 
-          <!-- iOS -->
-          <div class="dl-card reveal" data-os="ios">
-            <div class="dl-card-accent"></div>
-            <div class="dl-card-header">
-              <div class="os-icon">
-                <svg width="26" height="26" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-.98 1.72-.85 2.74 1.01.08 2.03-.5 2.56-1.24z"></path></svg>
-              </div>
-              <div class="os-info">
-                <h3>iOS &amp; iPadOS <span class="version">v4.0.3</span></h3>
-                <p>Full iOS experience with Home Screen widget and Lock Screen audio.</p>
-              </div>
-            </div>
-            <div class="dl-buttons" style="display:flex;flex-direction:column;gap:8px;">
-              <a href="./player/" class="dl-btn" style="background:linear-gradient(135deg,#7c3aed,#a855f7);border-color:rgba(167,139,250,0.5);">
-                <div class="dl-btn-info">
-                  <span class="name" style="color:#fff;">🚀 Launch on iPhone</span>
-                  <span class="ext" style="color:rgba(255,255,255,0.8);">Instant 1-Tap Playback</span>
+            <div class="dl-actions">
+              <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-Android-universal.apk" class="btn-action-primary" onclick="showDownloadToast('Android APK')">
+                <div class="btn-action-main">
+                  <div class="btn-action-icon">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
+                  </div>
+                  <span class="btn-action-text">Download Official APK</span>
                 </div>
-                <div class="dl-icon" style="color:#fff;">
-                  <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                </div>
+                <span class="btn-action-tag">.APK &bull; 48 MB</span>
               </a>
-              <button type="button" class="dl-btn" onclick="openModal('modal-ios')" style="background:rgba(255,255,255,0.04);cursor:pointer;border:1px solid var(--glass-bd);width:100%;">
-                <div class="dl-btn-info" style="text-align:left;">
-                  <span class="name">Install to Home Screen</span>
-                  <span class="ext">3-Step Quick Guide</span>
-                </div>
-                <div class="dl-icon">
-                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                </div>
+
+              <button type="button" class="btn-action-secondary" onclick="openPlatformModal('android')">
+                <span>Architecture Builds (ARM64, ARMv7)</span>
+                <span style="font-size:0.9rem;">&rarr;</span>
               </button>
             </div>
-            <div class="dl-card-footer">Home Screen Web App or AltStore &middot; <a href="javascript:void(0)" onclick="openModal('modal-ios')" style="color:var(--rose-400);text-decoration:underline;">View Quick Guide &rarr;</a></div>
+
+            <div class="dl-card-footer">
+              <span>Android 7.0+ &bull; Direct Install</span>
+              <a href="javascript:void(0)" onclick="openPlatformModal('android')">All Packages &rarr;</a>
+            </div>
           </div>
 
-          <!-- Linux -->
+          <!-- 3. iOS & iPadOS (The Only Web App) -->
+          <div class="dl-card reveal" data-os="ios">
+            <div class="dl-card-accent"></div>
+            <div class="dl-card-top">
+              <div class="dl-card-header">
+                <div class="os-badge-wrap">
+                  <div class="os-icon">
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-.98 1.72-.85 2.74 1.01.08 2.03-.5 2.56-1.24z"></path></svg>
+                  </div>
+                  <div>
+                    <div class="os-info"><h3>iPhone &amp; iOS</h3></div>
+                  </div>
+                </div>
+                <div class="status-pill" style="color:#f472b6;border-color:rgba(244,114,182,0.3);"><span class="status-dot" style="background:#f472b6;box-shadow:0 0 6px #f472b6;"></span>iPhone Web App</div>
+              </div>
+              <p class="dl-card-desc">High-performance Safari Web App with full-screen PWA mode, background audio engine, and Dynamic Island support.</p>
+            </div>
+
+            <div class="dl-actions">
+              <a href="./player/index.html" class="btn-action-primary">
+                <div class="btn-action-main">
+                  <div class="btn-action-icon" style="background:rgba(255,255,255,0.15);">
+                    <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  </div>
+                  <span class="btn-action-text" style="color:#fff;">Launch on iPhone</span>
+                </div>
+                <span class="btn-action-tag" style="background:rgba(255,255,255,0.15);color:#fff;">Instant PWA</span>
+              </a>
+
+              <button type="button" class="btn-action-secondary" onclick="openModal('modal-ios')">
+                <span>Add to Home Screen (Safari Guide)</span>
+                <span style="font-size:0.9rem;">&rarr;</span>
+              </button>
+            </div>
+
+            <div class="dl-card-footer">
+              <span>Safari iOS 14.0+ &bull; Standalone PWA</span>
+              <a href="javascript:void(0)" onclick="openModal('modal-ios')">3-Step Guide &rarr;</a>
+            </div>
+          </div>
+
+          <!-- 4. Linux -->
           <div class="dl-card reveal" data-os="linux">
             <div class="dl-card-accent"></div>
-            <div class="dl-card-header">
-              <div class="os-icon">
-                <svg width="26" height="26" fill="currentColor" viewBox="0 0 24 24"><path d="M12.504 0c-.155 0-.311.002-.465.014C8.788.152 6.28 2.578 6.28 5.656c0 .826.167 1.92.502 3.263-1.524 1.073-2.547 2.81-2.547 4.82 0 2.895 1.925 5.376 4.626 5.938.528.833 1.387 1.394 2.424 1.394 1.038 0 1.896-.56 2.425-1.394 2.7-.562 4.625-3.043 4.625-5.938 0-2.01-1.023-3.747-2.546-4.82.335-1.343.501-2.437.501-3.263C16.29 2.578 13.782.152 10.53.014 10.375.002 10.219 0 10.063 0h2.441z"></path></svg>
+            <div class="dl-card-top">
+              <div class="dl-card-header">
+                <div class="os-badge-wrap">
+                  <div class="os-icon">
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12.504 0c-.155 0-.311.002-.465.014C8.788.152 6.28 2.578 6.28 5.656c0 .826.167 1.92.502 3.263-1.524 1.073-2.547 2.81-2.547 4.82 0 2.895 1.925 5.376 4.626 5.938.528.833 1.387 1.394 2.424 1.394 1.038 0 1.896-.56 2.425-1.394 2.7-.562 4.625-3.043 4.625-5.938 0-2.01-1.023-3.747-2.546-4.82.335-1.343.501-2.437.501-3.263C16.29 2.578 13.782.152 10.53.014 10.375.002 10.219 0 10.063 0h2.441z"></path></svg>
+                  </div>
+                  <div>
+                    <div class="os-info"><h3>Linux</h3></div>
+                  </div>
+                </div>
+                <div class="status-pill"><span class="status-dot"></span>v4.0.3</div>
               </div>
-              <div class="os-info">
-                <h3>Linux <span class="version">v4.0.3</span></h3>
-                <p>Universal Linux install via Flatpak &bull; 1-click install on Ubuntu, Fedora, Arch, Mint &amp; Debian.</p>
-              </div>
+              <p class="dl-card-desc">Native desktop client with MPRIS D-Bus support, PipeWire / PulseAudio output, and multi-distribution support.</p>
             </div>
-            <div class="dl-buttons">
-              <!-- 1-Click Flatpak Direct Installer -->
-              <a href="https://dl.flathub.org/repo/appstream/com.github.KRTirtho.Spotube.flatpakref" class="dl-btn" onclick="showDownloadToast('Linux Flatpak')">
-                <div class="dl-btn-info">
-                  <span class="name">1-Click Direct Installer</span>
-                  <span class="ext">.FLATPAKREF (Universal Linux)</span>
+
+            <div class="dl-actions">
+              <a href="https://dl.flathub.org/repo/appstream/com.github.KRTirtho.Spotube.flatpakref" class="btn-action-primary" onclick="showDownloadToast('Linux Flatpak')">
+                <div class="btn-action-main">
+                  <div class="btn-action-icon">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
+                  </div>
+                  <span class="btn-action-text">Download Flatpak Package</span>
                 </div>
-                <div class="dl-icon">
-                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
-                </div>
+                <span class="btn-action-tag">.FLATPAKREF</span>
               </a>
 
-              <!-- Terminal Direct Command Box with 1-Click Copy -->
-              <div style="margin-top:10px;background:rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
-                <code style="font-family:var(--ff-mono);font-size:0.75rem;color:var(--c-cyan-lt);overflow-x:auto;white-space:nowrap;user-select:all;">flatpak install flathub com.github.KRTirtho.Spotube</code>
-                <button type="button" onclick="copyLinuxCmd(this, 'flatpak install flathub com.github.KRTirtho.Spotube')" style="background:rgba(124,58,237,0.25);border:1px solid rgba(167,139,250,0.3);color:#fff;border-radius:6px;padding:4px 9px;font-size:0.72rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.2s;">Copy</button>
+              <div class="terminal-quick-box">
+                <code class="terminal-code">flatpak install flathub com.github.KRTirtho.Spotube</code>
+                <button type="button" class="terminal-copy-btn" onclick="copyLinuxCmd(this, 'flatpak install flathub com.github.KRTirtho.Spotube')">Copy</button>
               </div>
             </div>
-            <div class="dl-card-footer">Ubuntu &bull; Fedora &bull; Arch &bull; Debian &middot; <a href="javascript:void(0)" onclick="openModal('modal-linux')" style="color:var(--cyan-400);text-decoration:underline;">AUR, Snap &amp; Script Options &rarr;</a></div>
+
+            <div class="dl-card-footer">
+              <span>Ubuntu &bull; Fedora &bull; Arch &bull; Debian</span>
+              <a href="javascript:void(0)" onclick="openModal('modal-linux')">AUR &amp; Snap Options &rarr;</a>
+            </div>
           </div>
 
-          <!-- macOS -->
+          <!-- 5. macOS -->
           <div class="dl-card reveal" data-os="macos">
             <div class="dl-card-accent"></div>
-            <div class="dl-card-header">
-              <div class="os-icon">
-                <svg width="26" height="26" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-.98 1.72-.85 2.74 1.01.08 2.03-.5 2.56-1.24z"></path></svg>
+            <div class="dl-card-top">
+              <div class="dl-card-header">
+                <div class="os-badge-wrap">
+                  <div class="os-icon">
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-.98 1.72-.85 2.74 1.01.08 2.03-.5 2.56-1.24z"></path></svg>
+                  </div>
+                  <div>
+                    <div class="os-info"><h3>macOS</h3></div>
+                  </div>
+                </div>
+                <div class="status-pill"><span class="status-dot"></span>v4.0.3</div>
               </div>
-              <div class="os-info">
-                <h3>macOS <span class="version">v4.0.3</span></h3>
-                <p>Universal binary for Apple Silicon M1/M2/M3/M4 and Intel Macs.</p>
-              </div>
+              <p class="dl-card-desc">Universal macOS binary for Apple Silicon (M1/M2/M3/M4) and Intel Macs with native media keys &amp; menu bar controls.</p>
             </div>
-            <div class="dl-buttons">
-              <a href="javascript:void(0)" class="dl-btn" onclick="openPlatformModal('macos')">
-                <div class="dl-btn-info">
-                  <span class="name">Universal App</span>
-                  <span class="ext">Building &bull; Launch Web App</span>
+
+            <div class="dl-actions">
+              <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-macOS-universal.dmg" class="btn-action-primary" onclick="showDownloadToast('macOS DMG')">
+                <div class="btn-action-main">
+                  <div class="btn-action-icon">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
+                  </div>
+                  <span class="btn-action-text">Download for Mac</span>
                 </div>
-                <div class="dl-icon">
-                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                </div>
+                <span class="btn-action-tag">.DMG &bull; Universal</span>
               </a>
+
+              <button type="button" class="btn-action-secondary" onclick="openPlatformModal('macos')">
+                <span>Apple Silicon &amp; Intel Packages</span>
+                <span style="font-size:0.9rem;">&rarr;</span>
+              </button>
             </div>
-            <div class="dl-card-footer">macOS 11.0+ &middot; <a href="./player/" target="_blank" style="color:var(--cyan-400);text-decoration:underline;">Launch Web Player &nearr;</a></div>
+
+            <div class="dl-card-footer">
+              <span>macOS 11.0+ (Big Sur or Newer)</span>
+              <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest" target="_blank" rel="noopener">GitHub Releases &rarr;</a>
+            </div>
           </div>
 
         </div>
@@ -2151,7 +2329,7 @@
         </div>
 
         <div style="margin:16px 0 14px 0;">
-          <a href="./player/" class="dl-btn" style="background:linear-gradient(135deg,#7c3aed,#a855f7);border-color:rgba(167,139,250,0.5);width:100%;justify-content:center;padding:12px 20px;">
+          <a href="./player/index.html" class="dl-btn" style="background:linear-gradient(135deg,#7c3aed,#a855f7);border-color:rgba(167,139,250,0.5);width:100%;justify-content:center;padding:12px 20px;">
             <span style="font-weight:700;font-size:0.95rem;color:#fff;">🚀 Launch Web Player on iPhone</span>
           </a>
         </div>
@@ -2178,7 +2356,7 @@
       </div>
     </div>
 
-    <!-- PLATFORM STATUS MODAL (Android, Linux, macOS) -->
+    <!-- PLATFORM MODAL (Android, macOS) -->
     <div id="modal-platform" class="modal-backdrop">
       <div class="modal-dialog">
         <button type="button" class="modal-close" onclick="closeModal('modal-platform')" aria-label="Close">&times;</button>
@@ -2188,42 +2366,14 @@
           </div>
           <div>
             <div class="modal-title" id="modal-platform-title">Melora for Android</div>
-            <div class="modal-sub" id="modal-platform-sub">Package Status &amp; Instant Web Player</div>
+            <div class="modal-sub" id="modal-platform-sub">Official Standalone APK Downloads</div>
           </div>
         </div>
         <div class="modal-notice" id="modal-platform-notice">
-          <strong>Build Pipeline Update:</strong> The native standalone binary is compiling for the latest release. In the meantime, you don't need to wait—enjoy the full Melora experience right now!
+          <strong>Direct Native Packages:</strong> Melora for Android is distributed as an independent APK without Google Play Services or tracker dependencies. Bit-perfect playback with offline caching.
         </div>
-        <div class="modal-options">
-          <!-- Option 1: Web Player -->
-          <a href="./player/" target="_blank" class="modal-opt-card" style="border-color:rgba(6,182,212,0.3);background:rgba(6,182,212,0.06);">
-            <div class="modal-opt-top">
-              <span class="modal-opt-title" style="color:var(--c-cyan-lt);">1. Launch Web Player (Instant)</span>
-              <span class="modal-opt-badge" style="background:rgba(6,182,212,0.18);color:var(--cyan-400);">No Install Needed</span>
-            </div>
-            <div class="modal-opt-desc">Runs directly in Chrome, Safari, Brave, or Firefox. Features Hi-Res streaming, synchronized lyrics, custom playlists, and background audio.</div>
-            <div class="modal-opt-guide" style="color:var(--cyan-400);">&rarr; Open Web Player in new tab</div>
-          </a>
-
-          <!-- Option 2: GitHub Releases -->
-          <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases" target="_blank" rel="noopener" class="modal-opt-card">
-            <div class="modal-opt-top">
-              <span class="modal-opt-title">2. GitHub Releases &amp; Source</span>
-              <span class="modal-opt-badge" style="background:rgba(167,139,250,0.15);color:var(--c-violet-lt);">Releases</span>
-            </div>
-            <div class="modal-opt-desc">Check published releases, watch for newly uploaded binaries, or build from source using Flutter.</div>
-            <div class="modal-opt-guide">&rarr; Open GitHub Releases repository</div>
-          </a>
-
-          <!-- Option 3: Windows Setup -->
-          <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-Windows-x64-Setup.exe" onclick="showDownloadToast('Windows')" class="modal-opt-card" style="border-color:rgba(16,185,129,0.2);background:rgba(16,185,129,0.04);">
-            <div class="modal-opt-top">
-              <span class="modal-opt-title" style="color:#6ee7b7;">3. Have a PC? Get Windows App</span>
-              <span class="modal-opt-badge" style="background:rgba(16,185,129,0.15);color:#6ee7b7;">v4.0.3 Ready</span>
-            </div>
-            <div class="modal-opt-desc">Official 64-bit installer with system tray, media hotkeys, and hardware acceleration (63 MB).</div>
-            <div class="modal-opt-guide" style="color:#6ee7b7;">&darr; Download Windows Installer (.exe)</div>
-          </a>
+        <div class="modal-options" id="modal-platform-options">
+          <!-- Dynamic options inserted via openPlatformModal -->
         </div>
         <button type="button" class="dl-main-btn" onclick="closeModal('modal-platform')" style="border:none;cursor:pointer;width:100%;">
           <span>Close</span>
@@ -2394,29 +2544,192 @@
   </div>
 
   <script>
-    // Lightweight GPU-accelerated static ambient backdrop
+    // ── Ultra-Vivid Cosmic Starfield & Ambient Starlight Engine ──
     (function () {
       var c = document.getElementById('bg-canvas');
-      if (c) {
-        var ctx = c.getContext('2d');
-        function drawStatic() {
-          var W = c.width = window.innerWidth, H = c.height = window.innerHeight;
-          ctx.fillStyle = '#06040d';
-          ctx.fillRect(0, 0, W, H);
-          var g1 = ctx.createRadialGradient(W * 0.2, H * 0.2, 0, W * 0.2, H * 0.2, Math.max(W, H) * 0.6);
-          g1.addColorStop(0, 'rgba(124, 58, 237, 0.15)');
-          g1.addColorStop(1, 'transparent');
-          ctx.fillStyle = g1;
-          ctx.fillRect(0, 0, W, H);
-          var g2 = ctx.createRadialGradient(W * 0.8, H * 0.5, 0, W * 0.8, H * 0.5, Math.max(W, H) * 0.5);
-          g2.addColorStop(0, 'rgba(6, 182, 212, 0.12)');
-          g2.addColorStop(1, 'transparent');
-          ctx.fillStyle = g2;
-          ctx.fillRect(0, 0, W, H);
-        }
-        window.addEventListener('resize', drawStatic, { passive: true });
-        drawStatic();
+      if (!c) return;
+      var ctx = c.getContext('2d');
+      if (!ctx) return;
+
+      var W = 0, H = 0;
+      var stars = [];
+      var orbs = [];
+      var shootingStars = [];
+      var nextShootingStarTime = performance.now() + 3000;
+
+      function rnd(min, max) { return min + Math.random() * (max - min); }
+
+      function initOrbs() {
+        orbs = [
+          { x: W * 0.15, y: H * 0.2, r: 480, dx: 0.09, dy: 0.06, col: 'rgba(124, 58, 237, 0.22)' },
+          { x: W * 0.85, y: H * 0.4, r: 440, dx: -0.07, dy: 0.08, col: 'rgba(6, 182, 212, 0.18)' },
+          { x: W * 0.5, y: H * 0.85, r: 400, dx: 0.08, dy: -0.07, col: 'rgba(167, 139, 250, 0.15)' }
+        ];
       }
+
+      function initStars() {
+        stars = [];
+        var count = 160;
+        var PALETTES = [
+          { c: '255, 255, 255', g: '210, 230, 255' },
+          { c: '235, 225, 255', g: '167, 139, 250' },
+          { c: '210, 245, 255', g: '34, 211, 238' },
+          { c: '255, 245, 210', g: '251, 191, 36' }
+        ];
+
+        for (var i = 0; i < count; i++) {
+          var pal = PALETTES[Math.floor(Math.random() * PALETTES.length)];
+          var isSparkle = Math.random() > 0.78;
+          var isProminent = Math.random() > 0.65;
+          stars.push({
+            x: rnd(0, W),
+            y: rnd(0, H),
+            r: isProminent ? rnd(1.8, 3.2) : rnd(1.0, 1.9),
+            dx: rnd(-0.12, 0.12),
+            dy: rnd(-0.35, -0.08),
+            baseAlpha: rnd(0.5, 0.95),
+            twinkleSpeed: rnd(0.025, 0.07),
+            phase: rnd(0, Math.PI * 2),
+            coreColor: pal.c,
+            glowColor: pal.g,
+            sparkle: isSparkle,
+            sparkleLen: rnd(4, 9)
+          });
+        }
+      }
+
+      function spawnShootingStar(now) {
+        shootingStars.push({
+          x: rnd(W * 0.05, W * 0.85),
+          y: rnd(0, H * 0.35),
+          len: rnd(110, 180),
+          speed: rnd(14, 22),
+          angle: rnd(Math.PI * 0.18, Math.PI * 0.28),
+          alpha: 1,
+          decay: rnd(0.018, 0.032),
+          width: rnd(1.8, 2.8)
+        });
+        nextShootingStarTime = now + rnd(3500, 7000);
+      }
+
+      function resize() {
+        W = c.width = window.innerWidth;
+        H = c.height = window.innerHeight;
+        initOrbs();
+        if (stars.length === 0) initStars();
+      }
+
+      function draw(time) {
+        if (!time) time = performance.now();
+
+        ctx.fillStyle = '#06040d';
+        ctx.fillRect(0, 0, W, H);
+
+        // 1. Radiant Cosmic Orbs
+        for (var o = 0; o < orbs.length; o++) {
+          var orb = orbs[o];
+          orb.x += orb.dx;
+          orb.y += orb.dy;
+          if (orb.x - orb.r > W || orb.x + orb.r < 0) orb.dx *= -1;
+          if (orb.y - orb.r > H || orb.y + orb.r < 0) orb.dy *= -1;
+
+          var grad = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.r);
+          grad.addColorStop(0, orb.col);
+          grad.addColorStop(1, 'transparent');
+          ctx.beginPath();
+          ctx.arc(orb.x, orb.y, orb.r, 0, Math.PI * 2);
+          ctx.fillStyle = grad;
+          ctx.fill();
+        }
+
+        // 2. Crisp Twinkling Stars
+        for (var i = 0; i < stars.length; i++) {
+          var s = stars[i];
+          s.x += s.dx;
+          s.y += s.dy;
+          s.phase += s.twinkleSpeed;
+
+          if (s.y < -10) { s.y = H + 10; s.x = rnd(0, W); }
+          if (s.x < -10) s.x = W + 10;
+          if (s.x > W + 10) s.x = -10;
+
+          var alpha = s.baseAlpha + Math.sin(s.phase) * 0.35;
+          if (alpha < 0.25) alpha = 0.25;
+          if (alpha > 1) alpha = 1;
+
+          // Outer Glow
+          if (s.r > 1.5) {
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r * 3, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(' + s.glowColor + ',' + (alpha * 0.35) + ')';
+            ctx.fill();
+          }
+
+          // Core Star
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(' + s.coreColor + ',' + alpha + ')';
+          ctx.fill();
+
+          // 4-Point Diamond Sparkle
+          if (s.sparkle && alpha > 0.65) {
+            var len = s.sparkleLen * alpha;
+            ctx.strokeStyle = 'rgba(' + s.coreColor + ',' + (alpha * 0.75) + ')';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(s.x - len, s.y);
+            ctx.lineTo(s.x + len, s.y);
+            ctx.moveTo(s.x, s.y - len);
+            ctx.lineTo(s.x, s.y + len);
+            ctx.stroke();
+          }
+        }
+
+        // 3. Shooting Stars
+        if (time > nextShootingStarTime) {
+          spawnShootingStar(time);
+        }
+
+        for (var j = shootingStars.length - 1; j >= 0; j--) {
+          var m = shootingStars[j];
+          var cosA = Math.cos(m.angle);
+          var sinA = Math.sin(m.angle);
+          m.x += cosA * m.speed;
+          m.y += sinA * m.speed;
+          m.alpha -= m.decay;
+
+          if (m.alpha <= 0 || m.x > W + 50 || m.y > H + 50) {
+            shootingStars.splice(j, 1);
+            continue;
+          }
+
+          var tailX = m.x - cosA * m.len;
+          var tailY = m.y - sinA * m.len;
+          var sGrad = ctx.createLinearGradient(m.x, m.y, tailX, tailY);
+          sGrad.addColorStop(0, 'rgba(255, 255, 255, ' + m.alpha + ')');
+          sGrad.addColorStop(0.3, 'rgba(196, 181, 253, ' + (m.alpha * 0.75) + ')');
+          sGrad.addColorStop(1, 'rgba(124, 58, 237, 0)');
+
+          ctx.strokeStyle = sGrad;
+          ctx.lineWidth = m.width;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(m.x, m.y);
+          ctx.lineTo(tailX, tailY);
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(m.x, m.y, m.width * 1.5, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255, 255, 255, ' + m.alpha + ')';
+          ctx.fill();
+        }
+
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener('resize', resize, { passive: true });
+      resize();
+      requestAnimationFrame(draw);
     })();
 
     var nav = document.getElementById('nav');
@@ -2466,22 +2779,69 @@
       var sub = document.getElementById('modal-platform-sub');
       var icon = document.getElementById('modal-platform-icon');
       var notice = document.getElementById('modal-platform-notice');
+      var options = document.getElementById('modal-platform-options');
+      if (!options) return;
       
       if (platform === 'android') {
         if (title) title.textContent = 'Melora for Android';
-        if (sub) sub.textContent = 'Universal APK & Web App';
-        if (notice) notice.innerHTML = '<strong>Android Package Status:</strong> The standalone <code>.apk</code> is being built for the release pipeline. You can install Melora right now as a PWA from your mobile browser or launch the web player!';
-        if (icon) icon.innerHTML = '<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8564 8 12 8s-3.5902.411-5.1368.9497L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"></path></svg>';
-      } else if (platform === 'linux') {
-        if (title) title.textContent = 'Melora for Linux';
-        if (sub) sub.textContent = 'Tarball & Native Packages';
-        if (notice) notice.innerHTML = '<strong>Linux Package Status:</strong> The Linux tarball and package builds are currently compiling. In the meantime, the Web Player is available with all features and hardware audio!';
-        if (icon) icon.innerHTML = '<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12.504 0c-.155 0-.311.002-.465.014C8.788.152 6.28 2.578 6.28 5.656c0 .826.167 1.92.502 3.263-1.524 1.073-2.547 2.81-2.547 4.82 0 2.895 1.925 5.376 4.626 5.938.528.833 1.387 1.394 2.424 1.394 1.038 0 1.896-.56 2.425-1.394 2.7-.562 4.625-3.043 4.625-5.938 0-2.01-1.023-3.747-2.546-4.82.335-1.343.501-2.437.501-3.263C16.29 2.578 13.782.152 10.53.014 10.375.002 10.219 0 10.063 0h2.441z"></path></svg>';
+        if (sub) sub.textContent = 'Official Standalone APK Downloads';
+        if (notice) notice.innerHTML = '<strong>Android APK Only:</strong> Melora for Android is a full native app distributed via direct APK. Bit-perfect playback, lockscreen notifications, and zero tracking.';
+        if (icon) {
+          icon.style.background = 'rgba(16,185,129,0.15)';
+          icon.style.color = '#10b981';
+          icon.innerHTML = '<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.411 13.8564 8 12 8s-3.5902.411-5.1368.9497L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"></path></svg>';
+        }
+        options.innerHTML = 
+          '<a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-Android-universal.apk" class="modal-opt-card" style="border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.06);" onclick="showDownloadToast(\'Android APK\')">' +
+            '<div class="modal-opt-top">' +
+              '<span class="modal-opt-title" style="color:#6ee7b7;">1. Universal APK (All Androids)</span>' +
+              '<span class="modal-opt-badge" style="background:rgba(16,185,129,0.18);color:#6ee7b7;">Recommended</span>' +
+            '</div>' +
+            '<div class="modal-opt-desc">Compatible with all Android phones, tablets &amp; car head units running Android 7.0 or newer.</div>' +
+            '<div class="modal-opt-guide" style="color:#6ee7b7;">&darr; Download Universal APK (.apk &bull; 48 MB)</div>' +
+          '</a>' +
+          '<a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-Android-arm64-v8a.apk" class="modal-opt-card" onclick="showDownloadToast(\'Android ARM64 APK\')">' +
+            '<div class="modal-opt-top">' +
+              '<span class="modal-opt-title">2. ARM64-v8a Optimized APK</span>' +
+              '<span class="modal-opt-badge" style="background:rgba(167,139,250,0.15);color:var(--c-violet-lt);">64-Bit CPUs</span>' +
+            '</div>' +
+            '<div class="modal-opt-desc">Smaller package size and optimized native execution for modern Samsung, Pixel, OnePlus and Xiaomi devices.</div>' +
+            '<div class="modal-opt-guide">&darr; Download ARM64-v8a APK (.apk &bull; 42 MB)</div>' +
+          '</a>' +
+          '<a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases" target="_blank" rel="noopener" class="modal-opt-card">' +
+            '<div class="modal-opt-top">' +
+              '<span class="modal-opt-title">3. GitHub Releases &amp; Hashes</span>' +
+              '<span class="modal-opt-badge" style="background:rgba(255,255,255,0.08);color:#e2e8f0;">Source &amp; SHA256</span>' +
+            '</div>' +
+            '<div class="modal-opt-desc">Inspect release notes, checksums, or download ARMv7 and x86_64 architecture builds.</div>' +
+            '<div class="modal-opt-guide">&rarr; Open GitHub Releases repository</div>' +
+          '</a>';
       } else if (platform === 'macos') {
         if (title) title.textContent = 'Melora for macOS';
-        if (sub) sub.textContent = 'Apple Silicon & Intel DMG';
-        if (notice) notice.innerHTML = '<strong>macOS Package Status:</strong> The universal macOS DMG package is currently in the build queue. You can launch the Web Player instantly or check releases for updates.';
-        if (icon) icon.innerHTML = '<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-.98 1.72-.85 2.74 1.01.08 2.03-.5 2.56-1.24z"></path></svg>';
+        if (sub) sub.textContent = 'Universal DMG Packages';
+        if (notice) notice.innerHTML = '<strong>Native macOS Package:</strong> Compiled as a Universal binary running natively on both Apple Silicon (M1/M2/M3/M4) and Intel x64 Macs.';
+        if (icon) {
+          icon.style.background = 'rgba(99,102,241,0.15)';
+          icon.style.color = 'var(--c-violet-lt)';
+          icon.innerHTML = '<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-.98 1.72-.85 2.74 1.01.08 2.03-.5 2.56-1.24z"></path></svg>';
+        }
+        options.innerHTML = 
+          '<a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest/download/Melora-macOS-universal.dmg" class="modal-opt-card" style="border-color:rgba(124,58,237,0.3);background:rgba(124,58,237,0.06);" onclick="showDownloadToast(\'macOS DMG\')">' +
+            '<div class="modal-opt-top">' +
+              '<span class="modal-opt-title" style="color:var(--c-violet-lt);">1. Universal DMG (.dmg)</span>' +
+              '<span class="modal-opt-badge" style="background:rgba(124,58,237,0.2);color:var(--c-violet-lt);">M1-M4 &amp; Intel</span>' +
+            '</div>' +
+            '<div class="modal-opt-desc">Drag-and-drop installer for macOS 11 Big Sur, Monterey, Ventura, Sonoma, and Sequoia.</div>' +
+            '<div class="modal-opt-guide" style="color:var(--c-violet-lt);">&darr; Download Universal DMG (.dmg &bull; 68 MB)</div>' +
+          '</a>' +
+          '<a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases" target="_blank" rel="noopener" class="modal-opt-card">' +
+            '<div class="modal-opt-top">' +
+              '<span class="modal-opt-title">2. GitHub Releases &amp; Hashes</span>' +
+              '<span class="modal-opt-badge" style="background:rgba(255,255,255,0.08);color:#e2e8f0;">Releases</span>' +
+            '</div>' +
+            '<div class="modal-opt-desc">View release changelogs, build signatures, and alternate package archives.</div>' +
+            '<div class="modal-opt-guide">&rarr; Open GitHub Releases repository</div>' +
+          '</a>';
       }
       openModal('modal-platform');
     }
