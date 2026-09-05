@@ -2,23 +2,26 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Install Melora on iOS — Step-by-Step Guide for iPhone & iPad</title>
-<meta name="description" content="Official step-by-step tutorial to install and run Melora on iOS. Use the native Safari PWA or sideload the IPA package with AltStore.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Install Melora on iOS — Official iPhone &amp; iPad Guide</title>
+<meta name="description" content="Official step-by-step visual tutorial to install and run Melora on iOS. Use the native Safari Web App (PWA) or sideload the IPA package with AltStore.">
+<meta name="theme-color" content="#06040d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="../images/melora-logo.png">
 
 <style>
 :root {
   --ff-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --ff-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ff-mono: 'JetBrains Mono', monospace;
   --c-bg: #06040d;
   --c-surface: #0e0a1c;
-  --c-card: rgba(22, 16, 42, 0.65);
-  --c-card-hover: rgba(32, 24, 60, 0.85);
+  --c-card: rgba(22, 16, 42, 0.72);
   --c-violet: #7c3aed;
   --c-violet-lt: #a78bfa;
   --c-cyan: #06b6d4;
@@ -27,9 +30,8 @@
   --c-txt: #f8fafc;
   --c-txt-dim: #94a3b8;
   --c-txt-muted: #64748b;
-  --glass-bd: rgba(255, 255, 255, 0.08);
-  --glass-bd-hov: rgba(167, 139, 250, 0.35);
-  --radius: 16px;
+  --glass-bd: rgba(255, 255, 255, 0.1);
+  --glass-bd-hov: rgba(167, 139, 250, 0.4);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -42,36 +44,29 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  position: relative;
 }
 
-/* BACKGROUND AMBIENT GLOW */
-.ambient {
+/* BACKGROUND COSMIC CANVAS */
+#bg-canvas {
   position: fixed;
   inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   z-index: 0;
-  overflow: hidden;
 }
-.ambient-blob {
-  position: absolute;
-  border-radius: 50%;
-  display: none;
-  opacity: 0.22;
-}
-.b1 { width: 550px; height: 550px; top: -100px; left: -100px; background: #7c3aed; }
-.b2 { width: 600px; height: 600px; top: 30%; right: -150px; background: #06b6d4; }
-.b3 { width: 450px; height: 450px; bottom: 0; left: 20%; background: #a855f7; }
 
 /* NAVIGATION */
 .nav {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(6, 4, 13, 0.8);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(6, 4, 13, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--glass-bd);
-  padding: 16px 24px;
+  padding: 14px 24px;
 }
 .nav-inner {
   max-width: 1100px;
@@ -87,28 +82,28 @@ body {
   text-decoration: none;
 }
 .nav-logo-mark {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(124, 58, 237, 0.4);
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.45);
 }
 .nav-logo-mark img { width: 100%; height: 100%; object-fit: cover; }
 .nav-brand {
   font-family: var(--ff-display);
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 800;
   color: #fff;
   letter-spacing: -0.02em;
 }
 .nav-badge {
-  font-size: 0.7rem;
-  padding: 3px 8px;
+  font-size: 0.72rem;
+  padding: 3px 9px;
   border-radius: 6px;
-  background: rgba(124, 58, 237, 0.18);
-  border: 1px solid rgba(167, 139, 250, 0.25);
+  background: rgba(124, 58, 237, 0.25);
+  border: 1px solid rgba(167, 139, 250, 0.35);
   color: var(--c-violet-lt);
-  font-weight: 600;
+  font-weight: 700;
 }
 .nav-actions {
   display: flex;
@@ -116,43 +111,48 @@ body {
   gap: 12px;
 }
 .btn-back {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
+  font-weight: 600;
   color: var(--c-txt-dim);
   text-decoration: none;
-  padding: 8px 14px;
+  padding: 8px 16px;
   border-radius: 10px;
   border: 1px solid var(--glass-bd);
-  transition: all 0.2s;
+  background: rgba(255, 255, 255, 0.03);
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 .btn-back:hover {
   color: #fff;
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
 }
 .btn-launch {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #fff;
-  background: linear-gradient(135deg, #7c3aed, #06b6d4);
-  padding: 8px 18px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #08090d;
+  background: #ffffff;
+  padding: 9px 20px;
   border-radius: 10px;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.35);
-  transition: all 0.2s;
+  gap: 7px;
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.25);
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 .btn-launch:hover {
+  background: var(--c-violet-lt);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.5);
+  box-shadow: 0 8px 24px rgba(184, 161, 255, 0.5);
 }
 
 /* CONTAINER */
 .container {
   max-width: 960px;
   margin: 0 auto;
-  padding: 60px 24px 100px;
+  padding: 48px 20px 100px;
   position: relative;
   z-index: 1;
 }
@@ -160,115 +160,121 @@ body {
 /* HERO */
 .hero {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 .hero-tag {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 14px;
+  padding: 6px 16px;
   border-radius: 99px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 0.8rem;
-  font-weight: 600;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.82rem;
+  font-weight: 700;
   color: var(--c-violet-lt);
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 .hero h1 {
   font-family: var(--ff-display);
   font-size: 2.75rem;
   font-weight: 800;
-  line-height: 1.15;
   letter-spacing: -0.03em;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
+  line-height: 1.15;
 }
 .hero h1 span {
-  background: linear-gradient(135deg, #fff 40%, var(--c-violet-lt) 70%, var(--c-cyan-lt) 100%);
+  background: linear-gradient(135deg, #fff 30%, var(--c-violet-lt) 70%, var(--c-cyan-lt) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 .hero p {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--c-txt-dim);
-  max-width: 620px;
-  margin: 0 auto 30px;
+  max-width: 640px;
+  margin: 0 auto 28px;
 }
 
 /* METHOD TABS */
 .method-tabs {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 40px;
+  gap: 14px;
+  margin-bottom: 34px;
 }
 .tab-btn {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--glass-bd);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid var(--glass-bd);
   color: var(--c-txt-dim);
-  padding: 12px 24px;
-  border-radius: 12px;
+  padding: 14px 26px;
+  border-radius: 14px;
   font-family: var(--ff-display);
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 0.98rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  user-select: none;
 }
 .tab-btn:hover {
   color: #fff;
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
 }
 .tab-btn.active {
-  background: rgba(124, 58, 237, 0.2);
-  border-color: rgba(167, 139, 250, 0.5);
+  background: rgba(124, 58, 237, 0.28);
+  border-color: rgba(167, 139, 250, 0.7);
   color: #fff;
-  box-shadow: 0 0 24px rgba(124, 58, 237, 0.25);
+  box-shadow: 0 0 28px rgba(124, 58, 237, 0.35);
 }
 .tab-pill {
-  font-size: 0.68rem;
-  padding: 2px 7px;
+  font-size: 0.72rem;
+  padding: 3px 9px;
   border-radius: 99px;
-  background: rgba(16, 185, 129, 0.2);
+  background: rgba(16, 185, 129, 0.25);
   color: #34d399;
+  font-weight: 700;
 }
 
-/* TUTORIAL CARD */
+/* TUTORIAL SECTION */
 .tutorial-section {
   display: none;
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .tutorial-section.active {
   display: block;
 }
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .guide-card {
   background: var(--c-card);
   border: 1px solid var(--glass-bd);
-  border-radius: 20px;
+  border-radius: 24px;
   padding: 36px 32px;
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
   margin-bottom: 30px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
 }
 .guide-card-head {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   margin-bottom: 28px;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--glass-bd);
+  flex-wrap: wrap;
+  gap: 14px;
 }
 .guide-card-title {
   font-family: var(--ff-display);
-  font-size: 1.35rem;
-  font-weight: 700;
+  font-size: 1.4rem;
+  font-weight: 800;
   color: #fff;
   margin-bottom: 4px;
 }
@@ -277,48 +283,95 @@ body {
   color: var(--c-txt-dim);
 }
 
+/* ACTION BANNER */
+.launch-hero-box {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(6, 182, 212, 0.15));
+  border: 1.5px solid rgba(167, 139, 250, 0.4);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.launch-hero-info h4 {
+  font-family: var(--ff-display);
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.launch-hero-info p {
+  font-size: 0.86rem;
+  color: #cbd5e1;
+}
+.launch-hero-btn {
+  background: #ffffff;
+  color: #08090d;
+  font-family: var(--ff-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 12px 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 18px rgba(255, 255, 255, 0.3);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.launch-hero-btn:hover {
+  background: var(--c-violet-lt);
+  transform: scale(1.04);
+  box-shadow: 0 6px 24px rgba(184, 161, 255, 0.6);
+}
+
 /* STEP LIST */
 .steps-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
 }
 .step-item {
   display: flex;
   gap: 20px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 14px;
-  padding: 20px 22px;
-  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  padding: 22px 24px;
+  transition: all 0.25s ease;
 }
 .step-item:hover {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(167, 139, 250, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(167, 139, 250, 0.35);
   transform: translateX(4px);
 }
 .step-num {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(6, 182, 212, 0.3));
-  border: 1px solid rgba(167, 139, 250, 0.3);
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.5), rgba(6, 182, 212, 0.4));
+  border: 1.5px solid rgba(167, 139, 250, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--ff-display);
-  font-weight: 700;
-  font-size: 0.95rem;
+  font-weight: 800;
+  font-size: 1.05rem;
   color: #fff;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
 }
 .step-content {
   flex: 1;
 }
 .step-title {
   font-family: var(--ff-display);
-  font-weight: 700;
-  font-size: 1.05rem;
+  font-weight: 800;
+  font-size: 1.1rem;
   color: #fff;
   margin-bottom: 6px;
   display: flex;
@@ -326,41 +379,46 @@ body {
   gap: 8px;
 }
 .step-desc {
-  font-size: 0.88rem;
-  color: var(--c-txt-dim);
+  font-size: 0.92rem;
+  color: #cbd5e1;
   line-height: 1.6;
+}
+.step-desc strong {
+  color: #ffffff;
 }
 .step-hint {
   margin-top: 10px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 8px;
-  background: rgba(124, 58, 237, 0.1);
-  border: 1px solid rgba(167, 139, 250, 0.15);
-  font-size: 0.78rem;
-  color: var(--c-violet-lt);
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 9px;
+  background: rgba(124, 58, 237, 0.15);
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #d8b4fe;
 }
 
-/* HIGHLIGHT BOX */
+/* CALLOUT */
 .callout {
-  background: rgba(16, 185, 129, 0.08);
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  border-radius: 12px;
-  padding: 16px 20px;
-  margin-top: 24px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1.5px solid rgba(16, 185, 129, 0.3);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-top: 26px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 }
 .callout-icon {
-  color: #10b981;
+  color: #34d399;
   flex-shrink: 0;
 }
 .callout-text {
-  font-size: 0.85rem;
-  color: #a7f3d0;
+  font-size: 0.88rem;
+  color: #d1fae5;
+  line-height: 1.55;
 }
 
 /* FAQ SECTION */
@@ -369,37 +427,43 @@ body {
 }
 .faq-title {
   font-family: var(--ff-display);
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.6rem;
+  font-weight: 800;
   margin-bottom: 24px;
   text-align: center;
 }
 .faq-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 18px;
 }
-@media (max-width: 680px) {
+@media (max-width: 768px) {
   .faq-grid { grid-template-columns: 1fr; }
-  .hero h1 { font-size: 2.1rem; }
+  .hero h1 { font-size: 2.2rem; }
   .method-tabs { flex-direction: column; }
+  .step-item { flex-direction: column; gap: 12px; }
+  .launch-hero-box { flex-direction: column; align-items: flex-start; }
 }
 .faq-card {
-  background: rgba(22, 16, 42, 0.4);
+  background: rgba(22, 16, 42, 0.5);
   border: 1px solid var(--glass-bd);
-  border-radius: 14px;
-  padding: 20px;
+  border-radius: 16px;
+  padding: 22px;
+  transition: border-color 0.2s;
+}
+.faq-card:hover {
+  border-color: rgba(167, 139, 250, 0.35);
 }
 .faq-q {
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-weight: 700;
+  font-size: 1rem;
   color: #fff;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 .faq-a {
-  font-size: 0.82rem;
+  font-size: 0.86rem;
   color: var(--c-txt-dim);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 /* FOOTER */
@@ -408,18 +472,14 @@ body {
   padding-top: 40px;
   border-top: 1px solid var(--glass-bd);
   margin-top: 60px;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   color: var(--c-txt-muted);
 }
 </style>
 </head>
 <body>
 
-<div class="ambient">
-  <div class="ambient-blob b1"></div>
-  <div class="ambient-blob b2"></div>
-  <div class="ambient-blob b3"></div>
-</div>
+<canvas id="bg-canvas"></canvas>
 
 <!-- TOP NAVIGATION -->
 <nav class="nav">
@@ -430,8 +490,8 @@ body {
       <span class="nav-badge">iOS Hub</span>
     </a>
     <div class="nav-actions">
-      <a href="../#downloads" class="btn-back">&larr; All Downloads</a>
-      <a href="../player/index.html" class="btn-launch" target="_blank">
+      <a href="../#downloads" class="btn-back">&larr; All Platforms</a>
+      <a href="../player/index.html" class="btn-launch">
         <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
         Launch Web Player
       </a>
@@ -445,21 +505,21 @@ body {
   <!-- HERO -->
   <header class="hero">
     <div class="hero-tag">
-      <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
       Official iOS Installation Guide
     </div>
     <h1>Step-by-Step <span>Melora for iPhone &amp; iPad</span></h1>
-    <p>Enjoy distraction-free music on your iPhone. Apple restricts unsigned App Store downloads, so choose the method that best fits your workflow.</p>
+    <p>Enjoy ad-free streaming on your iPhone with full-screen controls, Lock Screen artwork, and zero revokes. Choose your installation method below:</p>
 
     <!-- METHOD SELECTOR -->
     <div class="method-tabs">
       <button type="button" class="tab-btn active" id="tabPwa" onclick="setTab('pwa')">
-        <span>✨ Method 1: Instant Safari PWA</span>
+        <span>✨ Method 1: Instant Safari Web App</span>
         <span class="tab-pill">Recommended</span>
       </button>
       <button type="button" class="tab-btn" id="tabSideload" onclick="setTab('sideload')">
-        <span>⚙️ Method 2: Sideload IPA</span>
-        <span style="font-size:0.68rem;padding:2px 7px;border-radius:99px;background:rgba(255,255,255,0.08);color:var(--c-txt-dim);">AltStore</span>
+        <span>⚙️ Method 2: Sideload IPA Package</span>
+        <span style="font-size:0.72rem;padding:2px 8px;border-radius:99px;background:rgba(255,255,255,0.08);color:var(--c-txt-dim);">AltStore</span>
       </button>
     </div>
   </header>
@@ -474,6 +534,17 @@ body {
         </div>
       </div>
 
+      <!-- Quick Launch Card -->
+      <div class="launch-hero-box">
+        <div class="launch-hero-info">
+          <h4>Ready to install on this iPhone?</h4>
+          <p>Tap the button to open the Melora Web Player right now in Safari.</p>
+        </div>
+        <a href="../player/index.html" class="launch-hero-btn">
+          <span>🚀 Launch Web Player</span>
+        </a>
+      </div>
+
       <div class="steps-list">
 
         <!-- STEP 1 -->
@@ -481,11 +552,9 @@ body {
           <div class="step-num">1</div>
           <div class="step-content">
             <div class="step-title">Open the Web Player in Safari</div>
-            <div class="step-desc">On your iPhone or iPad, open the <strong>Safari</strong> browser and navigate to the Melora Web Player. (Make sure you use Safari, as iOS only allows Home Screen installations via Safari).</div>
-            <div style="margin-top:10px;">
-              <a href="../player/index.html" class="btn-launch" target="_blank" style="padding:7px 14px;font-size:0.8rem;">
-                Open Web Player in Safari &nearr;
-              </a>
+            <div class="step-desc">On your iPhone or iPad, open the <strong>Safari</strong> browser and navigate to the Melora Web Player. (Make sure you use <strong>Safari</strong>, as iOS only supports standalone Home Screen installs via Safari).</div>
+            <div class="step-hint">
+              💡 Tip: If you are already viewing this page on your iPhone, simply tap <strong>"Launch Web Player"</strong> above!
             </div>
           </div>
         </div>
@@ -495,9 +564,9 @@ body {
           <div class="step-num">2</div>
           <div class="step-content">
             <div class="step-title">Tap the Share Icon</div>
-            <div class="step-desc">At the bottom toolbar of Safari (or top bar on iPad), tap the <strong>Share</strong> button (the square icon with an upward arrow pointing out: <code>[ &uarr; ]</code>).</div>
+            <div class="step-desc">At the bottom toolbar of Safari (or top right on iPad), tap the <strong>Share</strong> button (the square icon with an upward arrow pointing out: <code>[ &uarr; ]</code>).</div>
             <div class="step-hint">
-              💡 Look at the bottom center of your iPhone screen
+              📱 Look at the bottom center of your iPhone screen
             </div>
           </div>
         </div>
@@ -506,8 +575,8 @@ body {
         <div class="step-item">
           <div class="step-num">3</div>
           <div class="step-content">
-            <div class="step-title">Select "Add to Home Screen"</div>
-            <div class="step-desc">In the iOS Share menu sheet, scroll down past the contact list and tap <strong>"Add to Home Screen"</strong> (the icon with a plus inside a square <code>&#8862;</code>).</div>
+            <div class="step-title">Scroll &amp; Select "Add to Home Screen"</div>
+            <div class="step-desc">In the iOS Share sheet that slides up, scroll down past the contacts and airplay section and tap <strong>"Add to Home Screen"</strong> (icon with a plus inside a square <code>&#8862;</code>).</div>
           </div>
         </div>
 
@@ -516,7 +585,7 @@ body {
           <div class="step-num">4</div>
           <div class="step-content">
             <div class="step-title">Confirm and Tap "Add"</div>
-            <div class="step-desc">A confirmation dialog appears showing the Melora logo and title. Simply tap <strong>"Add"</strong> in the top-right corner.</div>
+            <div class="step-desc">A preview window appears displaying the Melora icon and title. Tap <strong>"Add"</strong> in the top-right corner of your screen.</div>
           </div>
         </div>
 
@@ -525,7 +594,7 @@ body {
           <div class="step-num">5</div>
           <div class="step-content">
             <div class="step-title">Launch Melora from your Home Screen</div>
-            <div class="step-desc">Return to your iPhone Home Screen. You will see the native <strong>Melora</strong> app icon. Tap it to launch full-screen with no browser address bars, offline caching, and responsive sound.</div>
+            <div class="step-desc">Go to your iPhone Home Screen. Tap the new <strong>Melora</strong> app icon. It launches as a 100% full-screen app with zero Safari URL bars, Lock Screen audio controls, and background streaming!</div>
           </div>
         </div>
 
@@ -533,10 +602,10 @@ body {
 
       <div class="callout">
         <div class="callout-icon">
-          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </div>
         <div class="callout-text">
-          <strong>Zero Expiry Guarantee:</strong> Unlike sideloaded apps which expire every 7 days without a paid Apple Developer Account, Safari Web Apps never expire and never get revoked.
+          <strong>Zero Expiry Guarantee:</strong> Unlike sideloaded IPA apps which expire after 7 days, Safari Web Apps never expire and never need to be re-signed.
         </div>
       </div>
     </div>
@@ -548,7 +617,7 @@ body {
       <div class="guide-card-head">
         <div>
           <div class="guide-card-title">Method 2: Sideload via AltStore / Sideloadly</div>
-          <div class="guide-card-subtitle">For power users who want the native Flutter engine &bull; Requires a PC or Mac</div>
+          <div class="guide-card-subtitle">For power users who prefer sideloading the native iOS binary &bull; Requires a PC or Mac</div>
         </div>
       </div>
 
@@ -558,8 +627,8 @@ body {
         <div class="step-item">
           <div class="step-num">1</div>
           <div class="step-content">
-            <div class="step-title">Install AltServer on your PC / Mac</div>
-            <div class="step-desc">Download and install <strong>AltServer</strong> from <a href="https://altstore.io" target="_blank" style="color:var(--c-cyan-lt);">altstore.io</a>. Launch AltServer and enable Wi-Fi sync in iTunes / Finder.</div>
+            <div class="step-title">Install AltServer on your PC or Mac</div>
+            <div class="step-desc">Download and install <strong>AltServer</strong> from <a href="https://altstore.io" target="_blank" rel="noopener" style="color:var(--c-cyan-lt);font-weight:600;text-decoration:underline;">altstore.io</a>. Launch AltServer and enable Wi-Fi sync in iTunes / Finder.</div>
           </div>
         </div>
 
@@ -576,10 +645,10 @@ body {
         <div class="step-item">
           <div class="step-num">3</div>
           <div class="step-content">
-            <div class="step-title">Download the Melora iOS IPA</div>
+            <div class="step-title">Download the Melora iOS IPA Package</div>
             <div class="step-desc">Download the latest official Melora iOS build file directly from GitHub Releases:</div>
-            <div style="margin-top:10px;">
-              <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest" class="btn-launch" target="_blank" style="padding:7px 14px;font-size:0.8rem;background:rgba(255,255,255,0.06);border:1px solid var(--glass-bd);">
+            <div style="margin-top:12px;">
+              <a href="https://github.com/harshakalimireddi-collab/Melora-appplayer/releases/latest" class="btn-launch" target="_blank" rel="noopener" style="padding:10px 18px;font-size:0.85rem;background:rgba(255,255,255,0.08);color:#fff;border:1px solid var(--glass-bd);">
                 Download Melora.ipa from Releases &rarr;
               </a>
             </div>
@@ -600,7 +669,7 @@ body {
           <div class="step-num">5</div>
           <div class="step-content">
             <div class="step-title">Trust Developer Certificate</div>
-            <div class="step-desc">On your iPhone, go to <strong>Settings &gt; General &gt; VPN &amp; Device Management</strong>. Tap your Apple ID and tap <strong>"Trust"</strong>. Melora is now ready to run!</div>
+            <div class="step-desc">On your iPhone, go to <strong>Settings &gt; General &gt; VPN &amp; Device Management</strong>. Tap your Apple ID profile and select <strong>"Trust"</strong>. Melora is now ready to run!</div>
           </div>
         </div>
 
@@ -611,7 +680,7 @@ body {
           <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
         </div>
         <div class="callout-text" style="color:#fde68a;">
-          <strong>7-Day Sideload Refresh Note:</strong> Free Apple IDs require refreshing sideloaded apps every 7 days via AltStore. For a completely hassle-free experience with zero refreshes, we strongly recommend <strong>Method 1 (Safari PWA)</strong>.
+          <strong>7-Day Sideload Refresh Note:</strong> Free Apple IDs require refreshing sideloaded apps every 7 days via AltStore. For a completely hassle-free experience with zero refreshes, we strongly recommend <strong>Method 1 (Safari Web App)</strong>.
         </div>
       </div>
     </div>
@@ -627,7 +696,7 @@ body {
       </div>
       <div class="faq-card">
         <div class="faq-q">Does background playback work on iOS?</div>
-        <div class="faq-a">Yes! When added to your Home Screen as a Web App, iOS Media Session API integrates with the native iOS Lock Screen, Dynamic Island, and Control Center playback controls.</div>
+        <div class="faq-a">Yes! When added to your Home Screen as a Web App, the iOS Media Session API integrates with the native iOS Lock Screen, Dynamic Island, and Control Center playback controls.</div>
       </div>
       <div class="faq-card">
         <div class="faq-q">Is the Web Player free of advertisements?</div>
@@ -635,7 +704,7 @@ body {
       </div>
       <div class="faq-card">
         <div class="faq-q">Can I import my Spotify playlists on iPhone?</div>
-        <div class="faq-a">Yes! Open the Web Player, paste any Spotify playlist URL into the search bar, and Melora will automatically load all tracks instantly.</div>
+        <div class="faq-a">Yes! Open the Web Player, tap the Spotify icon at the top, paste any public playlist URL, and Melora will load all tracks immediately.</div>
       </div>
     </div>
   </section>
@@ -648,12 +717,113 @@ body {
 </div>
 
 <script>
+// Tab switcher supporting touch and pointer events
 function setTab(name) {
-  document.getElementById('tabPwa').classList.toggle('active', name === 'pwa');
-  document.getElementById('tabSideload').classList.toggle('active', name === 'sideload');
-  document.getElementById('sectionPwa').classList.toggle('active', name === 'pwa');
-  document.getElementById('sectionSideload').classList.toggle('active', name === 'sideload');
+  var tabPwa = document.getElementById('tabPwa');
+  var tabSideload = document.getElementById('tabSideload');
+  var secPwa = document.getElementById('sectionPwa');
+  var secSideload = document.getElementById('sectionSideload');
+  
+  if (tabPwa) tabPwa.classList.toggle('active', name === 'pwa');
+  if (tabSideload) tabSideload.classList.toggle('active', name === 'sideload');
+  if (secPwa) secPwa.classList.toggle('active', name === 'pwa');
+  if (secSideload) secSideload.classList.toggle('active', name === 'sideload');
 }
+
+// Bind both click and touch listeners to tab buttons
+document.addEventListener('DOMContentLoaded', function () {
+  var tPwa = document.getElementById('tabPwa');
+  var tSide = document.getElementById('tabSideload');
+  if (tPwa) {
+    tPwa.addEventListener('click', function () { setTab('pwa'); });
+    tPwa.addEventListener('touchend', function (e) { e.preventDefault(); setTab('pwa'); });
+  }
+  if (tSide) {
+    tSide.addEventListener('click', function () { setTab('sideload'); });
+    tSide.addEventListener('touchend', function (e) { e.preventDefault(); setTab('sideload'); });
+  }
+});
+
+// Professional Starfield Background
+(function () {
+  var c = document.getElementById('bg-canvas');
+  if (!c) return;
+  var ctx = c.getContext('2d');
+  if (!ctx) return;
+
+  var W = 0, H = 0, dpr = 1;
+  var stars = [];
+  var lastTime = 0;
+
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+
+  function initStars() {
+    var count = Math.min(Math.max(Math.floor((W * H) / 14000), 50), 120);
+    stars = [];
+    for (var i = 0; i < count; i++) {
+      var isBright = Math.random() > 0.8;
+      stars.push({
+        x: rnd(0, W), y: rnd(0, H),
+        r: isBright ? rnd(1.4, 2.0) : rnd(0.5, 1.2),
+        dx: rnd(-0.03, 0.03), dy: rnd(-0.12, -0.03),
+        baseAlpha: isBright ? rnd(0.7, 0.95) : rnd(0.3, 0.65),
+        twinkleAmp: rnd(0.08, 0.22),
+        twinkleSpeed: rnd(0.015, 0.04),
+        twinklePhase: rnd(0, Math.PI * 2)
+      });
+    }
+  }
+
+  function resize() {
+    W = window.innerWidth; H = window.innerHeight;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    c.width = W * dpr; c.height = H * dpr;
+    c.style.width = W + 'px'; c.style.height = H + 'px';
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.scale(dpr, dpr);
+    initStars();
+  }
+
+  function render(time) {
+    if (!time) time = 0;
+    var dt = Math.min((time - lastTime) / 16.67, 2.5) || 1;
+    lastTime = time;
+
+    ctx.fillStyle = '#06040d'; ctx.fillRect(0, 0, W, H);
+
+    var maxDim = Math.max(W, H);
+    var g1 = ctx.createRadialGradient(W * 0.25, H * 0.25, 0, W * 0.25, H * 0.25, maxDim * 0.45);
+    g1.addColorStop(0, 'rgba(124,58,237,0.12)');
+    g1.addColorStop(1, 'transparent');
+    ctx.fillStyle = g1; ctx.fillRect(0, 0, W, H);
+
+    var g2 = ctx.createRadialGradient(W * 0.75, H * 0.6, 0, W * 0.75, H * 0.6, maxDim * 0.4);
+    g2.addColorStop(0, 'rgba(6,182,212,0.08)');
+    g2.addColorStop(1, 'transparent');
+    ctx.fillStyle = g2; ctx.fillRect(0, 0, W, H);
+
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i];
+      s.x += s.dx * dt; s.y += s.dy * dt;
+      s.twinklePhase += s.twinkleSpeed * dt;
+      if (s.y < -5) s.y = H + 5;
+      if (s.x < -5) s.x = W + 5; else if (s.x > W + 5) s.x = -5;
+
+      var alpha = s.baseAlpha + Math.sin(s.twinklePhase) * s.twinkleAmp;
+      alpha = Math.max(0.2, Math.min(1, alpha));
+
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(235, 240, 255, ' + alpha + ')';
+      ctx.fill();
+    }
+
+    requestAnimationFrame(render);
+  }
+
+  window.addEventListener('resize', resize, { passive: true });
+  resize();
+  requestAnimationFrame(render);
+})();
 </script>
 
 </body>
