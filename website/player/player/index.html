@@ -665,6 +665,8 @@
       border-radius: var(--radius-sm);
       overflow: hidden;
       position: relative;
+      background: #141722;
+      flex-shrink: 0;
     }
     .media-art-box.circle {
       border-radius: 50%;
@@ -1697,7 +1699,7 @@
         title: "BIRDS OF A FEATHER",
         artist: "Billie Eilish",
         album: "HIT ME HARD AND SOFT",
-        art: "https://images.unsplash.com/photo-1520523839898-507125cd53c1?auto=format&fit=crop&w=600&q=80",
+        art: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=600&q=80",
         duration: 196,
         streamUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
       },
@@ -1814,7 +1816,7 @@
         title: "vampire",
         artist: "Olivia Rodrigo",
         album: "GUTS",
-        art: "https://images.unsplash.com/photo-1520523839898-507125cd53c1?auto=format&fit=crop&w=600&q=80",
+        art: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=600&q=80",
         duration: 219,
         streamUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
       },
@@ -1880,7 +1882,7 @@
     // Curated Artists (with verified roles)
     const CURATED_ARTISTS = [
       { id: "art-1", name: "Sabrina Carpenter", role: "Pop Royalty &bull; 85M monthly", art: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" },
-      { id: "art-2", name: "Billie Eilish", role: "Alt-Pop Visionary &bull; 92M monthly", art: "https://images.unsplash.com/photo-1520523839898-507125cd53c1?auto=format&fit=crop&w=400&q=80" },
+      { id: "art-2", name: "Billie Eilish", role: "Alt-Pop Visionary &bull; 92M monthly", art: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80" },
       { id: "art-3", name: "Kendrick Lamar", role: "Hip-Hop Icon &bull; 74M monthly", art: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" },
       { id: "art-4", name: "The Weeknd", role: "R&B / Synthwave &bull; 108M monthly", art: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=400&q=80" },
       { id: "art-5", name: "Chappell Roan", role: "Breakout Star &bull; 45M monthly", art: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80" },
@@ -1892,10 +1894,10 @@
     // Curated Albums
     const CURATED_ALBUMS = [
       { id: "alb-1", title: "Short n' Sweet", artist: "Sabrina Carpenter &bull; 2024", art: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" },
-      { id: "alb-2", title: "HIT ME HARD AND SOFT", artist: "Billie Eilish &bull; 2024", art: "https://images.unsplash.com/photo-1520523839898-507125cd53c1?auto=format&fit=crop&w=400&q=80" },
+      { id: "alb-2", title: "HIT ME HARD AND SOFT", artist: "Billie Eilish &bull; 2024", art: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80" },
       { id: "alb-3", title: "After Hours", artist: "The Weeknd &bull; 2020", art: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=400&q=80" },
       { id: "alb-4", title: "GNX", artist: "Kendrick Lamar &bull; 2024", art: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" },
-      { id: "alb-5", title: "GUTS", artist: "Olivia Rodrigo &bull; 2023", art: "https://images.unsplash.com/photo-1520523839898-507125cd53c1?auto=format&fit=crop&w=400&q=80" },
+      { id: "alb-5", title: "GUTS", artist: "Olivia Rodrigo &bull; 2023", art: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80" },
       { id: "alb-6", title: "Radical Optimism", artist: "Dua Lipa &bull; 2024", art: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" }
     ];
 
@@ -2268,7 +2270,7 @@
         return `
           <div class="media-card" onclick="${clickAction}">
             <div class="media-art-box ${isCircle ? 'circle' : ''}">
-              <img class="media-art-img" src="${item.art}" alt="${title}" loading="lazy">
+              <img class="media-art-img" src="${item.art}" alt="${title}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80';">
               <div class="media-play-badge">
                 <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
               </div>
@@ -2287,7 +2289,7 @@
         plGrid.innerHTML = CURATED_PLAYLISTS.map((item, idx) => `
           <div class="media-card" style="width:auto;" onclick="playTrack(GLOBAL_HOT_HITS[${idx % GLOBAL_HOT_HITS.length}])">
             <div class="media-art-box">
-              <img class="media-art-img" src="${item.art}" alt="${item.title}">
+              <img class="media-art-img" src="${item.art}" alt="${item.title}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80';">
               <div class="media-play-badge">
                 <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
               </div>
@@ -2304,7 +2306,7 @@
         artGrid.innerHTML = CURATED_ARTISTS.map((item, idx) => `
           <div class="media-card" style="width:auto;" onclick="playTrack(GLOBAL_HOT_HITS[${idx % GLOBAL_HOT_HITS.length}])">
             <div class="media-art-box circle">
-              <img class="media-art-img" src="${item.art}" alt="${item.name}">
+              <img class="media-art-img" src="${item.art}" alt="${item.name}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80';">
               <div class="media-play-badge">
                 <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
               </div>
@@ -2321,7 +2323,7 @@
         albGrid.innerHTML = CURATED_ALBUMS.map((item, idx) => `
           <div class="media-card" style="width:auto;" onclick="playTrack(GLOBAL_HOT_HITS[${idx % GLOBAL_HOT_HITS.length}])">
             <div class="media-art-box">
-              <img class="media-art-img" src="${item.art}" alt="${item.title}">
+              <img class="media-art-img" src="${item.art}" alt="${item.title}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80';">
               <div class="media-play-badge">
                 <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
               </div>
@@ -2338,7 +2340,7 @@
         radGrid.innerHTML = LIVE_RADIO.map((item, idx) => `
           <div class="media-card" style="width:auto;" onclick="playTrack(GLOBAL_HOT_HITS[${idx % GLOBAL_HOT_HITS.length}])">
             <div class="media-art-box">
-              <img class="media-art-img" src="${item.art}" alt="${item.title}">
+              <img class="media-art-img" src="${item.art}" alt="${item.title}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80';">
               <div class="media-play-badge">
                 <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
               </div>
@@ -2437,7 +2439,7 @@
         resGrid.innerHTML = matches.map(track => `
           <div class="media-card" style="width:auto;" onclick='playTrack(${JSON.stringify(track).replace(/'/g, "&#39;")})'>
             <div class="media-art-box">
-              <img class="media-art-img" src="${track.art}" alt="${track.title}">
+              <img class="media-art-img" src="${track.art}" alt="${track.title}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80';">
               <div class="media-play-badge">
                 <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
               </div>
