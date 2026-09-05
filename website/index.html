@@ -2544,193 +2544,151 @@
   </div>
 
   <script>
-    // ── Ultra-Vivid Cosmic Starfield & Ambient Starlight Engine ──
+    // ── Professional Starfield: Clean & Elegant Astronomy Style ──
     (function () {
       var c = document.getElementById('bg-canvas');
       if (!c) return;
       var ctx = c.getContext('2d');
       if (!ctx) return;
 
-      var W = 0, H = 0;
+      var W = 0, H = 0, dpr = 1;
       var stars = [];
-      var orbs = [];
       var shootingStars = [];
-      var nextShootingStarTime = performance.now() + 3000;
+      var lastTime = 0;
+      var nextShootingStarTime = 0;
 
-      function rnd(min, max) { return min + Math.random() * (max - min); }
+      var STAR_TYPES = [
+        { core: '255,255,255', glow: '200,220,255' },
+        { core: '220,230,255', glow: '160,180,255' },
+        { core: '240,235,255', glow: '180,160,255' }
+      ];
 
-      function initOrbs() {
-        orbs = [
-          { x: W * 0.15, y: H * 0.2, r: 480, dx: 0.09, dy: 0.06, col: 'rgba(124, 58, 237, 0.22)' },
-          { x: W * 0.85, y: H * 0.4, r: 440, dx: -0.07, dy: 0.08, col: 'rgba(6, 182, 212, 0.18)' },
-          { x: W * 0.5, y: H * 0.85, r: 400, dx: 0.08, dy: -0.07, col: 'rgba(167, 139, 250, 0.15)' }
-        ];
+      function pickType() {
+        var r = Math.random();
+        if (r < 0.55) return STAR_TYPES[0];
+        if (r < 0.85) return STAR_TYPES[1];
+        return STAR_TYPES[2];
       }
 
-      function initStars() {
-        stars = [];
-        var count = 160;
-        var PALETTES = [
-          { c: '255, 255, 255', g: '210, 230, 255' },
-          { c: '235, 225, 255', g: '167, 139, 250' },
-          { c: '210, 245, 255', g: '34, 211, 238' },
-          { c: '255, 245, 210', g: '251, 191, 36' }
-        ];
+      function rnd(a, b) { return a + Math.random() * (b - a); }
 
+      function initStars() {
+        var count = Math.min(Math.max(Math.floor((W * H) / 12000), 60), 130);
+        stars = [];
         for (var i = 0; i < count; i++) {
-          var pal = PALETTES[Math.floor(Math.random() * PALETTES.length)];
-          var isSparkle = Math.random() > 0.78;
-          var isProminent = Math.random() > 0.65;
+          var t = pickType();
+          var isBright = Math.random() > 0.78;
+          var hasCross = isBright && Math.random() > 0.55;
           stars.push({
-            x: rnd(0, W),
-            y: rnd(0, H),
-            r: isProminent ? rnd(1.8, 3.2) : rnd(1.0, 1.9),
-            dx: rnd(-0.12, 0.12),
-            dy: rnd(-0.35, -0.08),
-            baseAlpha: rnd(0.5, 0.95),
-            twinkleSpeed: rnd(0.025, 0.07),
-            phase: rnd(0, Math.PI * 2),
-            coreColor: pal.c,
-            glowColor: pal.g,
-            sparkle: isSparkle,
-            sparkleLen: rnd(4, 9)
+            x: rnd(0, W), y: rnd(0, H),
+            r: isBright ? rnd(1.4, 2.2) : rnd(0.5, 1.2),
+            dx: rnd(-0.04, 0.04), dy: rnd(-0.15, -0.04),
+            baseAlpha: isBright ? rnd(0.72, 0.95) : rnd(0.35, 0.68),
+            twinkleAmp: rnd(0.06, 0.22),
+            twinkleSpeed: rnd(0.015, 0.045),
+            twinklePhase: rnd(0, Math.PI * 2),
+            core: t.core, glow: t.glow,
+            hasCross: hasCross, crossLen: rnd(3, 7)
           });
         }
       }
 
       function spawnShootingStar(now) {
         shootingStars.push({
-          x: rnd(W * 0.05, W * 0.85),
-          y: rnd(0, H * 0.35),
-          len: rnd(110, 180),
-          speed: rnd(14, 22),
-          angle: rnd(Math.PI * 0.18, Math.PI * 0.28),
-          alpha: 1,
-          decay: rnd(0.018, 0.032),
-          width: rnd(1.8, 2.8)
+          x: rnd(W * 0.1, W * 0.85), y: rnd(0, H * 0.4),
+          len: rnd(80, 140), speed: rnd(10, 16),
+          angle: rnd(Math.PI * 0.2, Math.PI * 0.3),
+          alpha: 0.9, decay: rnd(0.016, 0.028), width: rnd(1.0, 1.8)
         });
-        nextShootingStarTime = now + rnd(3500, 7000);
+        nextShootingStarTime = now + rnd(4500, 9000);
       }
 
       function resize() {
-        W = c.width = window.innerWidth;
-        H = c.height = window.innerHeight;
-        initOrbs();
+        W = window.innerWidth; H = window.innerHeight;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        c.width = W * dpr; c.height = H * dpr;
+        c.style.width = W + 'px'; c.style.height = H + 'px';
+        ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.scale(dpr, dpr);
         if (stars.length === 0) initStars();
+        else { for (var i = 0; i < stars.length; i++) {
+          if (stars[i].x > W) stars[i].x = rnd(0, W);
+          if (stars[i].y > H) stars[i].y = rnd(0, H);
+        }}
       }
 
-      function draw(time) {
-        if (!time) time = performance.now();
+      function render(time) {
+        if (!time) time = 0;
+        var dt = Math.min((time - lastTime) / 16.67, 2.5) || 1;
+        lastTime = time;
 
-        ctx.fillStyle = '#06040d';
-        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = '#06040e'; ctx.fillRect(0, 0, W, H);
 
-        // 1. Radiant Cosmic Orbs
-        for (var o = 0; o < orbs.length; o++) {
-          var orb = orbs[o];
-          orb.x += orb.dx;
-          orb.y += orb.dy;
-          if (orb.x - orb.r > W || orb.x + orb.r < 0) orb.dx *= -1;
-          if (orb.y - orb.r > H || orb.y + orb.r < 0) orb.dy *= -1;
+        var maxDim = Math.max(W, H);
+        var g1 = ctx.createRadialGradient(W * 0.22, H * 0.28, 0, W * 0.22, H * 0.28, maxDim * 0.45);
+        g1.addColorStop(0, 'rgba(109,40,217,0.13)');
+        g1.addColorStop(0.5, 'rgba(109,40,217,0.04)');
+        g1.addColorStop(1, 'transparent');
+        ctx.fillStyle = g1; ctx.fillRect(0, 0, W, H);
 
-          var grad = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.r);
-          grad.addColorStop(0, orb.col);
-          grad.addColorStop(1, 'transparent');
-          ctx.beginPath();
-          ctx.arc(orb.x, orb.y, orb.r, 0, Math.PI * 2);
-          ctx.fillStyle = grad;
-          ctx.fill();
-        }
+        var g2 = ctx.createRadialGradient(W * 0.78, H * 0.55, 0, W * 0.78, H * 0.55, maxDim * 0.38);
+        g2.addColorStop(0, 'rgba(30,58,138,0.10)');
+        g2.addColorStop(0.5, 'rgba(30,58,138,0.03)');
+        g2.addColorStop(1, 'transparent');
+        ctx.fillStyle = g2; ctx.fillRect(0, 0, W, H);
 
-        // 2. Crisp Twinkling Stars
         for (var i = 0; i < stars.length; i++) {
           var s = stars[i];
-          s.x += s.dx;
-          s.y += s.dy;
-          s.phase += s.twinkleSpeed;
+          s.x += s.dx * dt; s.y += s.dy * dt;
+          s.twinklePhase += s.twinkleSpeed * dt;
+          if (s.y < -6) { s.y = H + 6; s.x = rnd(0, W); }
+          else if (s.y > H + 6) { s.y = -6; }
+          if (s.x < -6) s.x = W + 6; else if (s.x > W + 6) s.x = -6;
 
-          if (s.y < -10) { s.y = H + 10; s.x = rnd(0, W); }
-          if (s.x < -10) s.x = W + 10;
-          if (s.x > W + 10) s.x = -10;
+          var alpha = s.baseAlpha + Math.sin(s.twinklePhase) * s.twinkleAmp;
+          if (alpha < 0.18) alpha = 0.18; if (alpha > 1) alpha = 1;
 
-          var alpha = s.baseAlpha + Math.sin(s.phase) * 0.35;
-          if (alpha < 0.25) alpha = 0.25;
-          if (alpha > 1) alpha = 1;
-
-          // Outer Glow
-          if (s.r > 1.5) {
-            ctx.beginPath();
-            ctx.arc(s.x, s.y, s.r * 3, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(' + s.glowColor + ',' + (alpha * 0.35) + ')';
-            ctx.fill();
+          if (s.r > 1.1 && alpha > 0.45) {
+            ctx.beginPath(); ctx.arc(s.x, s.y, s.r * 2.6, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(' + s.glow + ',' + (alpha * 0.22) + ')'; ctx.fill();
           }
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(' + s.core + ',' + alpha + ')'; ctx.fill();
 
-          // Core Star
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(' + s.coreColor + ',' + alpha + ')';
-          ctx.fill();
-
-          // 4-Point Diamond Sparkle
-          if (s.sparkle && alpha > 0.65) {
-            var len = s.sparkleLen * alpha;
-            ctx.strokeStyle = 'rgba(' + s.coreColor + ',' + (alpha * 0.75) + ')';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(s.x - len, s.y);
-            ctx.lineTo(s.x + len, s.y);
-            ctx.moveTo(s.x, s.y - len);
-            ctx.lineTo(s.x, s.y + len);
+          if (s.hasCross && alpha > 0.6) {
+            var cl = s.crossLen * alpha;
+            ctx.strokeStyle = 'rgba(' + s.core + ',' + (alpha * 0.45) + ')';
+            ctx.lineWidth = 0.7; ctx.beginPath();
+            ctx.moveTo(s.x - cl, s.y); ctx.lineTo(s.x + cl, s.y);
+            ctx.moveTo(s.x, s.y - cl); ctx.lineTo(s.x, s.y + cl);
             ctx.stroke();
           }
         }
 
-        // 3. Shooting Stars
-        if (time > nextShootingStarTime) {
-          spawnShootingStar(time);
-        }
+        if (time > nextShootingStarTime) spawnShootingStar(time);
 
         for (var j = shootingStars.length - 1; j >= 0; j--) {
           var m = shootingStars[j];
-          var cosA = Math.cos(m.angle);
-          var sinA = Math.sin(m.angle);
-          m.x += cosA * m.speed;
-          m.y += sinA * m.speed;
-          m.alpha -= m.decay;
-
-          if (m.alpha <= 0 || m.x > W + 50 || m.y > H + 50) {
-            shootingStars.splice(j, 1);
-            continue;
-          }
-
-          var tailX = m.x - cosA * m.len;
-          var tailY = m.y - sinA * m.len;
-          var sGrad = ctx.createLinearGradient(m.x, m.y, tailX, tailY);
-          sGrad.addColorStop(0, 'rgba(255, 255, 255, ' + m.alpha + ')');
-          sGrad.addColorStop(0.3, 'rgba(196, 181, 253, ' + (m.alpha * 0.75) + ')');
-          sGrad.addColorStop(1, 'rgba(124, 58, 237, 0)');
-
-          ctx.strokeStyle = sGrad;
-          ctx.lineWidth = m.width;
-          ctx.lineCap = 'round';
-          ctx.beginPath();
-          ctx.moveTo(m.x, m.y);
-          ctx.lineTo(tailX, tailY);
-          ctx.stroke();
-
-          ctx.beginPath();
-          ctx.arc(m.x, m.y, m.width * 1.5, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(255, 255, 255, ' + m.alpha + ')';
-          ctx.fill();
+          var cosA = Math.cos(m.angle), sinA = Math.sin(m.angle);
+          m.x += cosA * m.speed * dt; m.y += sinA * m.speed * dt;
+          m.alpha -= m.decay * dt;
+          if (m.alpha <= 0 || m.x > W + 50 || m.y > H + 50) { shootingStars.splice(j, 1); continue; }
+          var tailX = m.x - cosA * m.len, tailY = m.y - sinA * m.len;
+          var grad = ctx.createLinearGradient(m.x, m.y, tailX, tailY);
+          grad.addColorStop(0, 'rgba(255,255,255,' + m.alpha + ')');
+          grad.addColorStop(0.35, 'rgba(200,210,255,' + (m.alpha * 0.55) + ')');
+          grad.addColorStop(1, 'rgba(180,160,255,0)');
+          ctx.strokeStyle = grad; ctx.lineWidth = m.width; ctx.lineCap = 'round';
+          ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(tailX, tailY); ctx.stroke();
+          ctx.beginPath(); ctx.arc(m.x, m.y, m.width * 1.2, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255,255,255,' + (m.alpha * 0.9) + ')'; ctx.fill();
         }
-
-        requestAnimationFrame(draw);
+        requestAnimationFrame(render);
       }
 
       window.addEventListener('resize', resize, { passive: true });
-      resize();
-      requestAnimationFrame(draw);
+      resize(); requestAnimationFrame(render);
     })();
+
 
     var nav = document.getElementById('nav');
     window.addEventListener('scroll', function () {
