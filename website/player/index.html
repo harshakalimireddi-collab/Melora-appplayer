@@ -1023,61 +1023,68 @@
       background: var(--c-lavender);
     }
 
-    /* Scrubber Row */
+    /* Scrubber Row - Crystal Clear & Highly Interactive */
     .scrubber-row {
       display: flex;
       align-items: center;
       gap: 12px;
       width: 100%;
+      user-select: none;
     }
     .time-tag {
-      font-size: 0.72rem;
+      font-size: 0.76rem;
       font-family: var(--ff-mono);
-      color: var(--c-text-mut);
-      min-width: 32px;
+      font-weight: 600;
+      color: #94a3b8;
+      min-width: 38px;
     }
     .progress-bar-container {
       flex: 1;
-      height: 4px;
+      height: 6px;
       border-radius: 99px;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       cursor: pointer;
       position: relative;
-      transition: height 0.15s ease;
-      padding: 6px 0; /* Expanded touch hit area */
+      padding: 10px 0; /* Large 26px comfortable touch & click hit-box */
       background-clip: content-box;
+      touch-action: none;
     }
     .progress-bar-container:hover {
-      height: 6px;
+      background: rgba(255, 255, 255, 0.32);
+      background-clip: content-box;
     }
     .progress-bar-fill {
       height: 100%;
       border-radius: 99px;
-      background: var(--c-text-pri);
+      background: linear-gradient(90deg, #818cf8 0%, #b8a1ff 50%, #ffffff 100%);
       position: relative;
       width: 0%;
       pointer-events: none;
-      transition: width 0.08s linear;
+      box-shadow: 0 0 8px rgba(184, 161, 255, 0.4);
     }
-    .progress-bar-container:hover .progress-bar-fill {
-      background: var(--c-lavender);
-    }
+    /* Highly visible handle thumb knob */
     .progress-bar-fill::after {
       content: '';
       position: absolute;
-      right: -5px;
+      right: -7px;
       top: 50%;
       transform: translateY(-50%);
-      width: 11px;
-      height: 11px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
-      background: #fff;
-      box-shadow: 0 0 6px rgba(0,0,0,0.4);
-      opacity: 0;
-      transition: opacity 0.15s;
+      background: #ffffff;
+      border: 2px solid #08090d;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 2px 6px rgba(0, 0, 0, 0.6);
+      opacity: 1; /* Always visible so the user immediately sees where playback is */
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
-    .progress-bar-container:hover .progress-bar-fill::after {
-      opacity: 1;
+    .progress-bar-container:hover .progress-bar-fill::after,
+    .progress-bar-container:active .progress-bar-fill::after {
+      transform: translateY(-50%) scale(1.25);
+      background: #b8a1ff;
+      border-color: #ffffff;
+      box-shadow: 0 0 12px rgba(184, 161, 255, 0.95);
     }
 
     /* Right: Volume Controller */
@@ -2200,6 +2207,7 @@
     // BULLETPROOF SEEKING & AUDIO EVENTS
     // ══════════════════════════════════════════════════════════
     audio.addEventListener('timeupdate', () => {
+      if (isUserScrubbing) return; // Prevent progress bar jumping while scrubbing
       const cur = audio.currentTime;
       const dur = (audio.duration && !isNaN(audio.duration) && isFinite(audio.duration)) ? audio.duration : currentQueue[currentIndex]?.duration || 180;
       if (timeCurrent) timeCurrent.textContent = formatTime(cur);
@@ -2256,31 +2264,98 @@
       }
     });
 
-    // Seeking handler supporting mouse click, mouse drag, and touch
-    function seekProgress(e) {
-      const container = e.currentTarget || document.getElementById('progressBar');
-      if (!container) return;
-      const rect = container.getBoundingClientRect();
-      const clientX = (e.touches && e.touches.length > 0) ? e.touches[0].clientX : (e.clientX !== undefined ? e.clientX : 0);
-      const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-      const dur = (audio.duration && !isNaN(audio.duration) && isFinite(audio.duration)) ? audio.duration : currentQueue[currentIndex]?.duration || 180;
+    // ── Professional Drag-and-Click Seekbar Controller ──
+    let isUserScrubbing = false;
+
+    function applySeekRatio(ratio, commitToAudio = false) {
+      ratio = Math.max(0, Math.min(1, ratio));
+      const dur = (audio.duration && !isNaN(audio.duration) && isFinite(audio.duration) && audio.duration > 0)
+        ? audio.duration
+        : (currentQueue[currentIndex]?.duration || 180);
       const targetTime = ratio * dur;
 
-      // Update UI immediately for silky smooth responsiveness
       if (progressFill) progressFill.style.width = (ratio * 100) + '%';
       if (mobMiniProgressFill) mobMiniProgressFill.style.width = (ratio * 100) + '%';
       if (timeCurrent) timeCurrent.textContent = formatTime(targetTime);
 
-      try {
-        if (audio.fastSeek) {
-          audio.fastSeek(targetTime);
-        } else {
-          audio.currentTime = targetTime;
+      if (commitToAudio) {
+        try {
+          if (!audio.src || audio.src === 'about:blank' || audio.src === window.location.href) {
+            audio.src = currentQueue[currentIndex]?.streamUrl || GLOBAL_HOT_HITS[0].streamUrl;
+          }
+          if (audio.fastSeek) {
+            audio.fastSeek(targetTime);
+          } else {
+            audio.currentTime = targetTime;
+          }
+        } catch (err) {
+          console.warn('Seek error:', err);
         }
-      } catch (err) {
-        console.warn('Seek error:', err);
       }
     }
+
+    function seekProgress(e) {
+      const container = document.getElementById('progressBar');
+      if (!container) return;
+      const rect = container.getBoundingClientRect();
+      const clientX = (e.touches && e.touches.length > 0) ? e.touches[0].clientX : (e.clientX !== undefined ? e.clientX : 0);
+      const ratio = (clientX - rect.left) / rect.width;
+      applySeekRatio(ratio, true);
+    }
+
+    // Interactive pointer drag handling for desktop & touch
+    (function initScrubberEvents() {
+      function attachEvents() {
+        const pb = document.getElementById('progressBar');
+        if (!pb) { setTimeout(attachEvents, 100); return; }
+
+        function onPointerMove(e) {
+          if (!isUserScrubbing) return;
+          const rect = pb.getBoundingClientRect();
+          const clientX = (e.touches && e.touches.length > 0) ? e.touches[0].clientX : (e.clientX !== undefined ? e.clientX : 0);
+          const ratio = (clientX - rect.left) / rect.width;
+          applySeekRatio(ratio, false);
+        }
+
+        function onPointerUp(e) {
+          if (!isUserScrubbing) return;
+          isUserScrubbing = false;
+          const rect = pb.getBoundingClientRect();
+          const clientX = (e.changedTouches && e.changedTouches.length > 0) ? e.changedTouches[0].clientX : (e.clientX !== undefined ? e.clientX : 0);
+          const ratio = (clientX - rect.left) / rect.width;
+          applySeekRatio(ratio, true);
+          window.removeEventListener('pointermove', onPointerMove);
+          window.removeEventListener('pointerup', onPointerUp);
+          window.removeEventListener('touchmove', onPointerMove);
+          window.removeEventListener('touchend', onPointerUp);
+        }
+
+        pb.addEventListener('pointerdown', (e) => {
+          isUserScrubbing = true;
+          const rect = pb.getBoundingClientRect();
+          const ratio = (e.clientX - rect.left) / rect.width;
+          applySeekRatio(ratio, true);
+          window.addEventListener('pointermove', onPointerMove, { passive: true });
+          window.addEventListener('pointerup', onPointerUp);
+        });
+
+        pb.addEventListener('touchstart', (e) => {
+          isUserScrubbing = true;
+          const rect = pb.getBoundingClientRect();
+          const clientX = e.touches[0].clientX;
+          const ratio = (clientX - rect.left) / rect.width;
+          applySeekRatio(ratio, true);
+          window.addEventListener('touchmove', onPointerMove, { passive: true });
+          window.addEventListener('touchend', onPointerUp);
+        }, { passive: true });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', attachEvents);
+      } else {
+        attachEvents();
+      }
+    })();
 
     // Volume controller
     function updateVolumeUI(val) {
@@ -2861,7 +2936,7 @@
     renderLibraryView();
     updatePlayStateUI(false);
 
-    // Initial track metadata
+    // Initial track metadata & immediate audio pre-binding
     const initialTrack = GLOBAL_HOT_HITS[0];
     if (dockArtImg) dockArtImg.src = initialTrack.art;
     if (dockTrackTitle) dockTrackTitle.textContent = initialTrack.title;
@@ -2870,9 +2945,12 @@
     if (mobMiniTitle) mobMiniTitle.textContent = initialTrack.title;
     if (mobMiniArtist) mobMiniArtist.textContent = initialTrack.artist;
     if (timeTotal) timeTotal.textContent = formatTime(initialTrack.duration);
+    if (audio && !audio.src) {
+      audio.src = initialTrack.streamUrl;
+      audio.load();
+    }
 
 // ── Professional Starfield: Clean & Elegant Astronomy Style ──
-    // ── Professional Starfield: Clean & Elegant Astronomy Style ──
     (function () {
       var c = document.getElementById('bg-canvas');
       if (!c) return;
@@ -3017,8 +3095,6 @@
 
       window.addEventListener('resize', resize, { passive: true });
       resize(); requestAnimationFrame(render);
-    })();
-
     })();
   </script>
 </body>
